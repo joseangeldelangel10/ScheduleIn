@@ -15,6 +15,7 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 [Evaluation of your app across the following attributes]
 - **Category:** Productivity, Social, communications, tools
 - **Mobile:**
+- <img src='AppViewDrafts.jpg' title='Expected views' width='' alt='Expected Views' />
 - **Story:**
 - **Market:**
 - **Habit:**
