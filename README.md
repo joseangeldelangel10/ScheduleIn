@@ -39,7 +39,9 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 * [list first screen here]
    * [list associated required story here]
-   * ...
+   * User can login with specific credentials
+   * User can view his week schedule once logged in
+   * user can add events to his schedule
 * [list second screen here]
    * [list associated required story here]
    * ...
