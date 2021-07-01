@@ -13,13 +13,13 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 ### App Evaluation
 [Evaluation of your app across the following attributes]
-- **Category:** Productivity, Social, communications, tools
+- **Category:** Productivity, Social, communications, tools 
 - **Mobile:**
 - <img src='AppViewsDrafts.jpg' title='Expected views' width='' alt='Expected Views' />
 - **Story:**
-- **Market:**
-- **Habit:**
-- **Scope:**
+- **Market:** App's main target are companies and asociations, we want to allow them to improve their logistics and to have a clear scheduling
+- **Habit:** 
+- **Scope:** Despite of the fact that the main target are the companies and executives, app will be open for anybody in the word.
 
 ## Product Spec
 
