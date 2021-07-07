@@ -24,24 +24,40 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 ## Product Spec
 
 ### 1. User Stories (Required and Optional)
+**Required User stories:**
 
-**Required Must-have Stories**
+* User can login with specific credentials
+* User can log-out
+* User can sign up
+* User can view his week schedule on log in
+* User can add events to his schedule
+* User is able to have a detailed view of a certain event
+* User can Create, Read, Update and Delete an event
+* User can view the week view of his calendar at double tap in the main activity (add grow animation)
+* User can look for other users using the search bar
+* User can see his schedule in month, week and day views
+* User can relate with other users
+* Once user is related with someone he can see a private view of the other person schedule
+* User can Login with google
+* User can see his notifications (reminders for next events) and his relations requests
+* User can discard his notifications and relate requests swiping right (does this counts as a gesture?)
 
-* [fill in your required user stories here]
-* ...
+**Optional user stories:**
+* User is able to link his calendar with google calendar
+* User can choose if a certain event is private or public to his friends (when public the other user will be allowed to see the details of the event)
+* User can create joined events (of 2 people) in an easy manner
+* User can create groups of people which whom he usually hangs, store this groups and create events with the people whitin such groups
+* User can look for app features using the search bar
 
-**Optional Nice-to-have Stories**
-
-* [fill in your required user stories here]
-* ...
+**NOTES: **
+* Add swipe animation to the menu activity
+* Use glide to add curved borders to profile picture
 
 ### 2. Screen Archetypes
 
 * [list first screen here]
    * [list associated required story here]
-   * User can login with specific credentials
-   * User can view his week schedule once logged in
-   * user can add events to his schedule
+
 * [list second screen here]
    * [list associated required story here]
    * ...
@@ -65,7 +81,7 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
-<img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
+<img src='AppViewsDrafts.jpg' title='Expected views' width='' alt='Expected Views' />
 
 ### [BONUS] Digital Wireframes & Mockups
 
