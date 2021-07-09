@@ -12,7 +12,6 @@ A calendar tool where you can also follow your friends, colleges and families al
 ScheduleIn is an app that aims to improve current calendar tools allowing the user to follow his friends, colleges and families in order to view partners aviability and to provide an easy way to create joined events, the user can also create gruops with other users which whom we usually hangs out with like family, work teams, etcetera and this will allow user easily create group events.
 
 ### App Evaluation
-[Evaluation of your app across the following attributes]
 - **Category:** Productivity, Social, communications, tools 
 - **Mobile:** This app will be developed initialy as a mobile app, however I consider that in the future the app should be responsive enough to give confort and practicity in tablets as well, on the other hand a webapp might be developed in the future as well.
 - **Story:** Allows user to orginize their time considering their peers time as well 
@@ -85,11 +84,15 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 ### [BONUS] Digital Wireframes & Mockups
 
 ### [BONUS] Interactive Prototype
+<img src='Interactive.gif' title='Interactive Prototype' width='' alt='Interactive Prototype' />
 
 ## Schema 
 [This section will be completed in Unit 9]
 ### Models
-[Add table of models]
+**Database Model:**
+<img src='DBmodel.png' title='DB model' width='' alt='DB model' />
+**Java objects:**
+
 ### Networking
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
