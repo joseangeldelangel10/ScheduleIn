@@ -39,6 +39,7 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 * User can Login with google
 * User can see his notifications (reminders for next events) and his relations requests
 * User can discard his notifications and relate requests swiping right (does this counts as a gesture?)
+* User can cancel his next event with a shortcut button
 
 **Optional user stories:**
 * User is able to link his calendar with google calendar
@@ -53,12 +54,23 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 ### 2. Screen Archetypes
 
-* [list first screen here]
-   * [list associated required story here]
-
-* [list second screen here]
-   * [list associated required story here]
-   * ...
+* Login or sign up
+* Login - 
+    * User can login with specific credentials
+    * User is able to link his calendar with google calendar
+* Register - User signs up 
+* ProfileView -
+    * User can view his week schedule on log in
+    * User can add events to his schedule
+    * User can cancel his next event with a shortcut button
+    * User can view the week view of his calendar at double tap in the main activity (add grow animation)
+    * User can look for other users using the search bar
+* Menu -
+    * User can see his schedule in month, week and day views
+* Notifications -
+    * User can see his notifications (reminders for next events) and his relations requests
+* Create/update event
+    * User can Create, Read, Update and Delete an event
 
 ### 3. Navigation
 
