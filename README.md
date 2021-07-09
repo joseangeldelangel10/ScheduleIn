@@ -106,7 +106,7 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 **Java objects:**
 
 ### Networking
-# Network request for this week events:
+##### Network request for this week events:
 ```java
         // specify what type of data we want to query
         ParseQuery<Post> query = ParseQuery.getQuery(Event.class);
