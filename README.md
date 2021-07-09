@@ -14,11 +14,10 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 ### App Evaluation
 [Evaluation of your app across the following attributes]
 - **Category:** Productivity, Social, communications, tools 
-- **Mobile:**
-- <img src='AppViewsDrafts.jpg' title='Expected views' width='' alt='Expected Views' />
-- **Story:**
+- **Mobile:** This app will be developed initialy as a mobile app, however I consider that in the future the app should be responsive enough to give confort and practicity in tablets as well, on the other hand a webapp might be developed in the future as well.
+- **Story:** Allows user to orginize their time considering their peers time as well 
 - **Market:** App's main target are companies and asociations, we want to allow them to improve their logistics and to have a clear scheduling
-- **Habit:** 
+- **Habit:** The user has total freedom to decide weather they want to register the tasks they will be doing or not, but the app will be much more useful with a constant usage.
 - **Scope:** Despite of the fact that the main target are the companies and executives, app will be open for anybody in the word.
 
 ## Product Spec
@@ -49,7 +48,7 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 * User can create groups of people which whom he usually hangs, store this groups and create events with the people whitin such groups
 * User can look for app features using the search bar
 
-**NOTES: **
+**NOTES:**
 * Add swipe animation to the menu activity
 * Use glide to add curved borders to profile picture
 
