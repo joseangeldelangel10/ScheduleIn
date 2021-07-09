@@ -106,30 +106,28 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 **Java objects:**
 
 ### Networking
-- [Add list of network requests by screen ]
-```
-// specify what type of data we want to query - Post.class
+# Network request for this week events:
+```java
+        // specify what type of data we want to query
         ParseQuery<Post> query = ParseQuery.getQuery(Event.class);
         // include data referred by user key
         query.include(Post.KEY_USER);
-      
+        query.whereLessThan("start", current_monday_morning);
+        query.whereGreaterThan("start", current_sunday_night);
         // start an asynchronous call for posts
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
                 // check for errors
                 if (e != null) {
-                    Log.e(TAG, "Issue with getting posts", e);
+                    Log.e(TAG, "Issue while retriving events", e);
                     return;
                 }
 
                 // for debugging purposes let's print every post description to logcat
                 for (Post post : posts) {
-                    Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
+                    weekCalendar = new WeekCalendar(events);
                 }
-
-                // save received posts to list and notify adapter of new data
-                adapter.addAll(posts);
             }
         });
 ```
