@@ -99,7 +99,6 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 <img src='Interactive.gif' title='Interactive Prototype' width='' alt='Interactive Prototype' />
 
 ## Schema 
-[This section will be completed in Unit 9]
 ### Models
 **Database Model:**
 <img src='DBmodel.png' title='DB model' width='' alt='DB model' />
@@ -112,8 +111,8 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
         ParseQuery<Post> query = ParseQuery.getQuery(Event.class);
         // include data referred by user key
         query.include(Post.KEY_USER);
-        query.whereLessThan("start", current_monday_morning);
-        query.whereGreaterThan("start", current_sunday_night);
+        query.whereGreaterThan("start", current_monday_morning);
+        query.whereLessThan("start", current_sunday_night);
         // start an asynchronous call for posts
         query.findInBackground(new FindCallback<Post>() {
             @Override
