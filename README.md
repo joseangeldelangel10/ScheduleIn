@@ -107,7 +107,31 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 ### Networking
 - [Add list of network requests by screen ]
--
-`print(hello world)`
+```
+// specify what type of data we want to query - Post.class
+        ParseQuery<Post> query = ParseQuery.getQuery(Event.class);
+        // include data referred by user key
+        query.include(Post.KEY_USER);
+      
+        // start an asynchronous call for posts
+        query.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> posts, ParseException e) {
+                // check for errors
+                if (e != null) {
+                    Log.e(TAG, "Issue with getting posts", e);
+                    return;
+                }
+
+                // for debugging purposes let's print every post description to logcat
+                for (Post post : posts) {
+                    Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
+                }
+
+                // save received posts to list and notify adapter of new data
+                adapter.addAll(posts);
+            }
+        });
+```
 - [Create basic snippets for each Parse network request]
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
