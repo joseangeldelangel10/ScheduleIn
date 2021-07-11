@@ -89,15 +89,10 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 **Flow Navigation** (Screen to Screen)
 
-* [list first screen here]
-   * [list screen navigation here]
-   * ...
-* [list second screen here]
-   * [list screen navigation here]
-   * ...
+<img src='NavigationFlow.jpg' title='Expected views' width='' alt='Expected Views' />
 
 ## Wireframes
-[Add picture of your hand sketched wireframes in this section]
+
 <img src='AppViewsDrafts.jpg' title='Expected views' width='' alt='Expected Views' />
 
 ### [BONUS] Digital Wireframes & Mockups
