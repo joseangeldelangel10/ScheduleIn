@@ -59,18 +59,25 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
     * User can login with specific credentials
     * User is able to link his calendar with google calendar
 * Register - User signs up 
-* ProfileView -
+* User ProfileView -
     * User can view his week schedule on log in
     * User can add events to his schedule
     * User can cancel his next event with a shortcut button
     * User can view the week view of his calendar at double tap in the main activity (add grow animation)
     * User can look for other users using the search bar
+* Edit profile -
 * Menu -
     * User can see his schedule in month, week and day views
 * Notifications -
     * User can see his notifications (reminders for next events) and his relations requests
-* Create/update event
+* Create/update event - 
     * User can Create, Read, Update and Delete an event
+* General ProfileView -
+    * User can relate with other users
+    * Once user is related with someone he can see a private view of the other person schedule
+* calendar view (day, week, month)
+* User relations
+* User groups
 
 ### 3. Navigation
 
