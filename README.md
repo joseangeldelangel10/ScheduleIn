@@ -82,7 +82,7 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 * User groups
     * User can create joined events (of 2 people) in an easy manner
     * User can create groups of people which whom he usually hangs, store this groups and create events with the people whitin such groups
-    * * User can CRUD his relations
+    * User can CRUD his relations
 
 ### 3. Navigation
 
@@ -142,6 +142,6 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
 Instead of providing specific endpoints to make requests to calendar api and sign in with google api, google provides java libraries that allow us to communicate with both APIs
-* Sign in library : https://developers.google.com/identity/sign-in/android/start-integrating
-* Calendar library : https://developers.google.com/calendar/api/quickstart/java
+   * Sign in library : https://developers.google.com/identity/sign-in/android/start-integrating
+   * Calendar library : https://developers.google.com/calendar/api/quickstart/java
 
