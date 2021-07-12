@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".menuActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+            <TextView android:textSize="30sp"
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Time" />
+
+            <TextView android:textSize="20sp"
+                android:id="@+id/menu_myday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView12"
+                android:layout_marginTop="5dp"
+                android:text="  My day" />
+
+            <TextView android:textSize="20sp"
+                android:id="@+id/menu_myweek"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_myday"
+                android:layout_marginTop="5dp"
+                android:text="  My week" />
+
+            <TextView android:textSize="20sp"
+                android:id="@+id/menu_mymonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_myweek"
+                android:layout_marginTop="5dp"
+                android:text="  My month" />
+
+        <View
+            android:id="@+id/divider0"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="?android:attr/listDivider"
+            android:layout_below="@id/menu_mymonth"/>
+
+
+            <TextView android:textSize="30sp"
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_mymonth"
+                android:layout_marginTop="5dp"
+                android:text="My profile" />
+
+            <TextView android:textSize="20sp"
+                android:id="@+id/menu_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView18"
+                android:layout_marginTop="5dp"
+                android:text="  Log-out" />
+
+            <TextView android:textSize="20sp"
+                android:id="@+id/menu_editprofile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_logout"
+                android:layout_marginTop="5dp"
+                android:text="  Edit profile" />
+
+            <TextView android:textSize="20sp"
+                android:id="@+id/menu_privactsettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_editprofile"
+                android:layout_marginTop="5dp"
+                android:text="  Privacy Settings" />
+
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="?android:attr/listDivider"
+        android:layout_below="@id/menu_privactsettings"/>
+
+            <TextView android:textSize="30sp"
+                android:id="@+id/textView22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_privactsettings"
+                android:layout_marginTop="5dp"
+                android:text="My relations" />
+
+            <TextView android:textSize="20sp"
+                android:id="@+id/menu_myrelations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView22"
+                android:layout_marginTop="5dp"
+                android:text="  See my relations" />
+
+            <TextView android:textSize="20sp"
+                android:id="@+id/menu_joinedevents"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_myrelations"
+                android:layout_marginTop="5dp"
+                android:text="  See joined events" />
+
+            <TextView android:textSize="20sp"
+                android:id="@+id/menu_createjoinedevent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_joinedevents"
+                android:layout_marginTop="5dp"
+                android:text="  Create joined event" />
+
+        <TextView android:textSize="20sp"
+            android:id="@+id/menu_mygroups"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/menu_createjoinedevent"
+            android:layout_marginTop="5dp"
+            android:text="  See my groups" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="?android:attr/listDivider"
+            android:layout_below="@id/menu_mygroups"/>
+</RelativeLayout>
+
