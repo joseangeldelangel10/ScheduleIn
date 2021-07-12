@@ -40,6 +40,7 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 * User can see his notifications (reminders for next events) and his relations requests
 * User can discard his notifications and relate requests swiping right (does this counts as a gesture?)
 * User can cancel his next event with a shortcut button
+* User can CRUD his relations
 
 **Optional user stories:**
 * User is able to link his calendar with google calendar
@@ -76,16 +77,18 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
     * User can relate with other users
     * Once user is related with someone he can see a private view of the other person schedule
 * calendar view (day, week, month)
+    * User can see his schedule in month, week and day views
 * User relations
 * User groups
+    * User can create joined events (of 2 people) in an easy manner
+    * User can create groups of people which whom he usually hangs, store this groups and create events with the people whitin such groups
+    * * User can CRUD his relations
 
 ### 3. Navigation
 
 **Tab Navigation** (Tab to Screen)
 
-* [fill out your first tab]
-* [fill out your second tab]
-* [fill out your third tab]
+* [Menu when optimized]
 
 **Flow Navigation** (Screen to Screen)
 
@@ -102,9 +105,12 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 ## Schema 
 ### Models
-**Database Model:**
+#### Database Model:
 <img src='DBmodel.png' title='DB model' width='' alt='DB model' />
-**Java objects:**
+#### Java objects:
+**Month calendar object:**
+
+
 
 ### Networking
 ##### Network request for this week events:
@@ -132,5 +138,10 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
             }
         });
 ```
-- [Create basic snippets for each Parse network request]
+... Other requests ...
+
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
+Instead of providing specific endpoints to make requests to calendar api and sign in with google api, google provides java libraries that allow us to communicate with both APIs
+* Sign in library : https://developers.google.com/identity/sign-in/android/start-integrating
+* Calendar library : https://developers.google.com/calendar/api/quickstart/java
+
