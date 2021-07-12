@@ -108,7 +108,7 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 #### Database Model:
 <img src='DBmodel.png' title='DB model' width='' alt='DB model' />
 #### Java objects:
-<img src='javaObjects.png' title='DB model' width='' alt='DB model' />
+<img src='javaObjects.jpg' title='DB model' width='' alt='DB model' />
 
 
 
