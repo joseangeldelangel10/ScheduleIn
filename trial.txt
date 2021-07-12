@@ -1,0 +1,1 @@
+trial txt to check if we have binded the git repo correctly
