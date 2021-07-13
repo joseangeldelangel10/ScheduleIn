@@ -17,8 +17,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -31,50 +33,69 @@ import com.example.schedulein_20.fragments.UserProfile;
 import com.google.android.material.navigation.NavigationView;
 import com.parse.ParseUser;
 
+import java.util.Date;
+
 public class ActivityDrawerLayout extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private final String TAG = "ActivityDrawerLayout";
+    ParseUser currentUser = ParseUser.getCurrentUser();
+    Toolbar toolbar;
+    DrawerLayout drawer;
+    ActionBarDrawerToggle toggle;
     NavigationView navigationView;
-    ImageView userImage;
+    FragmentManager fragmentManager;
+    View navHeader;
+    TextView headNavUser;
+    ImageView headNavPicture;
+    TextView headNavDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_layout);
-        userImage = findViewById(R.id.nav_menu_image);
 
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
+        /* ---------------------------------------------------------------------------------------------
+                                      REPLACING ACTION BAR FOR TOOLBAR TO USE NAV DRAWER
+        --------------------------------------------------------------------------------------------- */
+        toolbar = findViewById(R.id.my_awesome_toolbar);
         setSupportActionBar(toolbar);
         //toolbar.setLogo(R.drawable.calendar_icon);
         //toolbar.setDisplayUseLogoEnabled(true);
 
-        DrawerLayout drawer = findViewById(R.id.my_drawer_layout);
-        //drawerLayout.setStatusBarBackgroundColor(getColor(R.color.purple_200));
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.app_name, R.string.app_name);
+        /* ---------------------------------------------------------------------------------------------
+                                                DRAWER CONFIGURATION
+        --------------------------------------------------------------------------------------------- */
+        drawer = findViewById(R.id.my_drawer_layout);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_opened, R.string.drawer_closed);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        //navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        //navigationView.getMenu().getItem(0).setChecked(true);
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this); // binding onNavigationItemSelected();
+        fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.host_frame, new UserProfile()).commit();
 
-        /*Glide.with(ActivityDrawerLayout.this)
+        /* ---------------------------------------------------------------------------------------------
+                                      NAVIGATION HEADER ITEM CONTROL
+        --------------------------------------------------------------------------------------------- */
+        navHeader =  navigationView.getHeaderView(0);
+        headNavUser = navHeader.findViewById(R.id.nav_menu_mail);
+        headNavPicture = navHeader.findViewById(R.id.nav_menu_image);
+        headNavDate = navHeader.findViewById(R.id.nav_menu_date);
+        headNavUser.setText("Signed in as:\n" + currentUser.getString("name") + " " + currentUser.getString("surname"));
+        headNavDate.setText(DateTime.getFormalCurrentDate());
+        Glide.with(ActivityDrawerLayout.this)
                 .load("https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg")
-                .into(userImage);*/
+                .into(headNavPicture);
+
+        /* --------------------------------------------------------------------------------------------- */
+
     }
 
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
         Fragment fragment = null;
-        FragmentManager fragmentManager = getSupportFragmentManager();
+
         if (id == R.id.nav_menu_home) {
             fragment = new UserProfile();
         }
@@ -82,10 +103,7 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
             fragment = new CalendarView();
         }
         if (id == R.id.nav_menu_log_out){
-            ParseUser.logOut();
-            Toast.makeText(ActivityDrawerLayout.this, "logout succesfull", Toast.LENGTH_SHORT);
-            Intent intent = new Intent(this, loginOrSignup.class);
-            startActivity(intent);
+            logout();
             return true;
         }
         if (id == R.id.nav_menu_edit_profile){
@@ -101,13 +119,15 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
             fragment = new Groups();
         }
         fragmentManager.beginTransaction().replace(R.id.host_frame, fragment).commit();
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.my_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    private void Logout() {
-        Log.e(TAG, "logging out");
+    private void logout() {
+        ParseUser.logOut();
+        Toast.makeText(ActivityDrawerLayout.this, "logout succesfull", Toast.LENGTH_SHORT);
+        Intent intent = new Intent(this, loginOrSignup.class);
+        startActivity(intent);
         finish();
     }
 
@@ -119,4 +139,5 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
         //miActionProgressItem = menu.findItem(R.id.miActionProgress);
         return true;
     }
+
 }

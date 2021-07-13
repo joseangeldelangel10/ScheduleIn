@@ -15,6 +15,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.schedulein_20.DateTime;
 import com.example.schedulein_20.R;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -32,9 +33,9 @@ public class UserProfile extends Fragment {
     Button cancel_next_event;
     ScrollView week_schedule;
     Button new_event;
-    ParseUser currentUser;
+    ParseUser currentUser = ParseUser.getCurrentUser();;
 
-    // TODO: Rename parameter arguments, choose names that match
+    /*// TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -45,7 +46,7 @@ public class UserProfile extends Fragment {
 
     public UserProfile() {
         // Required empty public constructor
-    }
+    }*/
 
     /**
      * Use this factory method to create a new instance of
@@ -56,7 +57,7 @@ public class UserProfile extends Fragment {
      * @return A new instance of fragment UserProfile.
      */
     // TODO: Rename and change types and number of parameters
-    public static UserProfile newInstance(String param1, String param2) {
+    /*public static UserProfile newInstance(String param1, String param2) {
         UserProfile fragment = new UserProfile();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -72,12 +73,10 @@ public class UserProfile extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-    }
+    }*/
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_user_profile, container, false);
     }
 
@@ -93,9 +92,6 @@ public class UserProfile extends Fragment {
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                         RETRIEVING THE DATA TO GENERATE THE VIEWS
         ------------------------------------------------------------------------------------------------------------------------------------*/
-
-        currentUser = ParseUser.getCurrentUser();
-        String current_time = "morning";
         String user_name = currentUser.getString("name");
         String current_event = "current event";
         String next_event = "other event";
@@ -106,14 +102,16 @@ public class UserProfile extends Fragment {
 
         ParseFile currentUserProfileImage = (ParseFile) currentUser.getParseFile("profilePic");
         if (currentUserProfileImage != null) {
-            Glide.with(getContext()).load(currentUserProfileImage.getUrl()).into(ivUserImage);
+            Glide.with(getContext()).load(currentUserProfileImage.getUrl())
+                    .placeholder(R.drawable.profile_picture_placeholder)
+                    .into(ivUserImage);
         }else {
             Glide.with(getContext())
-                    .load("https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg")
+                    .load(R.drawable.profile_picture_placeholder)
                     .into(ivUserImage);
         }
 
-        greeting.setText("Good " + current_time + " " + user_name +"!");
+        greeting.setText(DateTime.timeBasedGreeting() + " " + user_name +"!");
         user_info.setText("- Now attending to: " + current_event + "\n- Next event: " + next_event);
     }
 }

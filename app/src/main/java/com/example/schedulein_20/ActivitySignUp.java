@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.parse.ParseUser;
 
@@ -57,22 +58,16 @@ public class ActivitySignUp extends AppCompatActivity {
         user.put(NAME_KEY, name);
         user.put(SURNAME_KEY, surname);
 
-        // Other fields can be set just like any other ParseObject,
-        // using the "put" method, like this: user.put("attribute", "its value");
-        // If this field does not exists, it will be automatically created
-
         user.signUpInBackground(e -> {
             if (e == null) {
-                // Hooray! Let them use the app now.
                 Log.e(TAG, "new user created");
+                Toast.makeText(this, "User created!", Toast.LENGTH_LONG);
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
                 finish();
             } else {
-                // Sign up didn't succeed. Look at the ParseException
-                // to figure out what went wrong
+                Toast.makeText(this, "there was a problem :(", Toast.LENGTH_LONG);
                 Log.e(TAG, "st went wrong when creating your user");
-                //Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -32,26 +32,36 @@ public class loginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        /* ----------------------------------------------------------------------------------------
+                                        VIEW REFERENCING
+      ---------------------------------------------------------------------------------------- */
+
         etEmail = findViewById(R.id.etEmailLoginAct);
         etPassword = findViewById(R.id.etPasswordLoginAct);
         buttLoginFinal = findViewById(R.id.buttFinalLogin);
         buttLoginWithGoogle = findViewById(R.id.buttLoginWithGoogle);
         buttLoginWithFb = findViewById(R.id.buttLoginWithFb);
 
+        /* ----------------------------------------------------------------------------------------
+                                    CREATING TOOLBAR
+      ---------------------------------------------------------------------------------------- */
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.login_my_awesome_toolbar);
         setSupportActionBar(toolbar);
 
-        /* ------------------------- WHEN LOGIN IS PRESSED VALIDATE CREDENTIALS ------------------------- */
+        /* ----------------------------------------------------------------------------------------
+                                 IF LOGIN PRESSED VALIDATE CREDENTIALS
+      ---------------------------------------------------------------------------------------- */
         buttLoginFinal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String emailOrUsernameText = etEmail.getText().toString();
                 String passwordText = etPassword.getText().toString();
-                Log.e("loginAct", "email: " + emailOrUsernameText + "password: " + passwordText);
+                Log.i("loginAct", "email: " + emailOrUsernameText + "password: " + passwordText);
                 loginUser(emailOrUsernameText, passwordText);
             }
         });
-        /* ----------------------------------------------------------------------------------------------- */
+        /* ------------------------------------------------------------------------------------ */
 
     }
 
