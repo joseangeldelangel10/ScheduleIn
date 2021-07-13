@@ -1,6 +1,7 @@
 package com.example.schedulein_20;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +9,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+/*------------------------------------------------------------------------
+This activity's functionality consists only in one on click listener,
+wich runs validateLocalCredentials function and triggers an intent
+------------------------------------------------------------------------*/
 
 public class loginActivity extends AppCompatActivity {
+    private final String TAG = "loginActivity";
     EditText etEmail;
     EditText etPassword;
     Button buttLoginFinal;
@@ -27,6 +38,9 @@ public class loginActivity extends AppCompatActivity {
         buttLoginWithGoogle = findViewById(R.id.buttLoginWithGoogle);
         buttLoginWithFb = findViewById(R.id.buttLoginWithFb);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.login_my_awesome_toolbar);
+        setSupportActionBar(toolbar);
+
         /* ------------------------- WHEN LOGIN IS PRESSED VALIDATE CREDENTIALS ------------------------- */
         buttLoginFinal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,10 +48,7 @@ public class loginActivity extends AppCompatActivity {
                 String emailOrUsernameText = etEmail.getText().toString();
                 String passwordText = etPassword.getText().toString();
                 Log.e("loginAct", "email: " + emailOrUsernameText + "password: " + passwordText);
-                if ( validateLocalCredentials(emailOrUsernameText, passwordText) ){
-                    Intent intent = new Intent(loginActivity.this, userProfile.class);
-                    startActivity(intent);
-                }
+                loginUser(emailOrUsernameText, passwordText);
             }
         });
         /* ----------------------------------------------------------------------------------------------- */
@@ -47,13 +58,22 @@ public class loginActivity extends AppCompatActivity {
     /* ----------------------------------------------------------------------------------------
                                     VALIDATING CREDENTIALS
       ---------------------------------------------------------------------------------------- */
-    private boolean validateLocalCredentials(String emailOrUsernameText, String passwordText) {
-        //Log.e("loginAct", "entered method");
-        if( emailOrUsernameText.equals("joseangeldelangel10@gmail.com") && passwordText.equals("12345") ){
-            //Log.e("loginAct", "entered conditional");
-            return true;
-        }
-        return false;
+
+    private void loginUser(String username, String password) {
+        Log.i(TAG, "attempting to login");
+        ParseUser.logInInBackground(username, password, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                if (e != null){
+                    Log.e(TAG, "Issue with login" + e, e);
+                    return;
+                }
+                Toast.makeText(loginActivity.this, "Success!", Toast.LENGTH_LONG);
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 
 

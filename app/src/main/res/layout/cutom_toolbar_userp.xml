@@ -8,6 +8,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/menu_icon"
-        android:background="@color/primary_green"/>
+        android:background="@color/primary"/>
 
 </RelativeLayout>

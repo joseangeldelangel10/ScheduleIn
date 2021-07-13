@@ -16,9 +16,20 @@
         android:title="Search"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
-    <item
+    <!--<item
         android:id="@+id/compose"
         android:icon="@drawable/notification_icon"
         android:title="Compose"
         app:showAsAction="always" />
+    <item
+        android:title="some item"
+        android:icon="@drawable/forward_arrow"
+        app:showAsAction="always">
+    </item>
+    <item
+        android:title="some item2"
+        android:icon="@drawable/forward_arrow"
+        app:showAsAction="always">
+    </item>-->
+
 </menu>
