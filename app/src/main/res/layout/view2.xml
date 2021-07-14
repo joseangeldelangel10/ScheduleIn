@@ -4,12 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Calendar Title"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
@@ -366,12 +360,16 @@
                             android:id="@+id/relativeLayout4"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1" >
+                            android:layout_weight="1">
 
-                            <View android:background="#00f" android:layout_width = "fill_parent" android:layout_height="180dp" android:layout_marginTop="180dp"/>
+                            <View
+                                android:layout_width="fill_parent"
+                                android:layout_height="180dp"
+                                android:layout_marginTop="180dp"
+                                android:background="#00f" />
 
                             <Button
-                                
+
                                 android:layout_width="fill_parent"
                                 android:layout_height="180dp"
                                 android:layout_marginTop="180dp"

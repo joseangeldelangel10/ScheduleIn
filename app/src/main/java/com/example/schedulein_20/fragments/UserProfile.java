@@ -1,24 +1,39 @@
 package com.example.schedulein_20.fragments;
 
+import android.app.usage.UsageEvents;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.schedulein_20.DateTime;
 import com.example.schedulein_20.R;
+import com.example.schedulein_20.models.Events;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,14 +41,15 @@ import com.parse.ParseUser;
  * create an instance of this fragment.
  */
 public class UserProfile extends Fragment {
-
+    private final String TAG = "UserProfile";
     ImageView ivUserImage;
     TextView greeting;
     TextView user_info;
     Button cancel_next_event;
     ScrollView week_schedule;
     Button new_event;
-    ParseUser currentUser = ParseUser.getCurrentUser();;
+    ParseUser currentUser = ParseUser.getCurrentUser();
+    ArrayList<Events> weekEvents = new ArrayList<>();
 
     /*// TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -113,5 +129,104 @@ public class UserProfile extends Fragment {
 
         greeting.setText(DateTime.timeBasedGreeting() + " " + user_name +"!");
         user_info.setText("- Now attending to: " + current_event + "\n- Next event: " + next_event);
+
+        queryWeekEvents(view);
+        //generateWeekView(view);
     }
+
+    private void generateWeekView(@NonNull View view) {
+        //int RelativeLayoutId = R.id.week_view_mon;
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+
+        RelativeLayout saturday = view.findViewById(R.id.week_view_sat);
+        RelativeLayout sunday = view.findViewById(R.id.week_view_sun);
+
+        //saturday.setVisibility(View.INVISIBLE);
+        //sunday.setVisibility(View.INVISIBLE);
+
+        for(Events event: weekEvents) {
+            RelativeLayout layout = view.findViewById(  Events.dayInt2Str.get(event.getWeekDay())  );
+            Log.e(TAG, event.getTitle() + String.valueOf(event.getDurationInMins()));
+            int heightWDuration = 1200*event.getDurationInMins();
+            heightWDuration = heightWDuration/24;
+            heightWDuration = heightWDuration/60;
+            Float height = heightWDuration*displayMetrics.density;
+            //set the properties for button
+            Button btnTag = new Button(getContext());
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, height.intValue()  );
+            //btnTag.setLayoutParams(params);
+            btnTag.setText(event.getTitle());
+            btnTag.setTextSize(0, 15);
+
+            Float marginTop = new Float(event.getStartInMins());
+            marginTop = marginTop*1200;
+            marginTop = marginTop/1440;
+            Float finalMarginTop = marginTop*displayMetrics.density;
+            Float titleOffset = 30*displayMetrics.density;
+
+            params.setMargins(0, finalMarginTop.intValue() + titleOffset.intValue(), 0, 0);
+            btnTag.setLayoutParams(params);
+            //btnTag.setWidth(10);
+            //btnTag.setId("programatic_button");
+
+            //add button to the layout
+            layout.addView(btnTag);
+        }
+
+    }
+
+    public void queryWeekEvents(View view) {
+        // specify what type of data we want to query - Post.class
+        ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
+        // include data referred by user key
+        query.include(Events.KEY_USER);
+        // limit query to latest 20 items
+        query.whereGreaterThan(Events.KEY_START_DATE, DateTime.weekStart());
+        query.whereLessThan(Events.KEY_START_DATE, DateTime.weekEnding());
+        query.whereEqualTo(Events.KEY_USER, ParseUser.getCurrentUser());
+        query.addAscendingOrder(Events.KEY_START_DATE);
+        // order posts by creation date (newest first)
+        //query.addDescendingOrder(Events.KEY_CREATED_AT);
+        // start an asynchronous call for posts
+        query.findInBackground(new FindCallback<Events>() {
+            @Override
+            public void done(List<Events> objects, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue with getting events", e);
+                    return;
+                }
+                if (objects.size() == 0){
+                    Log.i(TAG, "empty query");
+                }
+                // for debugging purposes let's print every post description to logcat
+                for (Events event : objects) {
+                    Log.i(TAG, "Event: " + event.getTitle() + ", username: " +
+                            event.getUser().getUsername() + "\nstarts: " + event.getStartDate() +
+                            " ends: " + event.getEndDate() + "\nonday: " + event.getWeekDay()
+                    );
+                    weekEvents.add(event);
+                    generateWeekView(view);
+                }
+            }
+        });
+    }
+
+    public void setViewMargins(Context con, ViewGroup.LayoutParams params,
+                               int left, int top , int right, int bottom, View view) {
+
+        final float scale = con.getResources().getDisplayMetrics().density;
+        // convert the DP into pixel
+        int pixel_left = (int) (left * scale + 0.5f);
+        int pixel_top = (int) (top * scale + 0.5f);
+        int pixel_right = (int) (right * scale + 0.5f);
+        int pixel_bottom = (int) (bottom * scale + 0.5f);
+
+        ViewGroup.MarginLayoutParams s = (ViewGroup.MarginLayoutParams) params;
+        s.setMargins(pixel_left, pixel_top, pixel_right, pixel_bottom);
+
+        view.setLayoutParams(params);
+    }
+
 }

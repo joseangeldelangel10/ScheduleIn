@@ -5,6 +5,7 @@ import android.util.Log;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DateTime {
     private static String TAG = "DateTime";
@@ -30,7 +31,7 @@ public class DateTime {
     }
 
     public static String timeBasedGreeting(){
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         int hour = date.getHours();
         String greet = "Good ";
         if ( 4 <= hour && hour < 12){
@@ -39,10 +40,33 @@ public class DateTime {
         if ( 12 <= hour && hour < 20){
             return greet + "afternoon";
         }
-        if ( 8 <= hour && hour < 4){
+        if ( 20 <= hour || hour < 4){
             return greet + "night";
         }
         return "Hey ";
+    }
+
+    public static Date weekStart(){
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+        c.set(Calendar.HOUR_OF_DAY,0);
+        c.set(Calendar.MINUTE,0);
+        c.set(Calendar.SECOND,0);
+        Date result = c.getTime();
+        Log.e("UserProfile", "start: " + result.toString());
+        return result;
+    }
+
+    public static Date weekEnding(){
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+        c.set(Calendar.HOUR_OF_DAY,0);
+        c.set(Calendar.MINUTE,0);
+        c.set(Calendar.SECOND,0);
+        c.add(Calendar.DATE,7);
+        Date result = c.getTime();
+        Log.e("UserProfile", "end: " + result.toString());
+        return result;
     }
 
 }

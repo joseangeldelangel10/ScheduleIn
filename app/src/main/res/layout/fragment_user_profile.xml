@@ -18,6 +18,10 @@
 
             -->
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/user_profile_header">
             <ImageView
                 android:id="@+id/ivUserImage"
                 android:layout_width="110dp"
@@ -70,12 +74,15 @@
                 android:backgroundTint="@color/emphasis1"
                 android:text="cancel next event"
                 android:textSize="10sp" />
+            </RelativeLayout>
+
+            <!-- ___________________________________________________________________________________________________________________ -->
 
             <TextView
                 android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ivUserImage"
+                android:layout_below="@+id/user_profile_header"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="20dp"
@@ -83,9 +90,9 @@
                 android:textSize="24sp"
                 tools:text="What's on your week?" />
 
-            <androidx.core.widget.NestedScrollView
+            <!--<ImageView
                 android:id="@+id/svUserWeek"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:layout_below="@+id/textView14"
                 android:layout_alignParentStart="true"
@@ -93,414 +100,22 @@
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="25dp">
-
-                <RelativeLayout
-                    android:id="@+id/relativeLayout242"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="0dp" >
-
-
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="0dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="40dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="80dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="120dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="160dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="200dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="240dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="280dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="320dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="360dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="400dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="440dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="480dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="520dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="560dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="600dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="640dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="680dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="720dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="760dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="800dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="840dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="880dp"/>
-                    <View android:background="#aaa" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="920dp"/>
-
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="20dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="60dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="100dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="140dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="180dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="220dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="260dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="300dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="340dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="380dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="420dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="460dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="500dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="540dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="580dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="620dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="660dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="700dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="740dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="780dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="820dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="860dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="900dp"/>
-                    <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="940dp"/>
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="0dp" >
-
-                        <RelativeLayout
-                            android:id="@+id/relativeLayout2"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:padding="0dp" >
-
-                            <View android:background="#aaa" android:layout_width = "1dp" android:layout_height="fill_parent" android:layout_alignParentRight="true"/>
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="0dp"
-                                android:gravity="center"
-                                android:text="12am" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="40dp"
-                                android:gravity="center"
-                                android:text="1am" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="80dp"
-                                android:gravity="center"
-                                android:text="2am" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="120dp"
-                                android:gravity="center"
-                                android:text="3am" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="160dp"
-                                android:gravity="center"
-                                android:text="4am" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="200dp"
-                                android:gravity="center"
-                                android:text="5am" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="240dp"
-                                android:gravity="center"
-                                android:text="6am" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="280dp"
-                                android:gravity="center"
-                                android:text="7am" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="320dp"
-                                android:gravity="center"
-                                android:text="8am" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="360dp"
-                                android:gravity="center"
-                                android:text="9am" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="400dp"
-                                android:gravity="center"
-                                android:text="10am" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="440dp"
-                                android:gravity="center"
-                                android:text="11am" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="480dp"
-                                android:gravity="center"
-                                android:text="12pm" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="520dp"
-                                android:gravity="center"
-                                android:text="1pm" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="560dp"
-                                android:gravity="center"
-                                android:text="2pm" />
-
-                            <TextView
-
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="600dp"
-                                android:gravity="center"
-                                android:text="3pm" />
-
-                            <TextView
-
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="640dp"
-                                android:gravity="center"
-                                android:text="4pm" />
-
-                            <TextView
-
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="680dp"
-                                android:gravity="center"
-                                android:text="5pm" />
-
-                            <TextView
-
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="720dp"
-                                android:gravity="center"
-                                android:text="6pm" />
-
-                            <TextView
-
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="760dp"
-                                android:gravity="center"
-                                android:text="7pm" />
-
-                            <TextView
-
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="800dp"
-                                android:gravity="center"
-                                android:text="8pm" />
-
-                            <TextView
-
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="840dp"
-                                android:gravity="center"
-                                android:text="9pm" />
-
-                            <TextView
-
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="880dp"
-                                android:gravity="center"
-                                android:text="10pm" />
-
-                            <TextView
-
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:layout_marginTop="920dp"
-                                android:gravity="center|top"
-                                android:text="11pm" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/relativeLayout3"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="14"
-                            android:padding="0dp" >
-
-                            <LinearLayout
-                                android:id="@+id/linearLayout3"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentRight="true"
-                                android:layout_alignParentTop="true"
-                                android:padding="0dp" >
-
-                                <RelativeLayout
-                                    android:id="@+id/relativeLayout4"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1" >
-
-                                    <View android:background="#00f" android:layout_width = "fill_parent" android:layout_height="180dp" android:layout_marginTop="180dp"/>
-
-                                    <Button
-
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="180dp"
-                                        android:layout_marginTop="180dp"
-                                        android:text="Some Event" />
-
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:id="@+id/relativeLayout5"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1" >
-
-                                    <View android:background="#00f" android:layout_width = "fill_parent" android:layout_height="180dp" android:layout_marginTop="280dp"/>
-
-                                    <Button
-
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="180dp"
-                                        android:layout_marginTop="280dp"
-                                        android:text="Some Event" />
-
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:id="@+id/relativeLayout6"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1" >
-
-                                    <View android:background="#00f" android:layout_width = "fill_parent" android:layout_height="60dp" android:layout_marginTop="40dp"/>
-
-                                    <Button
-
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="60dp"
-                                        android:layout_marginTop="40dp"
-                                        android:text="Some Event" />
-
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:id="@+id/relativeLayout7"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1" >
-
-                                    <View android:background="#00f" android:layout_width = "fill_parent" android:layout_height="90dp" android:layout_marginTop="60dp"/>
-
-                                    <Button
-
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="90dp"
-                                        android:layout_marginTop="60dp"
-                                        android:text="Some Event" />
-
-                                    <View android:background="#00f" android:layout_width = "fill_parent" android:layout_height="120dp" android:layout_marginTop="340dp"/>
-
-                                    <Button
-
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="120dp"
-                                        android:layout_marginTop="340dp"
-                                        android:text="Some Event" />
-
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:id="@+id/relativeLayout8"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1">
-
-                                    <View
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="180dp"
-                                        android:layout_marginTop="380dp"
-                                        android:background="#00f" />
-
-                                    <Button
-
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="180dp"
-                                        android:layout_marginTop="380dp"
-                                        android:text="Some Event" />
-
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:id="@+id/relativeLayout9"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1" >
-
-                                    <View android:background="#00f" android:layout_width = "fill_parent" android:layout_height="180dp" android:layout_marginTop="480dp"/>
-
-                                    <Button
-
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="180dp"
-                                        android:layout_marginTop="480dp"
-                                        android:text="Some Event" />
-
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:id="@+id/relativeLayout10"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1" >
-
-                                    <View android:background="#00f" android:layout_width = "fill_parent" android:layout_height="180dp" android:layout_marginTop="340dp"/>
-
-                                    <Button
-
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="180dp"
-                                        android:layout_marginTop="340dp"
-                                        android:text="Some Event" />
-
-                                </RelativeLayout>
-
-                            </LinearLayout>
-                        </RelativeLayout>
-                    </LinearLayout>
-                </RelativeLayout>
-                <!--<LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />-->
-            </androidx.core.widget.NestedScrollView>
+            </ImageView>-->
+            <include
+                android:id="@+id/svUserWeek"
+                layout="@layout/week_calendar_view_model"
+                android:layout_height="400dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="25dp"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/textView14">
+
+            </include>
+
+            <!-- ___________________________________________________________________________________________________________________ -->
 
             <Button
                 android:id="@+id/create_new_event"
