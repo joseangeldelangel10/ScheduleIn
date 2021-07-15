@@ -11,4 +11,9 @@
         android:layout_height="match_parent"
         android:text="calendar fragment" />
 
+    <include
+        layout="@layout/week_calendar_view_model">
+
+    </include>
+
 </FrameLayout>

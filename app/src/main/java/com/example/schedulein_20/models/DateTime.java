@@ -1,7 +1,8 @@
-package com.example.schedulein_20;
+package com.example.schedulein_20.models;
 
 import android.util.Log;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -26,8 +27,20 @@ public class DateTime {
         return res;
     }
 
-    private static String onlyDate(String res) {
+    public static String onlyDate(String res) {
         return(res.substring(0,11));
+    }
+
+    public static String onlyDate(Date date){
+        return date.toString().substring(0,11);
+    }
+
+    public static String onlyTime(Date date){
+        DecimalFormat formatter = new DecimalFormat("00");
+        String hour = formatter.format( date.getHours() );
+        String minutes = formatter.format( date.getMinutes() );
+
+        return hour + ":" + minutes;
     }
 
     public static String timeBasedGreeting(){
@@ -48,7 +61,7 @@ public class DateTime {
 
     public static Date weekStart(){
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+        c.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
         c.set(Calendar.HOUR_OF_DAY,0);
         c.set(Calendar.MINUTE,0);
         c.set(Calendar.SECOND,0);
@@ -59,7 +72,7 @@ public class DateTime {
 
     public static Date weekEnding(){
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+        c.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
         c.set(Calendar.HOUR_OF_DAY,0);
         c.set(Calendar.MINUTE,0);
         c.set(Calendar.SECOND,0);
@@ -69,4 +82,10 @@ public class DateTime {
         return result;
     }
 
+
+    public static Date currentDate(){
+        return Calendar.getInstance().getTime();
+    }
+
 }
+

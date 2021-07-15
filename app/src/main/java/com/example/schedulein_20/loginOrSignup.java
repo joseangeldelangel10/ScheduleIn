@@ -40,7 +40,7 @@ public class loginOrSignup extends AppCompatActivity {
         tvTip = findViewById(R.id.tvTipOfTheDay);
 
         Glide.with(loginOrSignup.this)
-                .load("https://miviaje.com/wp-content/uploads/2016/05/glaciar-mendehall.jpg")
+                .load(R.drawable.welcome_pic)
                 .into(ivLoginImages);
 
         tvTip.setText("tip of the day: try to debug your apps while running them");

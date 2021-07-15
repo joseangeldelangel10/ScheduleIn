@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ScheduleIn20">
-        <activity android:name=".ActivitySignUp"></activity>
+        <activity android:name=".CUeventActivity"></activity>
+        <activity android:name=".ActivitySignUp" />
         <activity android:name=".ActivityDrawerLayout" />
         <activity android:name=".loginOrSignup">
             <intent-filter>

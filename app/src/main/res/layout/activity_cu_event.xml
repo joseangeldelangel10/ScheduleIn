@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CUeventActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/login_my_awesome_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary">
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_my_awesome_toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"
+        android:text="Title:"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/etCUeventTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_my_awesome_toolbar"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="15dp"
+        android:layout_toEndOf="@+id/textView12"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <LinearLayout
+        android:id="@+id/CUeventStartLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/textView12"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="19dp"
+        android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Starts on:  "
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/CUeventStartDateTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wed, Jul7, 2021  "
+                android:textColor="@color/emphasis1"
+                android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="at  "
+                    android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/CUeventStartTimeTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12:30 pm"
+                android:textColor="@color/emphasis1"
+                android:textSize="16sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/CUeventEndLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/CUeventStartLinearLayout"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="19dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ends on:  "
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/CUeventEndDateTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wed, Jul7, 2021  "
+            android:textColor="@color/emphasis1"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="at  "
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/CUeventEndTimeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12:30 pm"
+            android:textColor="@color/emphasis1"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/CUeventToggleLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/CUeventEndLinearLayout"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="19dp"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/time_zone_icon">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/CUeventTimeZoneTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CST"></TextView>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@null">
+        </ImageView>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="?android:attr/listDivider" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:background="@null">
+        </ImageView>
+
+        <Switch
+            android:id="@+id/CUeventAllDaySwitch"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="All day" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/CUeventToggleLinearLayout"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="With:"
+        android:textSize="22sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/CUeventInviteesRv"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/textView18"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/CUeventInviteesRv"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Invite People:"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:id="@+id/CUeventInviteButtsLinearLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView20"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Look for someone"
+            android:textSize="10sp"></Button>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@null"></ImageView>
+
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Look for a group"
+            android:textSize="10sp"></Button>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/CUeventRemindersLinearLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/CUeventInviteButtsLinearLay"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reminders:">
+        </TextView>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/CUeventsCUFinalButt"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/CUeventRemindersLinearLay"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:background="@color/primary"
+        android:text="Create + " />
+
+
+</RelativeLayout>

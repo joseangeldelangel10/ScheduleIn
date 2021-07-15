@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/secondary">
+    android:layout_height="200dp"
+    android:background="@drawable/welcome_pic">
 
     <TextView
         android:id="@+id/nav_menu_date"
@@ -17,23 +17,23 @@
         android:textSize="30sp"
         tools:text="Monday, July 12th" />
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/nav_menu_image"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_below="@+id/nav_menu_date"
         android:layout_marginTop="8dp"
         app:srcCompat="@mipmap/ic_launcher_round"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars" />-->
 
     <TextView
         android:id="@+id/nav_menu_mail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/nav_menu_image"
+        android:layout_below="@+id/nav_menu_date"
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="94dp"
         android:text="TextView"
         android:textSize="18sp" />
 </RelativeLayout>

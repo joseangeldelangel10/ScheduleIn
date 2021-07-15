@@ -1,6 +1,5 @@
 package com.example.schedulein_20;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -9,44 +8,37 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.schedulein_20.fragments.CalendarView;
 import com.example.schedulein_20.fragments.EditProfile;
 import com.example.schedulein_20.fragments.Groups;
 import com.example.schedulein_20.fragments.Relations;
 import com.example.schedulein_20.fragments.Settings;
 import com.example.schedulein_20.fragments.UserProfile;
+import com.example.schedulein_20.models.DateTime;
 import com.google.android.material.navigation.NavigationView;
 import com.parse.ParseUser;
 
-import java.util.Date;
-
 public class ActivityDrawerLayout extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private final String TAG = "ActivityDrawerLayout";
-    ParseUser currentUser = ParseUser.getCurrentUser();
-    Toolbar toolbar;
-    DrawerLayout drawer;
-    ActionBarDrawerToggle toggle;
-    NavigationView navigationView;
-    FragmentManager fragmentManager;
-    View navHeader;
-    TextView headNavUser;
-    ImageView headNavPicture;
-    TextView headNavDate;
+    public ParseUser currentUser = ParseUser.getCurrentUser();
+    public Toolbar toolbar;
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle toggle;
+    private NavigationView navigationView;
+    private FragmentManager fragmentManager;
+    private View navHeader;
+    private TextView headNavUser;
+    //ImageView headNavPicture;
+    private TextView headNavDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,13 +70,13 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
         --------------------------------------------------------------------------------------------- */
         navHeader =  navigationView.getHeaderView(0);
         headNavUser = navHeader.findViewById(R.id.nav_menu_mail);
-        headNavPicture = navHeader.findViewById(R.id.nav_menu_image);
+        //headNavPicture = navHeader.findViewById(R.id.nav_menu_image);
         headNavDate = navHeader.findViewById(R.id.nav_menu_date);
         headNavUser.setText("Signed in as:\n" + currentUser.getString("name") + " " + currentUser.getString("surname"));
         headNavDate.setText(DateTime.getFormalCurrentDate());
-        Glide.with(ActivityDrawerLayout.this)
-                .load("https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg")
-                .into(headNavPicture);
+        /*Glide.with(ActivityDrawerLayout.this)
+                .load(R.drawable.welcome_pic)
+                .into(headNavPicture);*/
 
         /* --------------------------------------------------------------------------------------------- */
 
@@ -125,7 +117,7 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
 
     private void logout() {
         ParseUser.logOut();
-        Toast.makeText(ActivityDrawerLayout.this, "logout succesfull", Toast.LENGTH_SHORT);
+        Toast.makeText(ActivityDrawerLayout.this, "logout successful", Toast.LENGTH_SHORT);
         Intent intent = new Intent(this, loginOrSignup.class);
         startActivity(intent);
         finish();
