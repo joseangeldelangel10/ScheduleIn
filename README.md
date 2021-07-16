@@ -24,7 +24,7 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 ### 1. User Stories (Required and Optional)
 **Required User stories:**
 
-* User can login with specific credentials
+[*] User can login with specific credentials
 * User can log-out
 * User can sign up
 * User can view his week schedule on log in
@@ -102,6 +102,11 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 ### [BONUS] Interactive Prototype
 <img src='Interactive.gif' title='Interactive Prototype' width='' alt='Interactive Prototype' />
+
+## Current progress:
+### Overview
+
+### Stories acomplished
 
 ## Schema 
 ### Models
