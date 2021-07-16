@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.ProfileFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!--xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+
+            -->
+
+            <RelativeLayout
+                android:id="@+id/user_profile_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ProfileFragmentProfilePic"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="35dp"
+                    tools:layout_editor_absoluteX="42dp"
+                    tools:layout_editor_absoluteY="40dp"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <TextView
+                    android:id="@+id/ProfileFragmentName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_toEndOf="@+id/ProfileFragmentProfilePic"
+                    android:text="TextView"
+                    android:textSize="18sp"
+                    tools:text="Good Morning Jose!" />
+
+                <TextView
+                    android:id="@+id/ProfileFragmentExtraInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ProfileFragmentName"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_toEndOf="@+id/ProfileFragmentProfilePic"
+                    android:text="TextView"
+                    tools:text="Now Attending to: Event1" />
+
+                <Button
+                    android:id="@+id/ProfileFragmentRelateButt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="31dp"
+                    android:layout_below="@+id/ProfileFragmentExtraInfo"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="19dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_toEndOf="@+id/ProfileFragmentProfilePic"
+                    android:text="relate"
+                    android:textSize="10sp" />
+            </RelativeLayout>
+
+            <!-- ___________________________________________________________________________________________________________________ -->
+
+            <TextView
+                android:id="@+id/ProfileFragmentCalTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="20dp"
+                android:text="What's on your week?"
+                android:textSize="24sp"
+                tools:text="What's on your week?" />
+
+            <!--<ImageView
+                android:id="@+id/svUserWeek"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_below="@+id/textView14"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="25dp">
+            </ImageView>-->
+            <include
+                android:id="@+id/ProfileFragmentCalView"
+                layout="@layout/week_calendar_view_model"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="25dp">
+
+            </include>
+
+            <RelativeLayout
+                android:id="@+id/ProfileFragmentNonRelatedBanner"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:background="@color/gray"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/ProfileFragmentNonRelatedBannerText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </TextView>
+            </RelativeLayout>
+
+            <!-- ___________________________________________________________________________________________________________________ -->
+
+            <!--<Button
+                android:id="@+id/create_new_event"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:text="Create joined event +" />-->
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>

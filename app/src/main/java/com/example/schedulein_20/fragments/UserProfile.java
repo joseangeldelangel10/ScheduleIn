@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.schedulein_20.CUeventActivity;
@@ -29,6 +29,8 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,9 +101,9 @@ public class UserProfile extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         //super.onViewCreated(view, savedInstanceState);
         ivUserImage = view.findViewById(R.id.ivUserImage);
-        greeting = view.findViewById(R.id.greeting);
-        user_info = view.findViewById(R.id.user_info);
-        cancel_next_event = view.findViewById(R.id.cancel_next_event);
+        greeting = view.findViewById(R.id.ProfileFragmentName);
+        user_info = view.findViewById(R.id.ProfileFragmentExtraInfo);
+        cancel_next_event = view.findViewById(R.id.ProfileFragmentRelateButt);
         new_event = view.findViewById(R.id.create_new_event);
         context = getContext();
 
@@ -135,7 +137,10 @@ public class UserProfile extends Fragment {
         new_event.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String flag = "Create";
                 Intent intent = new Intent(context, CUeventActivity.class);
+                intent.putExtra( "Flag", flag);
+                //intent.putExtra("Event", Parse);
                 startActivity(intent);
             }
         });
@@ -177,8 +182,10 @@ public class UserProfile extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Log.e(TAG, "Intent for event: " + event.getTitle());
+                    String flag = "UpdateDelete";
                     Intent intent = new Intent(context, CUeventActivity.class);
-                    intent.putExtra(Movie.class.getSimpleName(), Parcels.wrap(pack));
+                    intent.putExtra( "Flag", flag);
+                    intent.putExtra("Event", Parcels.wrap(event) );
                     startActivity(intent);
                 }
             });
@@ -203,6 +210,7 @@ public class UserProfile extends Fragment {
             public void done(List<Events> objects, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Issue with getting events", e);
+                    Toast.makeText(getContext(), "There was a problem loading your events", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (objects.size() == 0){
@@ -216,6 +224,7 @@ public class UserProfile extends Fragment {
                     );
                     weekEvents.add(event);
                 }
+                Toast.makeText(getContext(), "Events loaded successfully!", Toast.LENGTH_LONG);
                 generateWeekView(view);
             }
         });

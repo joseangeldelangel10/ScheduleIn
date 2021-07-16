@@ -14,4 +14,5 @@
     <color name="secondary">#BADFE7</color>
     <color name="emphasis1">#388087</color>
     <color name="emphasis2">#C2EDCE</color>
+    <color name="gray">#C2C2C2</color>
 </resources>

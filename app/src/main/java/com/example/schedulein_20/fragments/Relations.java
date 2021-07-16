@@ -1,14 +1,28 @@
 package com.example.schedulein_20.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.schedulein_20.R;
+import com.example.schedulein_20.models.UserRelationsAdapter;
+import com.example.schedulein_20.models.UserSearchAdapter;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +30,12 @@ import com.example.schedulein_20.R;
  * create an instance of this fragment.
  */
 public class Relations extends Fragment {
+    private final String TAG = "RelationsFragment";
+    RecyclerView rvRelations;
+    RecyclerView rvRelationReq;
+    List<ParseUser> relations;
+    Context context;
+    UserRelationsAdapter adapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,5 +82,44 @@ public class Relations extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_relations, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        context = getContext();
+
+        rvRelations = view.findViewById(R.id.RelationsFragmentUserRelRv);
+        rvRelationReq = view.findViewById(R.id.RelationsFragmentRelReq);
+
+        relations = new ArrayList<>();
+        adapter = new UserRelationsAdapter(context, relations);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        rvRelations.setLayoutManager(linearLayoutManager); // we bind a layout manager to RV
+        rvRelations.setAdapter(adapter);
+
+        queryRelations(ParseUser.getCurrentUser());
+    }
+
+    private void queryRelations(ParseUser currentUser) {
+        ArrayList<String> relationsIds = (ArrayList<String>) currentUser.get("relations");
+        Log.e(TAG, relationsIds.toString());
+
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereContainedIn("objectId", relationsIds);
+        query.findInBackground((users, e) -> {
+            if (e == null) {
+                // The query was successful, returns the users that matches
+                // the criteria.
+                for(ParseUser user1 : users) {
+                    Log.d("User List ",(user1.getUsername()));
+                    relations.add(user1);
+                }
+                adapter.notifyDataSetChanged();
+            } else {
+                // Something went wrong.
+                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

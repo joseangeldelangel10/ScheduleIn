@@ -8,10 +8,13 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import org.parceler.Parcel;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+//@Parcel
 @ParseClassName("Events")
 public class Events extends ParseObject {
     public static final String KEY_TITLE = "title";

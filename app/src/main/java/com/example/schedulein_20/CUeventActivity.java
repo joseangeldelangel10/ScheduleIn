@@ -4,11 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.usage.UsageEvents;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,8 +20,12 @@ import com.example.schedulein_20.fragments.HourDialogFragment;
 import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.models.Events;
 import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import org.parceler.Parcels;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -34,10 +41,14 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
     TextView tvStartTime;
     TextView tvEndDate;
     TextView tvEndTime;
+    LinearLayout UDeventBt;
     Button btCreateEv;
+    Button btUpdateEv;
+    Button btDeleteEv;
     Date startDate;
     Date endDate;
     String eventTitle;
+    Events event2update;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +71,9 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         tvEndDate = findViewById(R.id.CUeventEndDateTv);
         tvEndTime = findViewById(R.id.CUeventEndTimeTv);
         btCreateEv = findViewById(R.id.CUeventsCUFinalButt);
+        btDeleteEv = findViewById(R.id.CUeventsDeleteEventBt);
+        btUpdateEv = findViewById(R.id.CUeventsUpdateEventBt);
+        UDeventBt = findViewById(R.id.CUeventsUDLinearLayout);
 
         /* ----------------------------------------------------------------------------------------
                             CALCULATING CURRENT DATE TO SET DEFAULT DATE FOR EVENT
@@ -72,10 +86,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         Log.e(TAG,"start: "  + startDate.toString());
         Log.e(TAG,"end: "  + endDate.toString());
 
-        tvStartDate.setText(DateTime.onlyDate( startDate ));
-        tvEndDate.setText(DateTime.onlyDate( endDate ));
-        tvStartTime.setText( DateTime.onlyTime(startDate) );
-        tvEndTime.setText( DateTime.onlyTime(endDate) );
+        updateDatesText();
 
         /* ----------------------------------------------------------------------------------------
                             SETTING TV ONCLICK LISTENERS FOR DATE EDIT
@@ -120,6 +131,91 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
                 createEventInDB();
             }
         });
+
+        btUpdateEv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eventTitle = etTitle.getText().toString();
+                updateEventInDB(event2update);
+            }
+        });
+
+        btDeleteEv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteEventInDB(event2update);
+            }
+        });
+
+        /* ----------------------------------------------------------------------------------------
+                            MODIFY BEHAVIOUR TO C-U-D EVENTS
+      ---------------------------------------------------------------------------------------- */
+
+        String flag = (String) getIntent().getExtras().get("Flag");
+
+        if(flag.equals("Create")){
+            UDeventBt.setVisibility(View.INVISIBLE);
+            UDeventBt.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
+        }else if (flag.equals("UpdateDelete")){
+            event2update = Parcels.unwrap(getIntent().getParcelableExtra("Event"));
+            etTitle.setText(event2update.getTitle());
+            startDate = event2update.getStartDate();
+            endDate = event2update.getEndDate();
+            updateDatesText();
+            btCreateEv.setVisibility(View.INVISIBLE);
+            btCreateEv.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
+        }
+    }
+
+    private void deleteEventInDB(Events event2update) {
+        ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
+        query.getInBackground(event2update.getObjectId(), (object, e) -> {
+            if (e == null) {
+                // Deletes the fetched ParseObject from the database
+                object.deleteInBackground(e2 -> {
+                    if(e2==null){
+                        Toast.makeText(this, "Delete Successful", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }else{
+                        //Something went wrong while deleting the Object
+                        Toast.makeText(this, "Error deleting event", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }else{
+                //Something went wrong while retrieving the Object
+                Toast.makeText(this, "Error connecting to database", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateEventInDB(Events event2update) {
+            ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
+
+            // Retrieve the object by id
+            query.getInBackground(event2update.getObjectId(), (object, e) -> {
+                if (e == null) {
+                    // Update the fields we want to
+                    object.put(Events.KEY_START_DATE, startDate);
+                    object.put(Events.KEY_END_DATE, endDate);
+                    object.put(Events.KEY_TITLE, eventTitle);
+
+                    // All other fields will remain the same
+                    object.saveInBackground();
+                    Toast.makeText(this, "Event updated successfully", Toast.LENGTH_SHORT).show();
+                    finish();
+
+                } else {
+                    // something went wrong
+                    Toast.makeText(this, "Failed when updating event", Toast.LENGTH_SHORT).show();
+                }
+            });
+    }
+
+    private void updateDatesText() {
+        tvStartDate.setText(DateTime.onlyDate( startDate ));
+        tvEndDate.setText(DateTime.onlyDate( endDate ));
+        tvStartTime.setText( DateTime.onlyTime(startDate) );
+        tvEndTime.setText( DateTime.onlyTime(endDate) );
     }
 
     private void createEventInDB() {
@@ -184,7 +280,8 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         startDate.setMonth(selectedDate.get(Calendar.MONTH));
         startDate.setDate(selectedDate.get(Calendar.DAY_OF_MONTH));
 
-        tvStartDate.setText(DateTime.onlyDate(startDate));
+        //tvStartDate.setText(DateTime.onlyDate(startDate));
+        updateDatesText();
     }
 
     @Override
@@ -193,7 +290,8 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         endDate.setMonth(selectedDate.get(Calendar.MONTH));
         endDate.setDate(selectedDate.get(Calendar.DAY_OF_MONTH));
 
-        tvEndDate.setText(DateTime.onlyDate(endDate));
+        //tvEndDate.setText(DateTime.onlyDate(endDate));
+        updateDatesText();
     }
 
     /* ---------------------------------------------------------------
@@ -205,7 +303,8 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         startDate.setMinutes(calendar.get(Calendar.MINUTE));
         startDate.setSeconds(calendar.get(Calendar.SECOND));
 
-        tvStartTime.setText(DateTime.onlyTime(startDate));
+        //tvStartTime.setText(DateTime.onlyTime(startDate));
+        updateDatesText();
     }
 
     @Override
@@ -214,6 +313,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         endDate.setMinutes(calendar.get(Calendar.MINUTE));
         endDate.setSeconds(calendar.get(Calendar.SECOND));
 
-        tvEndTime.setText(DateTime.onlyTime(endDate));
+        //tvEndTime.setText(DateTime.onlyTime(endDate));
+        updateDatesText();
     }
 }

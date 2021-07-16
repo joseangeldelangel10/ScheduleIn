@@ -35,7 +35,7 @@
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
-                android:id="@+id/greeting"
+                android:id="@+id/ProfileFragmentName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -49,10 +49,10 @@
                 tools:text="Good Morning Jose!" />
 
             <TextView
-                android:id="@+id/user_info"
+                android:id="@+id/ProfileFragmentExtraInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/greeting"
+                android:layout_below="@+id/ProfileFragmentName"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="35dp"
                 android:layout_marginTop="18dp"
@@ -62,10 +62,10 @@
                 tools:text="Now Attending to: Event1" />
 
             <Button
-                android:id="@+id/cancel_next_event"
+                android:id="@+id/ProfileFragmentRelateButt"
                 android:layout_width="wrap_content"
                 android:layout_height="31dp"
-                android:layout_below="@+id/user_info"
+                android:layout_below="@+id/ProfileFragmentExtraInfo"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="35dp"
                 android:layout_marginTop="19dp"
@@ -79,7 +79,7 @@
             <!-- ___________________________________________________________________________________________________________________ -->
 
             <TextView
-                android:id="@+id/textView14"
+                android:id="@+id/ProfileFragmentCalTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/user_profile_header"
@@ -111,7 +111,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="25dp"
                 android:layout_width="match_parent"
-                android:layout_below="@+id/textView14">
+                android:layout_below="@+id/ProfileFragmentCalTitle">
 
             </include>
 

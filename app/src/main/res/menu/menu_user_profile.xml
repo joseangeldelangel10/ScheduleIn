@@ -3,19 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
+
     <!--<item
-        android:id="@+id/iclogoutButton"
-        android:icon="@drawable/search_icon"
-        android:title="Compose"
-        app:showAsAction="always" />-->
-
-
-    <item
         android:id="@+id/app_bar_search"
         android:icon="@drawable/search_icon"
         android:title="Search"
         app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="always" />
+        app:showAsAction="always" />-->
+
+        <item
+            android:id="@+id/app_bar_search"
+            android:title="Search"
+            android:icon="@android:drawable/ic_menu_search"
+            app:showAsAction="always"
+            app:actionViewClass="androidx.appcompat.widget.SearchView" />
+
+
     <!--<item
         android:id="@+id/compose"
         android:icon="@drawable/notification_icon"

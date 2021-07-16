@@ -2,14 +2,18 @@ package com.example.schedulein_20;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuView;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +27,7 @@ import com.example.schedulein_20.fragments.Groups;
 import com.example.schedulein_20.fragments.Relations;
 import com.example.schedulein_20.fragments.Settings;
 import com.example.schedulein_20.fragments.UserProfile;
+import com.example.schedulein_20.fragments.UserSearchFragment;
 import com.example.schedulein_20.models.DateTime;
 import com.google.android.material.navigation.NavigationView;
 import com.parse.ParseUser;
@@ -39,6 +44,8 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
     private TextView headNavUser;
     //ImageView headNavPicture;
     private TextView headNavDate;
+    public static MenuItem searchItem;
+    public static SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +136,16 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_user_profile, menu);
         //miActionProgressItem = menu.findItem(R.id.miActionProgress);
+        searchItem = menu.findItem(R.id.app_bar_search);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new UserSearchFragment();
+                fragmentManager.beginTransaction().replace(R.id.host_frame, fragment).commit();
+            }
+        });
         return true;
     }
 
