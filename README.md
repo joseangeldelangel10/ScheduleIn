@@ -7,22 +7,22 @@
 #### (Description included below each gif)
 <img src='Requirements1.gif' title='Current progress overview' width='' alt='Current progress overview' />
 **in this gif we can appreciate the implementation of the following user stories:**
-   * User can login with specific credentials
-   * User can log-out
-   * User can sign up
-   * User can view his week schedule on log in
+   * [x] User can login with specific credentials
+   * [x] User can log-out
+   * [x] User can sign up
+   * [x] User can view his week schedule on log in
 
 <img src='Requirements2.gif' title='Current progress overview' width='' alt='Current progress overview' />
 **in this gif we can appreciate the implementation of the following user stories:**
-   * User can add events to his schedule
-   * User is able to have a detailed view of a certain event
-   * User can Create, Read, Update and Delete an event
+   * [x] User can add events to his schedule
+   * [x] User is able to have a detailed view of a certain event
+   * [x] User can Create, Read, Update and Delete an event
 
 <img src='Requirements3.gif' title='Current progress overview' width='' alt='Current progress overview' />
 **in this gif we can appreciate the implementation of the following user stories:**
-   * User can look for other users using the search bar
-   * User can relate with other users
-   * Once user is related with someone he can see a private view of the other person schedule
+   * [x] User can look for other users using the search bar
+   * [x] User can relate with other users
+   * [x] Once user is related with someone he can see a private view of the other person schedule
 
 # ScheduleIn
 A calendar tool where you can also follow your friends, colleges and families allowing user to view partners schedule and schedule joined events. app should also provide real time details (if users allow it) to let somebody know where you are and if you are available at the moment
