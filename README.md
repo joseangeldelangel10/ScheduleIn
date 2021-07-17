@@ -6,20 +6,26 @@
 ### Stories acomplished
 #### (Description included below each gif)
 <img src='Requirements1.gif' title='Current progress overview' width='' alt='Current progress overview' />
+
 **in this gif we can appreciate the implementation of the following user stories:**
+
    * [x] User can login with specific credentials
    * [x] User can log-out
    * [x] User can sign up
    * [x] User can view his week schedule on log in
 
 <img src='Requirements2.gif' title='Current progress overview' width='' alt='Current progress overview' />
+
 **in this gif we can appreciate the implementation of the following user stories:**
+
    * [x] User can add events to his schedule
    * [x] User is able to have a detailed view of a certain event
    * [x] User can Create, Read, Update and Delete an event
 
 <img src='Requirements3.gif' title='Current progress overview' width='' alt='Current progress overview' />
+
 **in this gif we can appreciate the implementation of the following user stories:**
+
    * [x] User can look for other users using the search bar
    * [x] User can relate with other users
    * [x] Once user is related with someone he can see a private view of the other person schedule
