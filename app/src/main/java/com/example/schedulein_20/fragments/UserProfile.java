@@ -52,7 +52,7 @@ public class UserProfile extends Fragment {
     public ArrayList<Events> weekEvents = new ArrayList<>();
     Context context;
 
-    /*// TODO: Rename parameter arguments, choose names that match
+    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -63,7 +63,7 @@ public class UserProfile extends Fragment {
 
     public UserProfile() {
         // Required empty public constructor
-    }*/
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -74,7 +74,7 @@ public class UserProfile extends Fragment {
      * @return A new instance of fragment UserProfile.
      */
     // TODO: Rename and change types and number of parameters
-    /*public static UserProfile newInstance(String param1, String param2) {
+    public static UserProfile newInstance(String param1, String param2) {
         UserProfile fragment = new UserProfile();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -90,7 +90,7 @@ public class UserProfile extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-    }*/
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,12 +100,15 @@ public class UserProfile extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         //super.onViewCreated(view, savedInstanceState);
+        context = getContext();
+        /* ------------------------------------------------------------------------------------------------------------------------------------
+                                                        VIEW REFERENCING
+        ------------------------------------------------------------------------------------------------------------------------------------*/
         ivUserImage = view.findViewById(R.id.ivUserImage);
         greeting = view.findViewById(R.id.ProfileFragmentName);
         user_info = view.findViewById(R.id.ProfileFragmentExtraInfo);
         cancel_next_event = view.findViewById(R.id.ProfileFragmentRelateButt);
         new_event = view.findViewById(R.id.create_new_event);
-        context = getContext();
 
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                         RETRIEVING THE DATA TO GENERATE THE VIEWS
@@ -115,7 +118,7 @@ public class UserProfile extends Fragment {
         String next_event = "other event";
 
         /* ------------------------------------------------------------------------------------------------------------------------------------
-                                                        BINDING DATA TO THE VIEWS
+                                                        BINDING DATA TO THE HEADER
         ------------------------------------------------------------------------------------------------------------------------------------*/
 
         ParseFile currentUserProfileImage = (ParseFile) currentUser.getParseFile("profilePic");
@@ -129,48 +132,59 @@ public class UserProfile extends Fragment {
                     .into(ivUserImage);
         }
 
-        greeting.setText(DateTime.timeBasedGreeting() + " " + user_name +"!");
+        greeting.setText(DateTime.timeBasedGreeting() + " " + user_name +"!"); // good morning-afternoon-night user
         user_info.setText("- Now attending to: " + current_event + "\n- Next event: " + next_event);
 
-        /* ------------------------------------------------------------------------------------------------------------------------------------*/
+        /* ------------------------------------------------------------------------------------------------------------------------------------
+                                                       WE GENERATE USER'S WEEK PREVIEW
+        ------------------------------------------------------------------------------------------------------------------------------------*/
+
+        queryWeekEvents(view);
+
+        /* ------------------------------------------------------------------------------------------------------------------------------------
+                                                        ADD CREATE EVENT FUNCTIONALITY
+        ------------------------------------------------------------------------------------------------------------------------------------*/
+
 
         new_event.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String flag = "Create";
                 Intent intent = new Intent(context, CUeventActivity.class);
-                intent.putExtra( "Flag", flag);
-                //intent.putExtra("Event", Parse);
+                intent.putExtra( "Flag", flag); // this flag lets the activity know that we are creating an event instead of updating it
                 startActivity(intent);
             }
         });
 
-        queryWeekEvents(view);
-        //generateWeekView(view);
-
     }
 
     private void generateWeekView(@NonNull View view) {
-        //int RelativeLayoutId = R.id.week_view_mon;
-        Float titleOffset = getResources().getDimension(R.dimen.week_view_header_ofset);
-        Float heightWDuration;
-        Float marginTop;
+        /* --------------------------------------------------------------------------------
+        to generate the week preview we generate a button for each event in weekEvents and
+        we place the button in the corresponding day column (colums are Relative Layouts)
+        at the corresponding height based in the event starting time and ending time
+        -------------------------------------------------------------------------------- */
+
+        Float titleOffset = getResources().getDimension(R.dimen.week_view_header_ofset); // dp height occupied by day tags (Monday, tuesday, wednesday, ...)
+        Float heightWDuration; // dp height of the event button based in its duration
+        Float marginTop; // dp height at which the event button is placed based event starting time
         Float minsInDay = new Float(24*60);
-        Float RelativeLayoutHeightDP = getResources().getDimension(R.dimen.week_view_hour_row_height) * 24;
+        Float RelativeLayoutHeightDP = getResources().getDimension(R.dimen.week_view_hour_row_height) * 24; // height of a day column (hour block height times 24 hrs)
 
         for(Events event: weekEvents) {
-            RelativeLayout layout = view.findViewById(  Events.dayInt2Str.get(event.getWeekDay())  );
-
+            RelativeLayout layout = view.findViewById(  Events.dayInt2Str.get(event.getWeekDay())  ); // we evaluate the corresponding day column using a hash map
             Log.e(TAG, event.getTitle() + String.valueOf(event.getDurationInMins()));
+
+            //we make a ratio to calculate button height
             heightWDuration = new Float(RelativeLayoutHeightDP*event.getDurationInMins() );
             heightWDuration = heightWDuration/minsInDay;
-            //heightWDuration = heightWDuration*displayMetrics.density;
 
+            //we make a ratio to calculate margin top
             marginTop = new Float(event.getStartInMins());
             marginTop = marginTop*RelativeLayoutHeightDP;
             marginTop = marginTop/minsInDay;
 
-            //set the properties for button
+            //we set the properties for the button
             Button btnTag = new Button(context);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams( RelativeLayout.LayoutParams.MATCH_PARENT, heightWDuration.intValue() );
             params.setMargins(0, marginTop.intValue() + titleOffset.intValue(), 0, 0);
@@ -178,10 +192,11 @@ public class UserProfile extends Fragment {
             btnTag.setText(event.getTitle());
             btnTag.setTextSize(0, 18);
 
+            // We bind a listener to each button which allows the user to update or delete an event by taping on it
             btnTag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.e(TAG, "Intent for event: " + event.getTitle());
+                    Log.i(TAG, "Intent for event: " + event.getTitle());
                     String flag = "UpdateDelete";
                     Intent intent = new Intent(context, CUeventActivity.class);
                     intent.putExtra( "Flag", flag);
@@ -189,6 +204,7 @@ public class UserProfile extends Fragment {
                     startActivity(intent);
                 }
             });
+            // ----------------------------
 
             layout.addView(btnTag);
         }
@@ -196,9 +212,13 @@ public class UserProfile extends Fragment {
     }
 
     public void queryWeekEvents(View view) {
+        /* --------------------------------------------------------------------------------
+        we query this week's events in database, we store each event as an event object in
+        "weekEvents" and finally we use such event objects to generate week preview
+        -------------------------------------------------------------------------------- */
 
         ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
-        // include data referred by user key
+
         query.include(Events.KEY_USER);
         query.whereGreaterThan(Events.KEY_START_DATE, DateTime.weekStart());
         query.whereLessThan(Events.KEY_START_DATE, DateTime.weekEnding());
@@ -224,7 +244,7 @@ public class UserProfile extends Fragment {
                     );
                     weekEvents.add(event);
                 }
-                Toast.makeText(getContext(), "Events loaded successfully!", Toast.LENGTH_LONG);
+                Toast.makeText(getContext(), "Events loaded successfully!", Toast.LENGTH_LONG).show();
                 generateWeekView(view);
             }
         });
