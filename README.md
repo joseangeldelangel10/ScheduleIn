@@ -24,30 +24,30 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 ### 1. User Stories (Required and Optional)
 **Required User stories:**
 
-* User can login with specific credentials
-* User can log-out
-* User can sign up
-* User can view his week schedule on log in
-* User can add events to his schedule
-* User is able to have a detailed view of a certain event
-* User can Create, Read, Update and Delete an event
-* User can view the week view of his calendar at double tap in the main activity (add grow animation)
-* User can look for other users using the search bar
-* User can see his schedule in month, week and day views
-* User can relate with other users
-* Once user is related with someone he can see a private view of the other person schedule
-* User can Login with google
-* User can see his notifications (reminders for next events) and his relations requests
-* User can discard his notifications and relate requests swiping right (does this counts as a gesture?)
-* User can cancel his next event with a shortcut button
-* User can CRUD his relations
+* [x] User can login with specific credentials
+* [x] User can log-out
+* [x] User can sign up
+* [x] User can view his week schedule on log in
+* [x] User can add events to his schedule
+* [x] User is able to have a detailed view of a certain event
+* [x] User can Create, Read, Update and Delete an event
+* [ ] User can view the week view of his calendar at double tap in the main activity (add grow animation)
+* [x] User can look for other users using the search bar
+* [ ] User can see his schedule in month, week and day views
+* [x] User can relate with other users
+* [x] Once user is related with someone he can see a private view of the other person schedule
+* [ ] User can Login with google
+* [ ] User can see his notifications (reminders for next events) and his relations requests
+* [ ] User can discard his notifications and relate requests swiping right (does this counts as a gesture?)
+* [ ] User can cancel his next event with a shortcut button
+* [ ] User can CRUD his relations
 
 **Optional user stories:**
-* User is able to link his calendar with google calendar
-* User can choose if a certain event is private or public to his friends (when public the other user will be allowed to see the details of the event)
-* User can create joined events (of 2 people) in an easy manner
-* User can create groups of people which whom he usually hangs, store this groups and create events with the people whitin such groups
-* User can look for app features using the search bar
+* [ ] User is able to link his calendar with google calendar
+* [ ] User can choose if a certain event is private or public to his friends (when public the other user will be allowed to see the details of the event)
+* [ ] User can create joined events (of 2 people) in an easy manner
+* [ ] User can create groups of people which whom he usually hangs, store this groups and create events with the people whitin such groups
+* [ ] User can look for app features using the search bar
 
 **NOTES:**
 * Add swipe animation to the menu activity
@@ -102,6 +102,13 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 ### [BONUS] Interactive Prototype
 <img src='Interactive.gif' title='Interactive Prototype' width='' alt='Interactive Prototype' />
+
+## Current progress:
+### Overview
+
+<img src='overview.gif' title='Current progress overview' width='' alt='Current progress overview' />
+
+### Stories acomplished
 
 ## Schema 
 ### Models
