@@ -42,7 +42,6 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
     private FragmentManager fragmentManager;
     private View navHeader;
     private TextView headNavUser;
-    //ImageView headNavPicture;
     private TextView headNavDate;
     public static MenuItem searchItem;
     public static SearchView searchView;
@@ -68,7 +67,7 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this); // binding onNavigationItemSelected();
+        navigationView.setNavigationItemSelectedListener(this); // in this class we declare the interface method onNavigationItemSelected;
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.host_frame, new UserProfile()).commit();
 
@@ -77,7 +76,6 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
         --------------------------------------------------------------------------------------------- */
         navHeader =  navigationView.getHeaderView(0);
         headNavUser = navHeader.findViewById(R.id.nav_menu_mail);
-        //headNavPicture = navHeader.findViewById(R.id.nav_menu_image);
         headNavDate = navHeader.findViewById(R.id.nav_menu_date);
         headNavUser.setText("Signed in as:\n" + currentUser.getString("name") + " " + currentUser.getString("surname"));
         headNavDate.setText(DateTime.getFormalCurrentDate());
@@ -124,7 +122,7 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
 
     private void logout() {
         ParseUser.logOut();
-        Toast.makeText(ActivityDrawerLayout.this, "logout successful", Toast.LENGTH_SHORT);
+        Toast.makeText(ActivityDrawerLayout.this, "logout successful", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, loginOrSignup.class);
         startActivity(intent);
         finish();
@@ -132,13 +130,15 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // we inflate our menu layout
+        /* ----------------- WE INFLATE A MENU CONTAINING THE SEARCH BAR ----------------- */
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_user_profile, menu);
-        //miActionProgressItem = menu.findItem(R.id.miActionProgress);
+
+        /* -------------------------------------------------------------------------------------
+        *             IF SEARCH BAR IS PRESSED WE INITIALIZE USER SEARCH FRAGMENT
+        ------------------------------------------------------------------------------------- */
         searchItem = menu.findItem(R.id.app_bar_search);
         searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

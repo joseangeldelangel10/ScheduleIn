@@ -16,24 +16,32 @@ public class ActivitySignUp extends AppCompatActivity {
     private final String TAG = "ActivitySignUp";
     private final String NAME_KEY = "name";
     private final String SURNAME_KEY = "surname";
-    EditText etNmae;
-    EditText etSurname;
-    EditText etUsername;
-    EditText etEmail;
-    EditText etPassword;
-    Button signUpButt;
+    private EditText etName;
+    private EditText etSurname;
+    private EditText etUsername;
+    private EditText etEmail;
+    private EditText etPassword;
+    private Button signUpButt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        etNmae = findViewById(R.id.signupName);
+        /* ----------------------------------------------------------------------------------------
+                                        VIEW REFERENCING
+      ---------------------------------------------------------------------------------------- */
+
+        etName = findViewById(R.id.signupName);
         etSurname = findViewById(R.id.signupSurname);
         etUsername = findViewById(R.id.signupUsername);
         etEmail = findViewById(R.id.signupEmail);
         etPassword = findViewById(R.id.signupPassword);
         signUpButt = findViewById(R.id.signupButtonFinal);
+
+        /* ----------------------------------------------------------------------------------------
+                                 WHEN SIGNUP IS PRESSED CREATE A NEW USER
+      ---------------------------------------------------------------------------------------- */
 
         signUpButt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +49,7 @@ public class ActivitySignUp extends AppCompatActivity {
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
                 String email = etEmail.getText().toString();
-                String name = etNmae.getText().toString();
+                String name = etName.getText().toString();
                 String surname = etSurname.getText().toString();
 
                 createUser(username, email, password, name, surname);
@@ -61,12 +69,12 @@ public class ActivitySignUp extends AppCompatActivity {
         user.signUpInBackground(e -> {
             if (e == null) {
                 Log.e(TAG, "new user created");
-                Toast.makeText(this, "User created!", Toast.LENGTH_LONG);
+                Toast.makeText(this, "User created!", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
                 finish();
             } else {
-                Toast.makeText(this, "there was a problem :(", Toast.LENGTH_LONG);
+                Toast.makeText(this, "there was a problem at sign up", Toast.LENGTH_LONG).show();
                 Log.e(TAG, "st went wrong when creating your user");
             }
         });

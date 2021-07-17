@@ -23,7 +23,7 @@ one triggers an intent and the other triggers a log
 public class loginOrSignup extends AppCompatActivity {
     private final String TAG = "loginOrSignup";
     public final int LOGIN_REQUEST_CODE = 10;
-    public final int SiGNUP_REQUEST_CODE = 10;
+    public final int SiGNUP_REQUEST_CODE = 20;
     ImageView ivLoginImages;
     Button buttLogin;
     Button buttSignup;
@@ -34,6 +34,9 @@ public class loginOrSignup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_or_signup);
 
+        /* --------------------------------------------------------------------------------------
+                                   WE REFERENCE VIEW ITEMS
+         ------------------------------------------------------------------------------------- */
         ivLoginImages = findViewById(R.id.ivLogImages);
         buttLogin = findViewById(R.id.buttLoginAct);
         buttSignup = findViewById(R.id.buttSignup);
@@ -44,6 +47,10 @@ public class loginOrSignup extends AppCompatActivity {
                 .into(ivLoginImages);
 
         tvTip.setText("tip of the day: try to debug your apps while running them");
+
+        /* --------------------------------------------------------------------------------------
+                                       VIEW FUNCTIONALITY
+         ------------------------------------------------------------------------------------- */
 
         /* ------------------ WE EVALUATE IF THERE IS ALREADY A USER --------------------- */
         if (ParseUser.getCurrentUser() != null){
@@ -72,9 +79,11 @@ public class loginOrSignup extends AppCompatActivity {
         });
         /* -------------------------------------------------------------------------------------------------- */
 
-
     }
 
+    /* --------------------------------------------------------------------------------------
+                            IF LOGIN (OR SIGNUP) IS SUCCESSFUL WE GO TO MAIN ACT
+         ------------------------------------------------------------------------------------- */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == LOGIN_REQUEST_CODE || requestCode == SiGNUP_REQUEST_CODE){

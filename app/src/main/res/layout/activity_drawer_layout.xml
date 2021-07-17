@@ -23,23 +23,22 @@
             android:background="?attr/colorPrimary">
         </androidx.appcompat.widget.Toolbar>
 
+        <!-- The rest of your content view -->
+
         <FrameLayout
             android:id="@+id/host_frame"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
         </FrameLayout>
 
-        <!-- The rest of your content view -->
 
     </LinearLayout>
 
 
 
-    <!-- Your drawer view. This can be any view, LinearLayout
-         is just an example. As we have set fitSystemWindows=true
-         this will be displayed under the status bar. -->
+    <!-- As drawer view we use the android default Navigation view
+    in order to have a drawer view easy to handle and with a clean aspect-->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"

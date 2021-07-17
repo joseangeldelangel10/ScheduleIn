@@ -21,11 +21,11 @@ wich runs validateLocalCredentials function and triggers an intent
 
 public class loginActivity extends AppCompatActivity {
     private final String TAG = "loginActivity";
-    EditText etEmail;
-    EditText etPassword;
-    Button buttLoginFinal;
-    Button buttLoginWithGoogle;
-    Button buttLoginWithFb;
+    private EditText etEmail;
+    private EditText etPassword;
+    private Button buttLoginFinal;
+    private Button buttLoginWithGoogle;
+    private Button buttLoginWithFb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +76,10 @@ public class loginActivity extends AppCompatActivity {
             public void done(ParseUser user, ParseException e) {
                 if (e != null){
                     Log.e(TAG, "Issue with login" + e, e);
+                    Toast.makeText(loginActivity.this, "problem occurred while logging in", Toast.LENGTH_LONG).show();
                     return;
                 }
-                Toast.makeText(loginActivity.this, "Success!", Toast.LENGTH_LONG);
+                Toast.makeText(loginActivity.this, "Login successful!", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
                 finish();
