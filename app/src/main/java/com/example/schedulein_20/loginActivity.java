@@ -57,7 +57,7 @@ public class loginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String emailOrUsernameText = etEmail.getText().toString();
                 String passwordText = etPassword.getText().toString();
-                Log.i("loginAct", "email: " + emailOrUsernameText + "password: " + passwordText);
+                Log.i(TAG, "email: " + emailOrUsernameText + "password: " + passwordText);
                 loginUser(emailOrUsernameText, passwordText);
             }
         });

@@ -150,7 +150,7 @@ public class ProfileFragment extends Fragment {
                             WE SHOW THE CORRESPONDING WEEK PREVIEW AND "RELATE BUTTON"
             --------------------------------------------------------------------------------*/
 
-            if (Relations.userIsRelated(currentUser, user) == -1){
+            if (Relations.getUsersRelation(currentUser, user) == 0){
                 calView.setVisibility(View.INVISIBLE);
                 calView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
                 textBanner.setText("Relate with " + user.get("name").toString() + " to see each others availability");
@@ -160,10 +160,24 @@ public class ProfileFragment extends Fragment {
                 relate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Relations.relateUsers(context,currentUser, user);
+                        Relations.sendRelateRequest(context,currentUser, user);
                     }
                 });
-            }else if (Relations.userIsRelated(currentUser, user) == 0){
+            }else if(Relations.getUsersRelation(currentUser, user) == 1){
+                calView.setVisibility(View.INVISIBLE);
+                calView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
+                textBanner.setText("Relate with " + user.get("name").toString() + " to see each others availability");
+
+                relate.setText("Accept request");
+                relate.setBackground(  new ColorDrawable(getResources().getColor(R.color.emphasis2))  );
+                relate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Relations.AcceptRequest(context,currentUser, user);
+                    }
+                });
+            }
+            else if (Relations.getUsersRelation(currentUser, user) == 2){
                 calView.setVisibility(View.INVISIBLE);
                 calView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
                 textBanner.setText("Request sent!");
@@ -172,7 +186,7 @@ public class ProfileFragment extends Fragment {
                 relate.setText("Request sent");
                 relate.setBackground(  new ColorDrawable(getResources().getColor(R.color.gray))  );
                 relate.setClickable(false);
-            }else {
+            }else if (Relations.getUsersRelation(currentUser, user) == 3){
                 banner.setVisibility(View.INVISIBLE);
                 banner.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
                 weekEvents = new ArrayList<>();

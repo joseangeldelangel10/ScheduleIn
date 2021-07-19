@@ -81,10 +81,10 @@ public class UserRelationsAdapter extends RecyclerView.Adapter<UserRelationsAdap
 
             butt2.setClickable(false);
             //butt1.setVisibility(View.INVISIBLE);
-            if ( Relations.userIsRelated(ParseUser.getCurrentUser(), user) == 1){
+            if ( Relations.getUsersRelation(ParseUser.getCurrentUser(), user) == 3){
                 butt2.setText("Related");
                 butt2.setBackground(  new ColorDrawable(itemView.getResources().getColor(R.color.emphasis2))    );
-            }else {
+            }else if ( Relations.getUsersRelation(ParseUser.getCurrentUser(), user) == 2){
                 butt2.setText("Request sent");
                 butt2.setBackground(  new ColorDrawable(itemView.getResources().getColor(R.color.gray))    );
             }
@@ -95,7 +95,7 @@ public class UserRelationsAdapter extends RecyclerView.Adapter<UserRelationsAdap
             butt1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Relations.unrelate(currentUser, user);
+                    Relations.unrelate( context, currentUser, user);
                     discardItem(position);
                 }
             });

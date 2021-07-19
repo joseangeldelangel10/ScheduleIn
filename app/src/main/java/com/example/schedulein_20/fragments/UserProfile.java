@@ -90,6 +90,7 @@ public class UserProfile extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        context = getContext();
     }
 
     @Override
@@ -100,7 +101,7 @@ public class UserProfile extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         //super.onViewCreated(view, savedInstanceState);
-        context = getContext();
+        //context = getContext();
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                         VIEW REFERENCING
         ------------------------------------------------------------------------------------------------------------------------------------*/

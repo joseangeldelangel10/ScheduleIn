@@ -36,6 +36,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class UserSearchFragment extends Fragment {
+    private final String TAG = "SearchFragment";
     Context context = getContext();
     List<ParseUser> searchResults;
     List<String> searchResultsIds;
@@ -160,7 +161,7 @@ public class UserSearchFragment extends Fragment {
                 // The query was successful, returns the users that matches
                 // the criteria.
                 for(ParseUser user1 : users) {
-                    Log.d("User List ",(user1.getUsername()));
+                    Log.d(TAG, "Username: " + user1.getUsername());
                     searchResults.add(user1);
                     searchResultsIds.add(user1.getObjectId());
                 }
