@@ -114,7 +114,7 @@ public class ProfileFragment extends Fragment {
          This fragment is initialized when the user taps on a search result and thus is
          called on the UserSearchAdapter onBindViewHolder method
         -------------------------------------------------------------------------------- */
-        super.onViewCreated(view, savedInstanceState);
+        //super.onViewCreated(view, savedInstanceState);
 
 
         userName = view.findViewById(R.id.ProfileFragmentName);

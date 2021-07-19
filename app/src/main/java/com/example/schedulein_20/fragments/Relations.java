@@ -98,7 +98,7 @@ public class Relations extends Fragment implements RelationRequestsAdapter.OnIte
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        //super.onViewCreated(view, savedInstanceState);
 
         /* --------------------------------------------------------------------------------
                                     WE REFERENCE RECYCLER VIEWS

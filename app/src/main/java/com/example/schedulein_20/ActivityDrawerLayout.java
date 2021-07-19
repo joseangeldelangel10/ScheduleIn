@@ -20,6 +20,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +38,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.parse.ParseUser;
 
 public class ActivityDrawerLayout extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private final String TAG = "ActivityDrawerLayout";
+    public static final String TAG = "ActivityDrawerLayout";
     public ParseUser currentUser = ParseUser.getCurrentUser();
     public Toolbar toolbar;
     private DrawerLayout drawer;
@@ -47,6 +49,7 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
     private TextView headNavUser;
     private TextView headNavDate;
     public static MenuItem searchItem;
+    public static MenuItem progressItem;
     public static SearchView searchView;
 
     @Override
@@ -59,6 +62,7 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
         --------------------------------------------------------------------------------------------- */
         toolbar = findViewById(R.id.my_awesome_toolbar);
         setSupportActionBar(toolbar);
+        //progressItem = findViewById(R.id.miActionProgress);
         //toolbar.setLogo(R.drawable.calendar_icon);
         //toolbar.setDisplayUseLogoEnabled(true);
 
@@ -87,6 +91,8 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
                 .into(headNavPicture);*/
 
         /* --------------------------------------------------------------------------------------------- */
+
+        showProgressBar();
 
     }
 
@@ -133,9 +139,11 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         /* ----------------- WE INFLATE A MENU CONTAINING THE SEARCH BAR ----------------- */
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_user_profile, menu);
+        //progressItem = menu.findItem(R.id.miActionProgress);
 
         /* -------------------------------------------------------------------------------------
         *             IF SEARCH BAR IS PRESSED WE INITIALIZE USER SEARCH FRAGMENT
@@ -155,10 +163,32 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.notifications_icon){
+        /*if(item.getItemId() == R.id.notifications_icon){
             Fragment fragment = new Notifications();
             fragmentManager.beginTransaction().replace(R.id.host_frame, fragment).commit();
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Store instance of the menu item containing progress
+        progressItem = menu.findItem(R.id.miActionProgress);
+        Log.e(TAG, "onPrepareOptionsMenu");
+
+        // Return to finish
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    public static void showProgressBar() {
+        Log.e(TAG, String.valueOf(progressItem) );
+        progressItem.setVisible(true);
+    }
+
+    public void hideProgressBar() {
+        // Hide progress item
+        progressItem.setVisible(false);
+    }
+
+
 }

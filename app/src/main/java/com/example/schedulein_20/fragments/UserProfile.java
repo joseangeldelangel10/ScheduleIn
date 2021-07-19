@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.schedulein_20.ActivityDrawerLayout;
 import com.example.schedulein_20.CUeventActivity;
 import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.R;
@@ -156,7 +157,6 @@ public class UserProfile extends Fragment {
                 startActivity(intent);
             }
         });
-
     }
 
     private void generateWeekView(@NonNull View view) {

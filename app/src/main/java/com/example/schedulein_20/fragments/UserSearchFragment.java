@@ -91,7 +91,7 @@ public class UserSearchFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        //super.onViewCreated(view, savedInstanceState);
         RecyclerView rvUserSearch = view.findViewById(R.id.UserSearchRv);
         context = getContext();
 
