@@ -184,6 +184,12 @@ public class Relations extends Fragment implements RelationRequestsAdapter.OnIte
         return true;
     }
 
+    /* -------------------------------------------------------------------------------------------------------------------------------------
+       ------------------------------------------------------------------------------------------------------------------------------------
+                                                       STATIC RELATIONS METHODS
+    *  -------------------------------------------------------------------------------------------------------------------------------------
+       ------------------------------------------------------------------------------------------------------------------------------------- */
+
     public static void AcceptRequest(Context context,ParseUser currentUser, ParseUser user){
         ArrayList<String> relations = (ArrayList<String>) currentUser.get("relations");
         relations.add( user.getObjectId() );
@@ -226,7 +232,6 @@ public class Relations extends Fragment implements RelationRequestsAdapter.OnIte
         });
 
     }
-
 
     public static void unrelate(Context context, ParseUser currentUser, ParseUser user) {
         String otherUserName = user.getString("username");

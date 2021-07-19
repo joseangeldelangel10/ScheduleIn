@@ -82,15 +82,28 @@ public class RelationRequestsAdapter extends RecyclerView.Adapter<RelationReques
         }
 
         private void bind(ParseUser relatingUser, int position){
-            Glide.with(context).load(relatingUser.getParseFile("profilePic").getUrl()).into(profilePic);
-            userName.setText(relatingUser.getString("name") + " " + relatingUser.getString("surname"));
 
+            /* ----------------------------------------------------------------------------------------
+             *                           BINDING USER INFO TO RV ITEM
+             * ---------------------------------------------------------------------------------------- */
+            Glide.with(context)
+                    .load(relatingUser.getParseFile("profilePic").getUrl())
+                    .into(profilePic);
+
+            userName.setText(relatingUser.getString("name") + " " + relatingUser.getString("surname"));
+            userDetails.setText("username: " + relatingUser.getString("username"));
+
+            /* ----------------------------------------------------------------------------------------
+            *                           BINDING BUTTONS LOGIC
+            * ---------------------------------------------------------------------------------------- */
             accept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // we accept the request (backend logic) and discard RV item
                     Relations.AcceptRequest(context, currentUser, relatingUser);
                     discardItem(position);
-
+                    // we call the interface method implemented in Relations to add the new relation to the relations
+                    // rv
                     RelationRequestsAdapter.OnItemChangeListener listener = (OnItemChangeListener) fragment;
                     listener.onRequestItemAccepted(relatingUser);
                 }
@@ -99,10 +112,13 @@ public class RelationRequestsAdapter extends RecyclerView.Adapter<RelationReques
             decline.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // we decline the request (backend logic) and discard RV item
                     Relations.DeclineRequest(context, currentUser, relatingUser);
                     discardItem(position);
                 }
             });
+
+            /* ---------------------------------------------------------------------------------------- */
         }
 
     }

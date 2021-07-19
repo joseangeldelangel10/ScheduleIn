@@ -60,8 +60,8 @@ public class UserRelationsAdapter extends RecyclerView.Adapter<UserRelationsAdap
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView ivProfilePic;
         TextView tvUserName;
-        Button butt1;
-        Button butt2;
+        Button butt1; // unrelate button
+        Button butt2; // relation type indicator
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,22 +73,19 @@ public class UserRelationsAdapter extends RecyclerView.Adapter<UserRelationsAdap
         }
 
         public void bind(ParseUser user, int position) {
+            /* ----------------------------------------------------------------------------------------
+             *                           BINDING USER INFO TO RV ITEM
+             * ---------------------------------------------------------------------------------------- */
             tvUserName.setText( user.getString("name") + " " + user.getString("surname") );
             Glide.with(context)
                     .load(user.getParseFile("profilePic").getUrl())
                     .placeholder(R.drawable.profile_picture_placeholder)
                     .into(ivProfilePic);
 
-            butt2.setClickable(false);
-            //butt1.setVisibility(View.INVISIBLE);
-            if ( Relations.getUsersRelation(ParseUser.getCurrentUser(), user) == 3){
-                butt2.setText("Related");
-                butt2.setBackground(  new ColorDrawable(itemView.getResources().getColor(R.color.emphasis2))    );
-            }else if ( Relations.getUsersRelation(ParseUser.getCurrentUser(), user) == 2){
-                butt2.setText("Request sent");
-                butt2.setBackground(  new ColorDrawable(itemView.getResources().getColor(R.color.gray))    );
-            }
 
+            /* ----------------------------------------------------------------------------------------
+             *                           BINDING UNRELATE LOGIC
+             * ---------------------------------------------------------------------------------------- */
             butt1.setText("Unrelate");
             butt1.setBackground(  new ColorDrawable(itemView.getResources().getColor(R.color.emphasis1))    );
 
@@ -99,6 +96,19 @@ public class UserRelationsAdapter extends RecyclerView.Adapter<UserRelationsAdap
                     discardItem(position);
                 }
             });
+
+            /* ----------------------------------------------------------------------------------------
+             *                       DEFINING RELATION TYPE INDICATOR BEHAVIOUR
+             * ---------------------------------------------------------------------------------------- */
+            butt2.setClickable(false);
+            if ( Relations.getUsersRelation(currentUser, user) == 3){
+                butt2.setText("Related");
+                butt2.setBackground(  new ColorDrawable(itemView.getResources().getColor(R.color.emphasis2))    );
+            }else if ( Relations.getUsersRelation(currentUser, user) == 2){
+                butt2.setText("Request sent");
+                butt2.setBackground(  new ColorDrawable(itemView.getResources().getColor(R.color.gray))    );
+            }
+            /* ---------------------------------------------------------------------------------------- */
 
         }
 

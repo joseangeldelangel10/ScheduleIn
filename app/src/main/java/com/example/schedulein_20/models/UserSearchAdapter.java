@@ -27,7 +27,6 @@ public class UserSearchAdapter extends Adapter<UserSearchAdapter.ViewHolder> {
     Context context;
     List<ParseUser> results;
 
-    //pass in the context and list of tweets
     public UserSearchAdapter(Context context, List<ParseUser> results){
         this.context = context;
         this.results = results;
@@ -65,16 +64,24 @@ public class UserSearchAdapter extends Adapter<UserSearchAdapter.ViewHolder> {
         }
 
         public void bind(ParseUser user) {
-            tvUserName.setText( user.getString("name") + " " + user.getString("surname") );
+
+            /* ----------------------------------------------------------------------------------------
+             *                          BIND USER INFO TO RESULTS RV ITEM
+             * ---------------------------------------------------------------------------------------- */
             String extraInfo = "" +
-            "username: " + user.getString("username") + "\n" +
-            "email: " + user.getString("email") + "\n";
-            tvExtraInfo.setText(extraInfo);
+                "username: " + user.getString("username") + "\n" +
+                "email: " + user.getString("email") + "\n";
             Glide.with(context)
                     .load(user.getParseFile("profilePic").getUrl())
                     .placeholder(R.drawable.profile_picture_placeholder)
                     .into(ivProfilePic);
+            tvUserName.setText( user.getString("name") + " " + user.getString("surname") );
+            tvExtraInfo.setText(extraInfo);
 
+            /* ----------------------------------------------------------------------------------------
+            *                 WHEN A SEARCH RESULT IS CLICKED WE GENERATE A NEW PROFILE
+            *                           FRAGMENT WITH THE CLICKED USER INFO
+            * ---------------------------------------------------------------------------------------- */
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -85,6 +92,8 @@ public class UserSearchAdapter extends Adapter<UserSearchAdapter.ViewHolder> {
                             .commit();
                 }
             });
+
+
 
         }
 
