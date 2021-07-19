@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:id="@+id/RequestItemPicture"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/RequestItemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"
+        android:layout_toStartOf="@+id/RequestItemDecline"
+        android:layout_toEndOf="@+id/RequestItemPicture"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/RequestItemDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/RequestItemName"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="25dp"
+        android:layout_toStartOf="@+id/RequestItemDecline"
+        android:layout_toEndOf="@+id/RequestItemPicture"
+        android:text="TextView" />
+
+    <ImageButton
+        android:id="@+id/RequestItemAccept"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/emphasis2"
+        app:srcCompat="@drawable/accept_icon" />
+
+    <ImageButton
+        android:id="@+id/RequestItemDecline"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toStartOf="@+id/RequestItemAccept"
+        android:background="@color/gray"
+        app:srcCompat="@drawable/decline_icon" />
+
+</RelativeLayout>

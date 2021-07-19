@@ -53,11 +53,18 @@ public class CalendarDialogFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        /* ------------------------------------------------------------------------------------------------------
+         THIS FRAGMENT IS CALLED BY THE ACTIVITY USED TO CREATE, UPDATE AND DELETE EVENTS (CUeventActivity)
+         whenever user wants to modify the start or end date of an event
+         ------------------------------------------------------------------------------------------------------*/
+
         button = view.findViewById(R.id.CalDialogFragmentBt);
         calendarView = view.findViewById(R.id.CalDialogFragmentCalView);
 
         calendar = Calendar.getInstance();
 
+        // every time user taps a new day in the calendar view we update the calendar object we will
+        // be returning
         calendarView.setOnDateChangeListener( new CalendarView.OnDateChangeListener() {
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 calendar.set(Calendar.YEAR,year);
@@ -65,11 +72,13 @@ public class CalendarDialogFragment extends DialogFragment {
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             }
         });
-        //button.setOnClickListener(this);
+
+        //when user clicks the "select new date" button we call the corresponding method
+        //implemented in CUeventActivity
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //HashMap<String, Calendar> result = new HashMap<>();
+
                 if (getArguments().get("title").equals(CUeventActivity.FLAG_EDIT_START_DATE)) {
                     EditCalendarDateListener listener = (EditCalendarDateListener) getActivity();
                     listener.onFinishStartDateEdit(calendar);
@@ -84,7 +93,7 @@ public class CalendarDialogFragment extends DialogFragment {
 
     }
 
-    // 1. Defines the listener interface with a method passing back data result.
+    // Defines the listener interface with a method passing back data result.
     public interface EditCalendarDateListener {
         void onFinishStartDateEdit(Calendar calendar);
         void onFinishEndDateEdit(Calendar calendar);

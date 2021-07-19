@@ -9,6 +9,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DateTime {
+    /* ------------------------------------------------------------------------
+    * This is a helper class with several static methods related to time matters
+    * ------------------------------------------------------------------------ */
     private static String TAG = "DateTime";
     private static long currentMillis = System.currentTimeMillis();
     private static Calendar calendar = Calendar.getInstance();

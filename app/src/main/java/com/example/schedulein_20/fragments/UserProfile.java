@@ -42,11 +42,11 @@ import java.util.List;
  */
 public class UserProfile extends Fragment {
     private final String TAG = "UserProfile";
-    ImageView ivUserImage;
-    TextView greeting;
-    TextView user_info;
+    private ImageView ivUserImage;
+    private TextView greeting;
+    private TextView user_info;
     Button cancel_next_event;
-    ScrollView week_schedule;
+    //ScrollView week_schedule;
     Button new_event;
     ParseUser currentUser = ParseUser.getCurrentUser();
     public ArrayList<Events> weekEvents = new ArrayList<>();

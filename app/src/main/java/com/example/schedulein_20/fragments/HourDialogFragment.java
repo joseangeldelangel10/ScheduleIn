@@ -36,7 +36,7 @@ public class HourDialogFragment extends DialogFragment {
     public static HourDialogFragment newInstance(String title) {
         HourDialogFragment frag = new HourDialogFragment();
         Bundle args = new Bundle();
-        args.putString("title", title);
+        args.putString("Flag", title);
         frag.setArguments(args);
         return frag;
     }
@@ -49,6 +49,11 @@ public class HourDialogFragment extends DialogFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        /* ------------------------------------------------------------------------------------------------------
+         THIS FRAGMENT IS CALLED BY THE ACTIVITY USED TO CREATE, UPDATE AND DELETE EVENTS (CUeventActivity)
+         whenever user wants to modify the start or end time of an event
+         ------------------------------------------------------------------------------------------------------*/
+
         super.onViewCreated(view, savedInstanceState);
 
         etHour = view.findViewById(R.id.timeDialogEditHourEt);
@@ -67,14 +72,13 @@ public class HourDialogFragment extends DialogFragment {
 
                     calendar = Calendar.getInstance();
                     calendar.set(Calendar.HOUR_OF_DAY,hour);
-                    Log.e(TAG, "Hour of day is: " + String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)) );
                     calendar.set(Calendar.MINUTE, min);
                     calendar.set(Calendar.SECOND, 0);
 
-                    if( getArguments().get("title").equals(CUeventActivity.FLAG_EDIT_START_TIME) ) {
+                    if( getArguments().get("Flag").equals(CUeventActivity.FLAG_EDIT_START_TIME) ) {
                         HourDialogFragment.EditTimeListener listener = (HourDialogFragment.EditTimeListener) getActivity();
                         listener.onFinishStartTimeEdit(calendar);
-                    }else if( getArguments().get("title").equals(CUeventActivity.FLAG_EDIT_END_TIME) ){
+                    }else if( getArguments().get("Flag").equals(CUeventActivity.FLAG_EDIT_END_TIME) ){
                         HourDialogFragment.EditTimeListener listener = (HourDialogFragment.EditTimeListener) getActivity();
                         listener.onFinishEndTimeEdit(calendar);
                     }
@@ -86,36 +90,6 @@ public class HourDialogFragment extends DialogFragment {
 
             }
         });
-
-
-        /*button = view.findViewById(R.id.CalDialogFragmentBt);
-        calendarView = view.findViewById(R.id.CalDialogFragmentCalView);
-
-        calendar = Calendar.getInstance();
-
-        calendarView.setOnDateChangeListener( new CalendarView.OnDateChangeListener() {
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                calendar.set(Calendar.YEAR,year);
-                calendar.set(Calendar.MONTH, month);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            }
-        });
-        //button.setOnClickListener(this);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //HashMap<String, Calendar> result = new HashMap<>();
-                if (getArguments().get("title").equals(CUeventActivity.FLAG_EDIT_START_DATE)) {
-                    EditCalendarDateListener listener = (EditCalendarDateListener) getActivity();
-                    listener.onFinishStartDateEdit(calendar);
-                }else if(getArguments().get("title").equals(CUeventActivity.FLAG_EDIT_END_DATE)) {
-                    EditCalendarDateListener listener = (EditCalendarDateListener) getActivity();
-                    listener.onFinishEndDateEdit(calendar);
-                }
-                // Close the dialog and return back to the parent activity
-                dismiss();
-            }
-        });*/
 
     }
 

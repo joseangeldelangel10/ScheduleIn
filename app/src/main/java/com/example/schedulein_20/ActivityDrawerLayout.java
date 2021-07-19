@@ -1,5 +1,6 @@
 package com.example.schedulein_20;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuView;
@@ -14,6 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 import com.example.schedulein_20.fragments.CalendarView;
 import com.example.schedulein_20.fragments.EditProfile;
 import com.example.schedulein_20.fragments.Groups;
+import com.example.schedulein_20.fragments.Notifications;
 import com.example.schedulein_20.fragments.Relations;
 import com.example.schedulein_20.fragments.Settings;
 import com.example.schedulein_20.fragments.UserProfile;
@@ -144,9 +147,18 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
             public void onClick(View v) {
                 Fragment fragment = new UserSearchFragment();
                 fragmentManager.beginTransaction().replace(R.id.host_frame, fragment).commit();
+                //searchView.setGravity(Gravity.LEFT);
             }
         });
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.notifications_icon){
+            Fragment fragment = new Notifications();
+            fragmentManager.beginTransaction().replace(R.id.host_frame, fragment).commit();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

@@ -40,7 +40,6 @@ public class UserSearchFragment extends Fragment {
     List<ParseUser> searchResults;
     List<String> searchResultsIds;
     UserSearchAdapter adapter;
-    String previousQueryText;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -110,7 +109,7 @@ public class UserSearchFragment extends Fragment {
             public boolean onQueryTextSubmit(String query) {
 
                 searchForUsers(query);
-                //------Reset search view -----
+                //------ collapse search view -----
                 searchView.clearFocus();
                 searchView.setQuery("", false);
                 searchView.setIconified(true);
@@ -120,26 +119,6 @@ public class UserSearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                /*if (previousQueryText != null && !newText.equals("") ){
-                    if (newText.contains(previousQueryText)){
-                        searchForUsers(newText);
-                    }
-                    else {
-                        searchResults.clear();
-                        searchResultsIds.clear();
-                        adapter.notifyDataSetChanged();
-                        searchForUsers(newText);
-                    }
-                    previousQueryText = newText;
-                }else {
-                    searchForUsers(newText);
-                    previousQueryText = newText;
-                }*/
-                /*
-                if (!newText.equals("")) {
-                    searchForUsers(newText);
-                }*/
-
                 return false;
             }
         });
@@ -149,16 +128,13 @@ public class UserSearchFragment extends Fragment {
     }
 
     private void searchForUsers(String text) {
-        //searchResults.add(ParseUser.getCurrentUser());
-        //adapter.notifyDataSetChanged();
+
+        // we clear recycler view so that previous search results won't show up anymore
         searchResults.clear();
         searchResultsIds.clear();
         adapter.notifyDataSetChanged();
 
-        //--ParseQuery<ParseUser> query = ParseUser.getQuery();
-        //query.whereEqualTo("email", "email@example.com");
-        //--query.whereStartsWith("username", text);
-        //query.whereStartsWith("surname", text);
+        // we define several queries in order to search a user by username, name, or surname
 
         ParseQuery<ParseUser> usernameQuery = ParseUser.getQuery();
         usernameQuery.whereStartsWith("username", text);
@@ -187,6 +163,10 @@ public class UserSearchFragment extends Fragment {
                     Log.d("User List ",(user1.getUsername()));
                     searchResults.add(user1);
                     searchResultsIds.add(user1.getObjectId());
+                }
+
+                if (searchResults.size() == 0){
+                    Toast.makeText(context, "No results found :(", Toast.LENGTH_SHORT).show();
                 }
                 adapter.notifyDataSetChanged();
             } else {

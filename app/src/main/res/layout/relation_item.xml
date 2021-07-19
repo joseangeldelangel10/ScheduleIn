@@ -32,10 +32,10 @@
 
     <Button
         android:id="@+id/RelationsButt1"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_toStartOf="@+id/RelationsButt2"
         android:text="Button"
@@ -43,11 +43,11 @@
 
     <Button
         android:id="@+id/RelationsButt2"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:text="Button"
         android:textSize="10sp" />

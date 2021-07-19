@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.fragments.ProfileFragment;
+import com.example.schedulein_20.fragments.Relations;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -24,11 +25,13 @@ import java.util.List;
 public class UserRelationsAdapter extends RecyclerView.Adapter<UserRelationsAdapter.ViewHolder> {
     Context context;
     List<ParseUser> relations;
+    ParseUser currentUser;
 
     //pass in the context and list of tweets
     public UserRelationsAdapter(Context context, List<ParseUser> relations){
         this.context = context;
         this.relations = relations;
+        currentUser = ParseUser.getCurrentUser();
     }
 
     @NonNull
@@ -41,12 +44,17 @@ public class UserRelationsAdapter extends RecyclerView.Adapter<UserRelationsAdap
     @Override
     public void onBindViewHolder(@NonNull UserRelationsAdapter.ViewHolder holder, int position) {
         ParseUser user = relations.get(position);
-        holder.bind(user);
+        holder.bind(user, position);
     }
 
     @Override
     public int getItemCount() {
         return relations.size();
+    }
+
+    private void discardItem(int position) {
+        relations.remove(position);
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -64,7 +72,7 @@ public class UserRelationsAdapter extends RecyclerView.Adapter<UserRelationsAdap
             butt2 = itemView.findViewById(R.id.RelationsButt2);
         }
 
-        public void bind(ParseUser user) {
+        public void bind(ParseUser user, int position) {
             tvUserName.setText( user.getString("name") + " " + user.getString("surname") );
             Glide.with(context)
                     .load(user.getParseFile("profilePic").getUrl())
@@ -72,14 +80,25 @@ public class UserRelationsAdapter extends RecyclerView.Adapter<UserRelationsAdap
                     .into(ivProfilePic);
 
             butt2.setClickable(false);
-            butt1.setVisibility(View.INVISIBLE);
-            if ( ProfileFragment.userIsRelated(ParseUser.getCurrentUser(), user) == 1){
+            //butt1.setVisibility(View.INVISIBLE);
+            if ( Relations.userIsRelated(ParseUser.getCurrentUser(), user) == 1){
                 butt2.setText("Related");
                 butt2.setBackground(  new ColorDrawable(itemView.getResources().getColor(R.color.emphasis2))    );
             }else {
                 butt2.setText("Request sent");
                 butt2.setBackground(  new ColorDrawable(itemView.getResources().getColor(R.color.gray))    );
             }
+
+            butt1.setText("Unrelate");
+            butt1.setBackground(  new ColorDrawable(itemView.getResources().getColor(R.color.emphasis1))    );
+
+            butt1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Relations.unrelate(currentUser, user);
+                    discardItem(position);
+                }
+            });
 
         }
 
