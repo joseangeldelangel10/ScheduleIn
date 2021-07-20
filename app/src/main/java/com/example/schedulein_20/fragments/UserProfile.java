@@ -1,5 +1,6 @@
 package com.example.schedulein_20.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,6 +45,8 @@ import java.util.List;
  */
 public class UserProfile extends Fragment {
     private final String TAG = "UserProfile";
+    public final int CREATE_EVENT_REQUEST_CODE = 10;
+    public final int UPDATE_EVENT_REQUEST_CODE = 20;
     private ImageView ivUserImage;
     private TextView greeting;
     private TextView user_info;
@@ -154,9 +158,25 @@ public class UserProfile extends Fragment {
                 String flag = "Create";
                 Intent intent = new Intent(context, CUeventActivity.class);
                 intent.putExtra( "Flag", flag); // this flag lets the activity know that we are creating an event instead of updating it
-                startActivity(intent);
+                startActivityForResult(intent, CREATE_EVENT_REQUEST_CODE);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CREATE_EVENT_REQUEST_CODE || requestCode == UPDATE_EVENT_REQUEST_CODE){
+            if (resultCode == Activity.RESULT_OK){
+
+                // WE CREATE A NEW FRAGMENT TO SHOW THE USER THE NEW EVENT HE HAS CREATED, DELETED OR UPDATED
+                // GIVING USER INSTANT RESPONSE
+                Fragment fragment = new UserProfile();
+                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.host_frame, fragment)
+                        .commit();
+            }
+        }
     }
 
     private void generateWeekView(@NonNull View view) {
@@ -180,6 +200,19 @@ public class UserProfile extends Fragment {
             heightWDuration = new Float(RelativeLayoutHeightDP*event.getDurationInMins() );
             heightWDuration = heightWDuration/minsInDay;
 
+            /*Float cond1 = Float.valueOf(event.getDurationInMins() + event.getStartInMins());
+            Float minutesLeftInday = minsInDay - event.getStartInMins();
+            if ( cond1 > minutesLeftInday ){
+                //add custom button
+                Float durationLeft = event.getDurationInMins() - minutesLeftInday;
+                heightWDuration = new Float(RelativeLayoutHeightDP*(minsInDay - event.getStartInMins()) );
+                heightWDuration = heightWDuration/minsInDay;
+                minutesLeftInday = minsInDay;
+                do {
+                    //add new button
+                }while (durationLeft > minutesLeftInday);
+            }*/
+
             //we make a ratio to calculate margin top
             marginTop = new Float(event.getStartInMins());
             marginTop = marginTop*RelativeLayoutHeightDP;
@@ -202,21 +235,22 @@ public class UserProfile extends Fragment {
                     Intent intent = new Intent(context, CUeventActivity.class);
                     intent.putExtra( "Flag", flag);
                     intent.putExtra("Event", Parcels.wrap(event) );
-                    startActivity(intent);
+                    startActivityForResult(intent, UPDATE_EVENT_REQUEST_CODE);
                 }
             });
             // ----------------------------
 
             layout.addView(btnTag);
         }
-
     }
+
 
     public void queryWeekEvents(View view) {
         /* --------------------------------------------------------------------------------
         we query this week's events in database, we store each event as an event object in
         "weekEvents" and finally we use such event objects to generate week preview
         -------------------------------------------------------------------------------- */
+        //ActivityDrawerLayout.showProgressBar();
 
         ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
 
@@ -249,7 +283,8 @@ public class UserProfile extends Fragment {
                 generateWeekView(view);
             }
         });
-    }
 
+        //ActivityDrawerLayout.hideProgressBar();
+    }
 
 }

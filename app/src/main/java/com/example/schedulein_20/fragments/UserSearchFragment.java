@@ -18,6 +18,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.schedulein_20.ActivityDrawerLayout;
@@ -92,8 +94,14 @@ public class UserSearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         //super.onViewCreated(view, savedInstanceState);
+        LinearLayout banner = view.findViewById(R.id.UserSearchBanner);
         RecyclerView rvUserSearch = view.findViewById(R.id.UserSearchRv);
         context = getContext();
+
+        banner.setVisibility(View.VISIBLE);
+        banner.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        rvUserSearch.setVisibility(View.INVISIBLE);
+        rvUserSearch.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 0));
 
         searchResults = new ArrayList<>();
         searchResultsIds = new ArrayList<>();
@@ -108,6 +116,10 @@ public class UserSearchFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                banner.setVisibility(View.INVISIBLE);
+                banner.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 0));
+                rvUserSearch.setVisibility(View.VISIBLE);
+                rvUserSearch.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
 
                 searchForUsers(query);
                 //------ collapse search view -----
@@ -129,7 +141,7 @@ public class UserSearchFragment extends Fragment {
     }
 
     private void searchForUsers(String text) {
-
+        ActivityDrawerLayout.showProgressBar();
         // we clear recycler view so that previous search results won't show up anymore
         searchResults.clear();
         searchResultsIds.clear();
@@ -174,6 +186,7 @@ public class UserSearchFragment extends Fragment {
                 // Something went wrong.
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
+            ActivityDrawerLayout.hideProgressBar();
         });
     }
 

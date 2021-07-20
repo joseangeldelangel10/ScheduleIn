@@ -67,9 +67,10 @@ public class Events extends ParseObject {
         Date start = getStartDate();
         Date end = getEndDate();
         int minutesInHour = 60;
+        int minutesInDay = 24*60;
 
-        int startMinute = start.getHours() * minutesInHour + start.getMinutes();
-        int endMinute = end.getHours() * minutesInHour + end.getMinutes();
+        int startMinute = start.getDate()*minutesInDay + start.getHours() * minutesInHour + start.getMinutes();
+        int endMinute = end.getDate()*minutesInDay + end.getHours() * minutesInHour + end.getMinutes();
 
         return endMinute - startMinute;
     }

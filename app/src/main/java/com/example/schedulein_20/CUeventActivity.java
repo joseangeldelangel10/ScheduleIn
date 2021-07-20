@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
 import android.app.usage.UsageEvents;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -175,6 +176,8 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
                 object.deleteInBackground(e2 -> {
                     if(e2==null){
                         Toast.makeText(this, "Delete Successful", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent();
+                        setResult(RESULT_OK, intent);
                         finish();
                     }else{
                         //Something went wrong while deleting the Object
@@ -202,6 +205,8 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
                     // All other fields will remain the same
                     object.saveInBackground();
                     Toast.makeText(this, "Event updated successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK, intent);
                     finish();
 
                 } else {
@@ -242,6 +247,8 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
                 }
                 Log.i(TAG, "saving succeded");
                 Toast.makeText(CUeventActivity.this, "Saved!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });

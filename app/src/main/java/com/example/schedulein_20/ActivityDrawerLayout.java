@@ -56,13 +56,13 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_layout);
-
+        Log.e(TAG, "onCreate Activity");
         /* ---------------------------------------------------------------------------------------------
                                       REPLACING ACTION BAR FOR TOOLBAR TO USE NAV DRAWER
         --------------------------------------------------------------------------------------------- */
+        //onPrepareOptionsMenu((Menu) this);
         toolbar = findViewById(R.id.my_awesome_toolbar);
         setSupportActionBar(toolbar);
-        //progressItem = findViewById(R.id.miActionProgress);
         //toolbar.setLogo(R.drawable.calendar_icon);
         //toolbar.setDisplayUseLogoEnabled(true);
 
@@ -92,7 +92,7 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
 
         /* --------------------------------------------------------------------------------------------- */
 
-        showProgressBar();
+        //showProgressBar();
 
     }
 
@@ -139,7 +139,7 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
+        Log.e(TAG, "onCreateOptionsMenu");
         /* ----------------- WE INFLATE A MENU CONTAINING THE SEARCH BAR ----------------- */
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_user_profile, menu);
@@ -149,6 +149,7 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
         *             IF SEARCH BAR IS PRESSED WE INITIALIZE USER SEARCH FRAGMENT
         ------------------------------------------------------------------------------------- */
         searchItem = menu.findItem(R.id.app_bar_search);
+        progressItem = menu.findItem(R.id.miActionProgress);
         searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
@@ -158,6 +159,7 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
                 //searchView.setGravity(Gravity.LEFT);
             }
         });
+
         return true;
     }
 
@@ -173,7 +175,7 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // Store instance of the menu item containing progress
-        progressItem = menu.findItem(R.id.miActionProgress);
+        //progressItem = menu.findItem(R.id.miActionProgress);
         Log.e(TAG, "onPrepareOptionsMenu");
 
         // Return to finish
@@ -185,7 +187,7 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
         progressItem.setVisible(true);
     }
 
-    public void hideProgressBar() {
+    public static void hideProgressBar() {
         // Hide progress item
         progressItem.setVisible(false);
     }

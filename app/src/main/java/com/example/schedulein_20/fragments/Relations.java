@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.schedulein_20.ActivityDrawerLayout;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.models.RelationRequestsAdapter;
 import com.example.schedulein_20.models.UserRelationsAdapter;
@@ -131,6 +132,8 @@ public class Relations extends Fragment implements RelationRequestsAdapter.OnIte
     }
 
     private void queryRelations(ParseUser currentUser) {
+        ActivityDrawerLayout.showProgressBar();
+
         ArrayList<String> relationsIds = (ArrayList<String>) currentUser.get("relations");
         Log.e(TAG, relationsIds.toString());
 
@@ -152,9 +155,13 @@ public class Relations extends Fragment implements RelationRequestsAdapter.OnIte
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        ActivityDrawerLayout.hideProgressBar();
     }
 
     private void queryRequests(ParseUser currentUser) {
+        ActivityDrawerLayout.showProgressBar();
+
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("relations", currentUser.getObjectId() );// we check for all users where current user id is contained in their relations
         query.findInBackground((users, e) -> {
@@ -174,6 +181,8 @@ public class Relations extends Fragment implements RelationRequestsAdapter.OnIte
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        ActivityDrawerLayout.hideProgressBar();
     }
 
     private boolean notPartOfUserRelations(ParseUser user) {

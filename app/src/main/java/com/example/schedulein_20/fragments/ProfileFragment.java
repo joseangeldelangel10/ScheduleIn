@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.schedulein_20.ActivityDrawerLayout;
 import com.example.schedulein_20.CUeventActivity;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.models.DateTime;
@@ -161,6 +163,12 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Relations.sendRelateRequest(context,currentUser, user);
+
+                        // WE CREATE A NEW FRAGMENT SO USER CAN SE INSTANT RESPONSE FOR HIS ACTIONS
+                        Fragment fragment = ProfileFragment.newInstance(user, "some string");
+                        ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.host_frame, fragment)
+                                .commit();
                     }
                 });
             }else if(Relations.getUsersRelation(currentUser, user) == 1){
@@ -174,6 +182,12 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Relations.AcceptRequest(context,currentUser, user);
+
+                        // WE CREATE A NEW FRAGMENT SO USER CAN SE INSTANT RESPONSE FOR HIS ACTIONS
+                        Fragment fragment = ProfileFragment.newInstance(user, "some string");
+                        ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.host_frame, fragment)
+                                .commit();
                     }
                 });
             }
@@ -247,6 +261,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public void queryWeekEvents(View view, ParseUser user) {
+        ActivityDrawerLayout.showProgressBar();
 
         ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
         // include data referred by user key
@@ -279,6 +294,8 @@ public class ProfileFragment extends Fragment {
                 generateWeekView(view);
             }
         });
+
+        ActivityDrawerLayout.hideProgressBar();
     }
 
     /*public static int userIsRelated(ParseUser currentUser, ParseUser user) {
