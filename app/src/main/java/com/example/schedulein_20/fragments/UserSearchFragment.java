@@ -6,15 +6,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +19,13 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.schedulein_20.ActivityDrawerLayout;
+import com.example.schedulein_20.DrawerLayoutActivity;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.models.UserSearchAdapter;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -99,9 +95,7 @@ public class UserSearchFragment extends Fragment {
         context = getContext();
 
         banner.setVisibility(View.VISIBLE);
-        banner.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        rvUserSearch.setVisibility(View.INVISIBLE);
-        rvUserSearch.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 0));
+        rvUserSearch.setVisibility(View.GONE);
 
         searchResults = new ArrayList<>();
         searchResultsIds = new ArrayList<>();
@@ -110,16 +104,14 @@ public class UserSearchFragment extends Fragment {
         rvUserSearch.setLayoutManager(linearLayoutManager); // we bind a layout manager to RV
         rvUserSearch.setAdapter(adapter);
 
-        MenuItem searchItem = ActivityDrawerLayout.searchItem;
-        SearchView searchView = ActivityDrawerLayout.searchView;
+        MenuItem searchItem = DrawerLayoutActivity.searchItem;
+        SearchView searchView = DrawerLayoutActivity.searchView;
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                banner.setVisibility(View.INVISIBLE);
-                banner.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 0));
+                banner.setVisibility(View.GONE);
                 rvUserSearch.setVisibility(View.VISIBLE);
-                rvUserSearch.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
 
                 searchForUsers(query);
                 //------ collapse search view -----
@@ -141,7 +133,7 @@ public class UserSearchFragment extends Fragment {
     }
 
     private void searchForUsers(String text) {
-        ActivityDrawerLayout.showProgressBar();
+        DrawerLayoutActivity.showProgressBar();
         // we clear recycler view so that previous search results won't show up anymore
         searchResults.clear();
         searchResultsIds.clear();
@@ -186,7 +178,7 @@ public class UserSearchFragment extends Fragment {
                 // Something went wrong.
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-            ActivityDrawerLayout.hideProgressBar();
+            DrawerLayoutActivity.hideProgressBar();
         });
     }
 

@@ -10,19 +10,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.schedulein_20.R;
-import com.example.schedulein_20.fragments.CalendarDialogFragment;
-import com.example.schedulein_20.fragments.Relations;
+import com.example.schedulein_20.fragments.RelationsFragment;
 import com.parse.ParseUser;
 
-import java.util.Calendar;
 import java.util.List;
-
-import javax.security.auth.callback.Callback;
 
 public class RelationRequestsAdapter extends RecyclerView.Adapter<RelationRequestsAdapter.ViewHolder> {
     Context context;
@@ -100,7 +95,7 @@ public class RelationRequestsAdapter extends RecyclerView.Adapter<RelationReques
                 @Override
                 public void onClick(View v) {
                     // we accept the request (backend logic) and discard RV item
-                    Relations.AcceptRequest(context, currentUser, relatingUser);
+                    RelationsFragment.AcceptRequest(context, currentUser, relatingUser);
                     discardItem(position);
                     // we call the interface method implemented in Relations to add the new relation to the relations
                     // rv
@@ -113,7 +108,7 @@ public class RelationRequestsAdapter extends RecyclerView.Adapter<RelationReques
                 @Override
                 public void onClick(View v) {
                     // we decline the request (backend logic) and discard RV item
-                    Relations.DeclineRequest(context, currentUser, relatingUser);
+                    RelationsFragment.DeclineRequest(context, currentUser, relatingUser);
                     discardItem(position);
                 }
             });

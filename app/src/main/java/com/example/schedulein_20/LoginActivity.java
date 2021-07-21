@@ -19,7 +19,7 @@ This activity's functionality consists only in one on click listener,
 wich runs validateLocalCredentials function and triggers an intent
 ------------------------------------------------------------------------*/
 
-public class loginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     private final String TAG = "loginActivity";
     private EditText etEmail;
     private EditText etPassword;
@@ -76,10 +76,10 @@ public class loginActivity extends AppCompatActivity {
             public void done(ParseUser user, ParseException e) {
                 if (e != null){
                     Log.e(TAG, "Issue with login" + e, e);
-                    Toast.makeText(loginActivity.this, "problem occurred while logging in", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "problem occurred while logging in", Toast.LENGTH_LONG).show();
                     return;
                 }
-                Toast.makeText(loginActivity.this, "Login successful!", Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
                 finish();

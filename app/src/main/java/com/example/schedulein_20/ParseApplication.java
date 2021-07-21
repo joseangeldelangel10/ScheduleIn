@@ -3,6 +3,7 @@ package com.example.schedulein_20;
 import android.app.Application;
 
 import com.example.schedulein_20.models.Events;
+import com.example.schedulein_20.models.Group;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -13,6 +14,7 @@ public class ParseApplication extends Application {
         super.onCreate();
 
         ParseObject.registerSubclass(Events .class);
+        ParseObject.registerSubclass(Group.class);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId( getString(R.string.application_id))

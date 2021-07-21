@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.parse.ParseUser;
 
-public class ActivitySignUp extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
     private final String TAG = "ActivitySignUp";
     private final String NAME_KEY = "name";
     private final String SURNAME_KEY = "surname";

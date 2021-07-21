@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CUgroupsActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/groups_my_awesome_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:title="New group">
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/CUGroupNameLinearLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/groups_my_awesome_toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Group Name: "
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/CUGroupName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/textView2"
+            android:ems="10"
+            android:hint="untitled group"
+            android:inputType="textPersonName"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/CUGroupColorLinearLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/CUGroupNameLinearLay"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Color: "
+            android:textSize="24sp" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@null"></ImageView>
+
+        <ImageButton
+            android:id="@+id/CUGroupColorPrimary"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@color/primary"></ImageButton>
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@null"></ImageView>
+
+        <ImageButton
+            android:id="@+id/CUGroupColorSecondary"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@color/secondary"></ImageButton>
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@null"></ImageView>
+
+        <ImageButton
+            android:id="@+id/CUGroupColorEmphasis2"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@color/emphasis2"></ImageButton>
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/DGroupMembersSv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/CUGroupColorLinearLay"
+        android:layout_marginTop="20dp"
+        app:iconifiedByDefault="false"
+        app:queryHint="look for group members"></androidx.appcompat.widget.SearchView>
+
+    <Button
+        android:id="@+id/CUGroupCreateGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="Create group +" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/DGroupMembersRv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/CUGroupCreateGroup"
+        android:layout_below="@+id/DGroupMembersSv"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="25dp" />
+
+
+
+
+
+
+</RelativeLayout>

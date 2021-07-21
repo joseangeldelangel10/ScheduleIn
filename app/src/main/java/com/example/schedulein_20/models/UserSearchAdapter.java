@@ -10,15 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.bumptech.glide.Glide;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.fragments.ProfileFragment;
-import com.example.schedulein_20.fragments.UserProfile;
-import com.example.schedulein_20.fragments.UserSearchFragment;
 import com.parse.ParseUser;
 
 import java.util.List;

@@ -10,14 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.schedulein_20.R;
-import com.example.schedulein_20.fragments.ProfileFragment;
-import com.example.schedulein_20.fragments.Relations;
+import com.example.schedulein_20.fragments.RelationsFragment;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -92,7 +89,7 @@ public class UserRelationsAdapter extends RecyclerView.Adapter<UserRelationsAdap
             butt1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Relations.unrelate( context, currentUser, user);
+                    RelationsFragment.unrelate( context, currentUser, user);
                     discardItem(position);
                 }
             });
@@ -101,10 +98,10 @@ public class UserRelationsAdapter extends RecyclerView.Adapter<UserRelationsAdap
              *                       DEFINING RELATION TYPE INDICATOR BEHAVIOUR
              * ---------------------------------------------------------------------------------------- */
             butt2.setClickable(false);
-            if ( Relations.getUsersRelation(currentUser, user) == 3){
+            if ( RelationsFragment.getUsersRelation(currentUser, user) == 3){
                 butt2.setText("Related");
                 butt2.setBackground(  new ColorDrawable(itemView.getResources().getColor(R.color.emphasis2))    );
-            }else if ( Relations.getUsersRelation(currentUser, user) == 2){
+            }else if ( RelationsFragment.getUsersRelation(currentUser, user) == 2){
                 butt2.setText("Request sent");
                 butt2.setBackground(  new ColorDrawable(itemView.getResources().getColor(R.color.gray))    );
             }

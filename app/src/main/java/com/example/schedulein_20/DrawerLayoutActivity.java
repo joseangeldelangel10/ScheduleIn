@@ -3,7 +3,6 @@ package com.example.schedulein_20;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -15,29 +14,25 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.schedulein_20.fragments.CalendarView;
-import com.example.schedulein_20.fragments.EditProfile;
-import com.example.schedulein_20.fragments.Groups;
-import com.example.schedulein_20.fragments.Notifications;
-import com.example.schedulein_20.fragments.Relations;
-import com.example.schedulein_20.fragments.Settings;
-import com.example.schedulein_20.fragments.UserProfile;
+import com.example.schedulein_20.fragments.CalendarViewFragment;
+import com.example.schedulein_20.fragments.EditProfileFragment;
+import com.example.schedulein_20.fragments.GroupsFragment;
+import com.example.schedulein_20.fragments.RelationsFragment;
+import com.example.schedulein_20.fragments.SettingsFragment;
+import com.example.schedulein_20.fragments.UserProfileFragment;
 import com.example.schedulein_20.fragments.UserSearchFragment;
 import com.example.schedulein_20.models.DateTime;
 import com.google.android.material.navigation.NavigationView;
 import com.parse.ParseUser;
 
-public class ActivityDrawerLayout extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class DrawerLayoutActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG = "ActivityDrawerLayout";
     public ParseUser currentUser = ParseUser.getCurrentUser();
     public Toolbar toolbar;
@@ -76,7 +71,7 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this); // in this class we declare the interface method onNavigationItemSelected;
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.host_frame, new UserProfile()).commit();
+        fragmentManager.beginTransaction().replace(R.id.host_frame, new UserProfileFragment()).commit();
 
         /* ---------------------------------------------------------------------------------------------
                                       NAVIGATION HEADER ITEM CONTROL
@@ -103,26 +98,26 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
         Fragment fragment = null;
 
         if (id == R.id.nav_menu_home) {
-            fragment = new UserProfile();
+            fragment = new UserProfileFragment();
         }
-        if (id == R.id.nav_menu_my_day || id == R.id.nav_menu_my_week || id == R.id.nav_menu_my_month ) {
-            fragment = new CalendarView();
+        else if (id == R.id.nav_menu_my_day || id == R.id.nav_menu_my_week || id == R.id.nav_menu_my_month ) {
+            fragment = new CalendarViewFragment();
         }
-        if (id == R.id.nav_menu_log_out){
+        else if (id == R.id.nav_menu_log_out){
             logout();
             return true;
         }
-        if (id == R.id.nav_menu_edit_profile){
-            fragment = new EditProfile();
+        else if (id == R.id.nav_menu_edit_profile){
+            fragment = new EditProfileFragment();
         }
-        if (id == R.id.nav_menu_privacy_settings){
-            fragment = new Settings();
+        else if (id == R.id.nav_menu_privacy_settings){
+            fragment = new SettingsFragment();
         }
-        if (id == R.id.nav_menu_see_my_relations) {
-            fragment = new Relations();
+        else if (id == R.id.nav_menu_see_my_relations) {
+            fragment = new RelationsFragment();
         }
         else if (id == R.id.nav_menu_see_my_groups) {
-            fragment = new Groups();
+            fragment = new GroupsFragment();
         }
         fragmentManager.beginTransaction().replace(R.id.host_frame, fragment).commit();
         drawer.closeDrawer(GravityCompat.START);
@@ -131,8 +126,8 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
 
     private void logout() {
         ParseUser.logOut();
-        Toast.makeText(ActivityDrawerLayout.this, "logout successful", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, loginOrSignup.class);
+        Toast.makeText(DrawerLayoutActivity.this, "logout successful", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, LoginOrSignupActivity.class);
         startActivity(intent);
         finish();
     }
@@ -156,7 +151,6 @@ public class ActivityDrawerLayout extends AppCompatActivity implements Navigatio
             public void onClick(View v) {
                 Fragment fragment = new UserSearchFragment();
                 fragmentManager.beginTransaction().replace(R.id.host_frame, fragment).commit();
-                //searchView.setGravity(Gravity.LEFT);
             }
         });
 

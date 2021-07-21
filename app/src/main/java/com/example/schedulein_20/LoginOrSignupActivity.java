@@ -2,7 +2,6 @@ package com.example.schedulein_20;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +19,7 @@ This activity's functionality consists only in two on click listeners,
 one triggers an intent and the other triggers a log
 ------------------------------------------------------------------------*/
 
-public class loginOrSignup extends AppCompatActivity {
+public class LoginOrSignupActivity extends AppCompatActivity {
     private final String TAG = "loginOrSignup";
     public final int LOGIN_REQUEST_CODE = 10;
     public final int SiGNUP_REQUEST_CODE = 20;
@@ -42,7 +41,7 @@ public class loginOrSignup extends AppCompatActivity {
         buttSignup = findViewById(R.id.buttSignup);
         tvTip = findViewById(R.id.tvTipOfTheDay);
 
-        Glide.with(loginOrSignup.this)
+        Glide.with(LoginOrSignupActivity.this)
                 .load(R.drawable.welcome_pic)
                 .into(ivLoginImages);
 
@@ -62,7 +61,7 @@ public class loginOrSignup extends AppCompatActivity {
         buttLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(loginOrSignup.this, loginActivity.class);
+                Intent intent = new Intent(LoginOrSignupActivity.this, LoginActivity.class);
                 startActivityForResult(intent, LOGIN_REQUEST_CODE);
             }
         });
@@ -73,7 +72,7 @@ public class loginOrSignup extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.e(TAG, "Sign up pressed");
-                Intent intent = new Intent(loginOrSignup.this, ActivitySignUp.class);
+                Intent intent = new Intent(LoginOrSignupActivity.this, SignUpActivity.class);
                 startActivityForResult(intent, SiGNUP_REQUEST_CODE);
             }
         });
@@ -95,7 +94,7 @@ public class loginOrSignup extends AppCompatActivity {
     }
 
     private void goMainActivity(){
-        Intent intent = new Intent(loginOrSignup.this, ActivityDrawerLayout.class);
+        Intent intent = new Intent(LoginOrSignupActivity.this, DrawerLayoutActivity.class);
         startActivity(intent);
         finish();
     }

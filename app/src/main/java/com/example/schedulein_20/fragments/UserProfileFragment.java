@@ -17,12 +17,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.schedulein_20.ActivityDrawerLayout;
 import com.example.schedulein_20.CUeventActivity;
 import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.R;
@@ -40,19 +38,19 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link UserProfile#newInstance} factory method to
+ * Use the {@link UserProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UserProfile extends Fragment {
+public class UserProfileFragment extends Fragment {
     private final String TAG = "UserProfile";
     public final int CREATE_EVENT_REQUEST_CODE = 10;
     public final int UPDATE_EVENT_REQUEST_CODE = 20;
     private ImageView ivUserImage;
     private TextView greeting;
-    private TextView user_info;
-    Button cancel_next_event;
+    private TextView userInfo;
+    Button cancelNextEvent;
     //ScrollView week_schedule;
-    Button new_event;
+    Button newEvent;
     ParseUser currentUser = ParseUser.getCurrentUser();
     public ArrayList<Events> weekEvents = new ArrayList<>();
     Context context;
@@ -66,7 +64,7 @@ public class UserProfile extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public UserProfile() {
+    public UserProfileFragment() {
         // Required empty public constructor
     }
 
@@ -79,8 +77,8 @@ public class UserProfile extends Fragment {
      * @return A new instance of fragment UserProfile.
      */
     // TODO: Rename and change types and number of parameters
-    public static UserProfile newInstance(String param1, String param2) {
-        UserProfile fragment = new UserProfile();
+    public static UserProfileFragment newInstance(String param1, String param2) {
+        UserProfileFragment fragment = new UserProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -112,9 +110,9 @@ public class UserProfile extends Fragment {
         ------------------------------------------------------------------------------------------------------------------------------------*/
         ivUserImage = view.findViewById(R.id.ivUserImage);
         greeting = view.findViewById(R.id.ProfileFragmentName);
-        user_info = view.findViewById(R.id.ProfileFragmentExtraInfo);
-        cancel_next_event = view.findViewById(R.id.ProfileFragmentRelateButt);
-        new_event = view.findViewById(R.id.create_new_event);
+        userInfo = view.findViewById(R.id.ProfileFragmentExtraInfo);
+        cancelNextEvent = view.findViewById(R.id.ProfileFragmentRelateButt);
+        newEvent = view.findViewById(R.id.create_new_event);
 
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                         RETRIEVING THE DATA TO GENERATE THE VIEWS
@@ -139,7 +137,7 @@ public class UserProfile extends Fragment {
         }
 
         greeting.setText(DateTime.timeBasedGreeting() + " " + user_name +"!"); // good morning-afternoon-night user
-        user_info.setText("- Now attending to: " + current_event + "\n- Next event: " + next_event);
+        userInfo.setText("- Now attending to: " + current_event + "\n- Next event: " + next_event);
 
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                        WE GENERATE USER'S WEEK PREVIEW
@@ -152,7 +150,7 @@ public class UserProfile extends Fragment {
         ------------------------------------------------------------------------------------------------------------------------------------*/
 
 
-        new_event.setOnClickListener(new View.OnClickListener() {
+        newEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String flag = "Create";
@@ -171,7 +169,7 @@ public class UserProfile extends Fragment {
 
                 // WE CREATE A NEW FRAGMENT TO SHOW THE USER THE NEW EVENT HE HAS CREATED, DELETED OR UPDATED
                 // GIVING USER INSTANT RESPONSE
-                Fragment fragment = new UserProfile();
+                Fragment fragment = new UserProfileFragment();
                 ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
                         .replace(R.id.host_frame, fragment)
                         .commit();
@@ -186,11 +184,11 @@ public class UserProfile extends Fragment {
         at the corresponding height based in the event starting time and ending time
         -------------------------------------------------------------------------------- */
 
-        Float titleOffset = getResources().getDimension(R.dimen.week_view_header_ofset); // dp height occupied by day tags (Monday, tuesday, wednesday, ...)
+        Float titleOffset = context.getResources().getDimension(R.dimen.week_view_header_ofset); // dp height occupied by day tags (Monday, tuesday, wednesday, ...)
         Float heightWDuration; // dp height of the event button based in its duration
         Float marginTop; // dp height at which the event button is placed based event starting time
         Float minsInDay = new Float(24*60);
-        Float RelativeLayoutHeightDP = getResources().getDimension(R.dimen.week_view_hour_row_height) * 24; // height of a day column (hour block height times 24 hrs)
+        Float RelativeLayoutHeightDP = context.getResources().getDimension(R.dimen.week_view_hour_row_height) * 24; // height of a day column (hour block height times 24 hrs)
 
         for(Events event: weekEvents) {
             RelativeLayout layout = view.findViewById(  Events.dayInt2Str.get(event.getWeekDay())  ); // we evaluate the corresponding day column using a hash map
@@ -265,7 +263,7 @@ public class UserProfile extends Fragment {
             public void done(List<Events> objects, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Issue with getting events", e);
-                    Toast.makeText(getContext(), "There was a problem loading your events", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "There was a problem loading your events", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (objects.size() == 0){
@@ -279,7 +277,7 @@ public class UserProfile extends Fragment {
                     );
                     weekEvents.add(event);
                 }
-                Toast.makeText(getContext(), "Events loaded successfully!", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Events loaded successfully!", Toast.LENGTH_LONG).show();
                 generateWeekView(view);
             }
         });

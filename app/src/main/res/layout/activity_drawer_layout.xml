@@ -6,7 +6,7 @@
     android:id="@+id/my_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivityDrawerLayout">
+    tools:context=".DrawerLayoutActivity">
     <!-- Your normal content view -->
     <LinearLayout
         android:layout_width="match_parent"

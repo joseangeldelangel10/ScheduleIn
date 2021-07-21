@@ -15,29 +15,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.schedulein_20.ActivityDrawerLayout;
+import com.example.schedulein_20.DrawerLayoutActivity;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.models.RelationRequestsAdapter;
 import com.example.schedulein_20.models.UserRelationsAdapter;
-import com.example.schedulein_20.models.UserSearchAdapter;
 import com.parse.FunctionCallback;
-import com.parse.Parse;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Relations#newInstance} factory method to
+ * Use the {@link RelationsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Relations extends Fragment implements RelationRequestsAdapter.OnItemChangeListener{
+public class RelationsFragment extends Fragment implements RelationRequestsAdapter.OnItemChangeListener{
     public static final String TAG = "RelationsFragment";
     private RecyclerView rvRelations;
     private RecyclerView rvRelationReq;
@@ -57,7 +55,7 @@ public class Relations extends Fragment implements RelationRequestsAdapter.OnIte
     private String mParam1;
     private String mParam2;
 
-    public Relations() {
+    public RelationsFragment() {
         // Required empty public constructor
     }
 
@@ -70,8 +68,8 @@ public class Relations extends Fragment implements RelationRequestsAdapter.OnIte
      * @return A new instance of fragment Relations.
      */
     // TODO: Rename and change types and number of parameters
-    public static Relations newInstance(String param1, String param2) {
-        Relations fragment = new Relations();
+    public static RelationsFragment newInstance(String param1, String param2) {
+        RelationsFragment fragment = new RelationsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -123,7 +121,7 @@ public class Relations extends Fragment implements RelationRequestsAdapter.OnIte
                                WE CONFIGURE AND POPULATE REQUESTS RV
         * -------------------------------------------------------------------------------- */
         requests = new ArrayList<>();
-        reqAdapter = new RelationRequestsAdapter(context, requests, Relations.this);
+        reqAdapter = new RelationRequestsAdapter(context, requests, RelationsFragment.this);
         LinearLayoutManager reqLinearLayoutManager = new LinearLayoutManager(context);
         rvRelationReq.setLayoutManager(reqLinearLayoutManager); // we bind a layout manager to RV
         rvRelationReq.setAdapter(reqAdapter);
@@ -132,7 +130,7 @@ public class Relations extends Fragment implements RelationRequestsAdapter.OnIte
     }
 
     private void queryRelations(ParseUser currentUser) {
-        ActivityDrawerLayout.showProgressBar();
+        DrawerLayoutActivity.showProgressBar();
 
         ArrayList<String> relationsIds = (ArrayList<String>) currentUser.get("relations");
         Log.e(TAG, relationsIds.toString());
@@ -156,11 +154,11 @@ public class Relations extends Fragment implements RelationRequestsAdapter.OnIte
             }
         });
 
-        ActivityDrawerLayout.hideProgressBar();
+        DrawerLayoutActivity.hideProgressBar();
     }
 
     private void queryRequests(ParseUser currentUser) {
-        ActivityDrawerLayout.showProgressBar();
+        DrawerLayoutActivity.showProgressBar();
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("relations", currentUser.getObjectId() );// we check for all users where current user id is contained in their relations
@@ -182,7 +180,7 @@ public class Relations extends Fragment implements RelationRequestsAdapter.OnIte
             }
         });
 
-        ActivityDrawerLayout.hideProgressBar();
+        DrawerLayoutActivity.hideProgressBar();
     }
 
     private boolean notPartOfUserRelations(ParseUser user) {
@@ -191,6 +189,12 @@ public class Relations extends Fragment implements RelationRequestsAdapter.OnIte
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onRequestItemAccepted(ParseUser user) {
+        relations.add(user);
+        relAdapter.notifyDataSetChanged();
     }
 
     /* -------------------------------------------------------------------------------------------------------------------------------------
@@ -341,10 +345,45 @@ public class Relations extends Fragment implements RelationRequestsAdapter.OnIte
         }*/
     }
 
-    @Override
-    public void onRequestItemAccepted(ParseUser user) {
-        relations.add(user);
-        relAdapter.notifyDataSetChanged();
+    public static void queryRelatedUsersWhere(ParseUser currentUser, String query) {
+        DrawerLayoutActivity.showProgressBar();
+
+        List<ParseUser> searchResults = new ArrayList<>();
+        // we clear recycler view so that previous search results won't show up anymore
+        ArrayList<String> cuRelations = (ArrayList<String>) currentUser.get("relations");
+
+        // we define several queries in order to search a user by username, name, or surname
+
+        ParseQuery<ParseUser> mainQuery = ParseUser.getQuery();
+        mainQuery.whereStartsWith("name", query);
+        mainQuery.whereContainedIn("objectId", cuRelations);
+        mainQuery.whereEqualTo("relations", currentUser.getObjectId());
+        //mainQuery.whereNotContainedIn("objectId", searchResultsIds);
+        //mainQuery.setLimit(50);
+
+        mainQuery.findInBackground((users, e) -> {
+            if (e == null) {
+                // The query was successful, returns the users that matches
+                // the criteria.
+                for(ParseUser user1 : users) {
+                    Log.d(TAG, "Username: " + user1.getUsername());
+                    searchResults.add(user1);
+                }
+                /*if (searchResults.size() == 0){
+                    Toast.makeText(context, "No results found :(", Toast.LENGTH_SHORT).show();
+                }*/
+                Log.e("searchingPossibleMembers", searchResults.toString());
+
+            } else {
+                // Something went wrong.
+                //Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("searchingPossibleMembers", "st went wrong");
+
+            }
+            DrawerLayoutActivity.hideProgressBar();
+        });
     }
+
+
 
 }

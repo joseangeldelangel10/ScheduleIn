@@ -12,10 +12,10 @@ import com.example.schedulein_20.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link EditProfile#newInstance} factory method to
+ * Use the {@link EditProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EditProfile extends Fragment {
+public class EditProfileFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class EditProfile extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public EditProfile() {
+    public EditProfileFragment() {
         // Required empty public constructor
     }
 
@@ -39,8 +39,8 @@ public class EditProfile extends Fragment {
      * @return A new instance of fragment EditProfile.
      */
     // TODO: Rename and change types and number of parameters
-    public static EditProfile newInstance(String param1, String param2) {
-        EditProfile fragment = new EditProfile();
+    public static EditProfileFragment newInstance(String param1, String param2) {
+        EditProfileFragment fragment = new EditProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
