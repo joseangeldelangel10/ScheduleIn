@@ -1,6 +1,10 @@
 package com.example.schedulein_20.models;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
+
+import com.example.schedulein_20.R;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -15,6 +19,8 @@ public class DateTime {
     private static String TAG = "DateTime";
     private static long currentMillis = System.currentTimeMillis();
     private static Calendar calendar = Calendar.getInstance();
+    private static Resources res;
+
 
     public static String getCurrentDate() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -46,20 +52,21 @@ public class DateTime {
         return hour + ":" + minutes;
     }
 
-    public static String timeBasedGreeting(){
+    public static String timeBasedGreeting(Context context){
+        res = context.getResources();
         Date date = calendar.getTime();
         int hour = date.getHours();
-        String greet = "Good ";
+        String greet = res.getString(R.string.good) + " ";
         if ( 4 <= hour && hour < 12){
-            return greet + "morning";
+            return greet + res.getString(R.string.morning);
         }
         if ( 12 <= hour && hour < 20){
-            return greet + "afternoon";
+            return greet + res.getString(R.string.afternoon);
         }
         if ( 20 <= hour || hour < 4){
-            return greet + "night";
+            return greet + res.getString(R.string.night);
         }
-        return "Hey ";
+        return res.getString(R.string.generic_greeting);
     }
 
     public static Date weekStart(){

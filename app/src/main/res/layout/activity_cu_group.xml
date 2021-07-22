@@ -122,18 +122,51 @@
         android:layout_marginBottom="20dp"
         android:text="Create group +" />
 
+    <RelativeLayout
+        android:id="@+id/CUGroupUDbuttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp">
+
+        <Button
+            android:id="@+id/CUGroupDeleteGroup"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:text="Delete group"
+            android:background="@color/red"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp">
+        </Button>
+
+        <Button
+            android:id="@+id/CUGroupUpdateGroup"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:text="update group"
+            android:background="@color/primary"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="0dp">
+        </Button>
+
+    </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/DGroupMembersRv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/CUGroupCreateGroup"
         android:layout_below="@+id/DGroupMembersSv"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="25dp" />
+        android:layout_marginBottom="90dp" />
 
 
 

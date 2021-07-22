@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.schedulein_20.DrawerLayoutActivity;
+import com.example.schedulein_20.LayoutGenerators.CalendarViewsGenerator;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.models.Events;
@@ -193,6 +194,7 @@ public class ProfileFragment extends Fragment {
                 relate.setText("Request sent");
                 relate.setBackground(  new ColorDrawable(getResources().getColor(R.color.gray))  );
                 relate.setClickable(false);
+
             }else if (RelationsFragment.getUsersRelation(currentUser, user) == 3){
                 banner.setVisibility(View.GONE);
                 calView.setVisibility(View.VISIBLE);
@@ -206,49 +208,6 @@ public class ProfileFragment extends Fragment {
 
         }else {
             Toast.makeText(context, "sorry we couldn't retrieve this user's data", Toast.LENGTH_LONG).show();
-        }
-
-    }
-
-
-
-    private void generateWeekView(@NonNull View view) {
-        /* --------------------------------------------------------------------------------
-        to generate the week preview we generate a button for each event in weekEvents and
-        we place the button in the corresponding day column (colums are Relative Layouts)
-        at the corresponding height based in the event starting time and ending time
-        -------------------------------------------------------------------------------- */
-
-        Float titleOffset = getResources().getDimension(R.dimen.week_view_header_ofset); // dp height occupied by day tags (Monday, tuesday, wednesday, ...)
-        Float heightWDuration; // dp height of the event button based in its duration
-        Float marginTop; // dp height at which the event button is placed based event starting time
-        Float minsInDay = new Float(24*60);
-        Float RelativeLayoutHeightDP = getResources().getDimension(R.dimen.week_view_hour_row_height) * 24; // height of a day column (hour block height times 24 hrs)
-
-        for(Events event: weekEvents) {
-            RelativeLayout layout = view.findViewById(  Events.dayInt2Str.get(event.getWeekDay())  ); // we evaluate the corresponding day column using a hash map
-            Log.e(TAG, event.getTitle() + String.valueOf(event.getDurationInMins()));
-
-            //we make a ratio to calculate button height
-            heightWDuration = new Float(RelativeLayoutHeightDP*event.getDurationInMins() );
-            heightWDuration = heightWDuration/minsInDay;
-
-            //we make a ratio to calculate margin top
-            marginTop = new Float(event.getStartInMins());
-            marginTop = marginTop*RelativeLayoutHeightDP;
-            marginTop = marginTop/minsInDay;
-
-            //we set the properties for the button
-            Button btnTag = new Button(context);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams( RelativeLayout.LayoutParams.MATCH_PARENT, heightWDuration.intValue() );
-            params.setMargins(0, marginTop.intValue() + titleOffset.intValue(), 0, 0);
-            btnTag.setLayoutParams(params);
-            btnTag.setText("Event");
-            btnTag.setTextSize(0, 18);
-            btnTag.setClickable(false);
-
-            layout.addView(btnTag);
-
         }
 
     }
@@ -284,7 +243,8 @@ public class ProfileFragment extends Fragment {
                     weekEvents.add(event);
                 }
                 Toast.makeText(getContext(), user.getString("name") +"'s week view loaded successfully!", Toast.LENGTH_LONG).show();
-                generateWeekView(view);
+                //generateWeekView(view);
+                CalendarViewsGenerator.generateWeekView(view, context, (ArrayList<Events>) weekEvents, ProfileFragment.this);
             }
         });
 

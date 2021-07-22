@@ -114,6 +114,7 @@ public class GroupsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(context, CUgroupsActivity.class);
+                intent.putExtra("Flag", "Create");
                 startActivity(intent);
             }
         });

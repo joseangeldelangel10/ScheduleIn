@@ -10,6 +10,7 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,16 +23,18 @@ public class Events extends ParseObject {
     public static final String KEY_USER = "creator";
     public static final String KEY_START_DATE = "startDate";
     public static final String KEY_END_DATE = "endDate";
-    public static HashMap<Integer, Integer> dayInt2Str = new HashMap<>();
+    public static final String KEY_INVITEES = "invitees";
+    public static final String KEY_ACCESS = "public";
+    public static HashMap<Integer, Integer> dayInt2Layout = new HashMap<>();
 
     public Events(){
-        dayInt2Str.put(0, R.id.week_view_sun);
-        dayInt2Str.put(1, R.id.week_view_mon);
-        dayInt2Str.put(2, R.id.week_view_tue);
-        dayInt2Str.put(3, R.id.week_view_wed);
-        dayInt2Str.put(4, R.id.week_view_thu);
-        dayInt2Str.put(5, R.id.week_view_fri);
-        dayInt2Str.put(6, R.id.week_view_sat);
+        dayInt2Layout.put(0, R.id.week_view_sun);
+        dayInt2Layout.put(1, R.id.week_view_mon);
+        dayInt2Layout.put(2, R.id.week_view_tue);
+        dayInt2Layout.put(3, R.id.week_view_wed);
+        dayInt2Layout.put(4, R.id.week_view_thu);
+        dayInt2Layout.put(5, R.id.week_view_fri);
+        dayInt2Layout.put(6, R.id.week_view_sat);
     }
 
     public String getTitle() { return getString(KEY_TITLE); }
@@ -58,6 +61,13 @@ public class Events extends ParseObject {
 
     public void setEndDate(Date date) {put(KEY_END_DATE, date);}
 
+    public ArrayList<String> getInvitees() {return (ArrayList<String>) get(KEY_INVITEES);}
+
+    public void setInvitees(ArrayList<String> invitees) {put(KEY_INVITEES, invitees);}
+
+    public boolean hasPublicAccess() { return getBoolean(KEY_ACCESS); }
+
+    public void setPublicAccess(boolean access) { put(KEY_ACCESS, access); }
 
     public int getWeekDay(){
         return getStartDate().getDay();

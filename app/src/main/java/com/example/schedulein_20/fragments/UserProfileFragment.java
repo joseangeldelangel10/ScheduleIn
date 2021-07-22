@@ -22,9 +22,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.schedulein_20.CUeventActivity;
+import com.example.schedulein_20.LayoutGenerators.CalendarViewsGenerator;
 import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.models.Events;
+import com.example.schedulein_20.models.ParseUserExtraAttributes;
+import com.example.schedulein_20.parseDatabaseComms.EventQueries;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -48,12 +51,11 @@ public class UserProfileFragment extends Fragment {
     private ImageView ivUserImage;
     private TextView greeting;
     private TextView userInfo;
-    Button cancelNextEvent;
-    //ScrollView week_schedule;
-    Button newEvent;
-    ParseUser currentUser = ParseUser.getCurrentUser();
-    public ArrayList<Events> weekEvents = new ArrayList<>();
-    Context context;
+    private Button cancelNextEvent;
+    private Button newEvent;
+    private ParseUser currentUser;
+    public ArrayList<Events> weekEvents;
+    private Context context;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -93,7 +95,6 @@ public class UserProfileFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        context = getContext();
     }
 
     @Override
@@ -103,8 +104,10 @@ public class UserProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        //super.onViewCreated(view, savedInstanceState);
-        //context = getContext();
+        currentUser = ParseUser.getCurrentUser();
+        weekEvents = new ArrayList<>();
+        context = getContext();
+
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                         VIEW REFERENCING
         ------------------------------------------------------------------------------------------------------------------------------------*/
@@ -117,7 +120,7 @@ public class UserProfileFragment extends Fragment {
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                         RETRIEVING THE DATA TO GENERATE THE VIEWS
         ------------------------------------------------------------------------------------------------------------------------------------*/
-        String user_name = currentUser.getString("name");
+        String user_name = currentUser.getString(ParseUserExtraAttributes.KEY_NAME);
         String current_event = "current event";
         String next_event = "other event";
 
@@ -125,9 +128,10 @@ public class UserProfileFragment extends Fragment {
                                                         BINDING DATA TO THE HEADER
         ------------------------------------------------------------------------------------------------------------------------------------*/
 
-        ParseFile currentUserProfileImage = (ParseFile) currentUser.getParseFile("profilePic");
+        ParseFile currentUserProfileImage = (ParseFile) currentUser.getParseFile(ParseUserExtraAttributes.KEY_PROFILE_PIC);
         if (currentUserProfileImage != null) {
-            Glide.with(context).load(currentUserProfileImage.getUrl())
+            Glide.with(context)
+                    .load(currentUserProfileImage.getUrl())
                     .placeholder(R.drawable.profile_picture_placeholder)
                     .into(ivUserImage);
         }else {
@@ -136,19 +140,20 @@ public class UserProfileFragment extends Fragment {
                     .into(ivUserImage);
         }
 
-        greeting.setText(DateTime.timeBasedGreeting() + " " + user_name +"!"); // good morning-afternoon-night user
-        userInfo.setText("- Now attending to: " + current_event + "\n- Next event: " + next_event);
+        greeting.setText(DateTime.timeBasedGreeting(context) + " " + user_name +"!"); // good morning-afternoon-night user
+        userInfo.setText(getString(R.string.now_attending_to) + current_event + "\n" + getString(R.string.next_event) + next_event);
 
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                        WE GENERATE USER'S WEEK PREVIEW
         ------------------------------------------------------------------------------------------------------------------------------------*/
 
-        queryWeekEvents(view);
+        FindCallback onWeekEventsFound = weekEventsCallback(view);
+        EventQueries.queryWeekEvents(context, currentUser, onWeekEventsFound);
+
 
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                         ADD CREATE EVENT FUNCTIONALITY
         ------------------------------------------------------------------------------------------------------------------------------------*/
-
 
         newEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,7 +169,8 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CREATE_EVENT_REQUEST_CODE || requestCode == UPDATE_EVENT_REQUEST_CODE){
+        if (requestCode == CREATE_EVENT_REQUEST_CODE || requestCode == UPDATE_EVENT_REQUEST_CODE || requestCode == CalendarViewsGenerator.UPDATE_EVENT_REQUEST_CODE){
+            Log.e(TAG, "req:" + String.valueOf(requestCode) + " res:" + String.valueOf(resultCode));
             if (resultCode == Activity.RESULT_OK){
 
                 // WE CREATE A NEW FRAGMENT TO SHOW THE USER THE NEW EVENT HE HAS CREATED, DELETED OR UPDATED
@@ -177,112 +183,24 @@ public class UserProfileFragment extends Fragment {
         }
     }
 
-    private void generateWeekView(@NonNull View view) {
-        /* --------------------------------------------------------------------------------
-        to generate the week preview we generate a button for each event in weekEvents and
-        we place the button in the corresponding day column (colums are Relative Layouts)
-        at the corresponding height based in the event starting time and ending time
-        -------------------------------------------------------------------------------- */
-
-        Float titleOffset = context.getResources().getDimension(R.dimen.week_view_header_ofset); // dp height occupied by day tags (Monday, tuesday, wednesday, ...)
-        Float heightWDuration; // dp height of the event button based in its duration
-        Float marginTop; // dp height at which the event button is placed based event starting time
-        Float minsInDay = new Float(24*60);
-        Float RelativeLayoutHeightDP = context.getResources().getDimension(R.dimen.week_view_hour_row_height) * 24; // height of a day column (hour block height times 24 hrs)
-
-        for(Events event: weekEvents) {
-            RelativeLayout layout = view.findViewById(  Events.dayInt2Str.get(event.getWeekDay())  ); // we evaluate the corresponding day column using a hash map
-            Log.e(TAG, event.getTitle() + String.valueOf(event.getDurationInMins()));
-
-            //we make a ratio to calculate button height
-            heightWDuration = new Float(RelativeLayoutHeightDP*event.getDurationInMins() );
-            heightWDuration = heightWDuration/minsInDay;
-
-            /*Float cond1 = Float.valueOf(event.getDurationInMins() + event.getStartInMins());
-            Float minutesLeftInday = minsInDay - event.getStartInMins();
-            if ( cond1 > minutesLeftInday ){
-                //add custom button
-                Float durationLeft = event.getDurationInMins() - minutesLeftInday;
-                heightWDuration = new Float(RelativeLayoutHeightDP*(minsInDay - event.getStartInMins()) );
-                heightWDuration = heightWDuration/minsInDay;
-                minutesLeftInday = minsInDay;
-                do {
-                    //add new button
-                }while (durationLeft > minutesLeftInday);
-            }*/
-
-            //we make a ratio to calculate margin top
-            marginTop = new Float(event.getStartInMins());
-            marginTop = marginTop*RelativeLayoutHeightDP;
-            marginTop = marginTop/minsInDay;
-
-            //we set the properties for the button
-            Button btnTag = new Button(context);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams( RelativeLayout.LayoutParams.MATCH_PARENT, heightWDuration.intValue() );
-            params.setMargins(0, marginTop.intValue() + titleOffset.intValue(), 0, 0);
-            btnTag.setLayoutParams(params);
-            btnTag.setText(event.getTitle());
-            btnTag.setTextSize(0, 18);
-
-            // We bind a listener to each button which allows the user to update or delete an event by taping on it
-            btnTag.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.i(TAG, "Intent for event: " + event.getTitle());
-                    String flag = "UpdateDelete";
-                    Intent intent = new Intent(context, CUeventActivity.class);
-                    intent.putExtra( "Flag", flag);
-                    intent.putExtra("Event", Parcels.wrap(event) );
-                    startActivityForResult(intent, UPDATE_EVENT_REQUEST_CODE);
-                }
-            });
-            // ----------------------------
-
-            layout.addView(btnTag);
-        }
-    }
-
-
-    public void queryWeekEvents(View view) {
-        /* --------------------------------------------------------------------------------
-        we query this week's events in database, we store each event as an event object in
-        "weekEvents" and finally we use such event objects to generate week preview
-        -------------------------------------------------------------------------------- */
-        //ActivityDrawerLayout.showProgressBar();
-
-        ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
-
-        query.include(Events.KEY_USER);
-        query.whereGreaterThan(Events.KEY_START_DATE, DateTime.weekStart());
-        query.whereLessThan(Events.KEY_START_DATE, DateTime.weekEnding());
-        query.whereEqualTo(Events.KEY_USER, ParseUser.getCurrentUser());
-        query.addAscendingOrder(Events.KEY_START_DATE);
-
-        query.findInBackground(new FindCallback<Events>() {
+    private FindCallback<Events> weekEventsCallback(View view){
+        return new FindCallback<Events>() {
             @Override
-            public void done(List<Events> objects, ParseException e) {
+            public void done(List<Events> events, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Issue with getting events", e);
-                    Toast.makeText(context, "There was a problem loading your events", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, getString(R.string.loading_events_problem), Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (objects.size() == 0){
-                    Log.i(TAG, "week events query empty");
+                if (events.size() == 0){
+                    Toast.makeText(context, currentUser.getString(ParseUserExtraAttributes.KEY_NAME) + " " + getString(R.string.no_events_loaded_this_week), Toast.LENGTH_SHORT).show();
+                }else {
+                    weekEvents.addAll(events);
+                    Toast.makeText(context, currentUser.getString(ParseUserExtraAttributes.KEY_NAME) + " " +  getString(R.string.events_loaded_succesfully), Toast.LENGTH_SHORT).show();
+                    CalendarViewsGenerator.generateWeekView(view, context, weekEvents, UserProfileFragment.this);
                 }
-                // for debugging purposes let's print every post description to logcat
-                for (Events event : objects) {
-                    Log.i(TAG, "Event: " + event.getTitle() + ", username: " +
-                            event.getUser().getUsername() + "\nstarts: " + event.getStartDate() +
-                            " ends: " + event.getEndDate() + "\nonday: " + event.getWeekDay()
-                    );
-                    weekEvents.add(event);
-                }
-                Toast.makeText(context, "Events loaded successfully!", Toast.LENGTH_LONG).show();
-                generateWeekView(view);
             }
-        });
-
-        //ActivityDrawerLayout.hideProgressBar();
+        };
     }
 
 }

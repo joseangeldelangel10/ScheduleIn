@@ -4,5 +4,16 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="drawer_closed">drawer_closed</string>
     <string name="drawer_opened">drawer_opened</string>
-
+    <string name="logout_successful">logout successful</string>
+    <string name="good">Good</string>
+    <string name="morning">morning</string>
+    <string name="afternoon">afternoon</string>
+    <string name="night">night</string>
+    <string name="generic_greeting">Hey!</string>
+    <string name="now_attending_to">- Now attending to: </string>
+    <string name="next_event">- Next event:</string>
+    <string name="loading_events_problem">There was a problem loading your events</string>
+    <string name="events_loaded_succesfully">your events loaded successfully</string>
+    <string name="no_events_loaded_this_week">has no events this week</string>
+    <string name="Event">Event</string>
 </resources>

@@ -33,4 +33,12 @@ public class Group  extends ParseObject{
         put(KEY_MEMBERS,members);
     }
 
+    public static ArrayList<String> parseUsers2Ids(ArrayList<ParseUser> parseUsers){
+        ArrayList<String> result = new ArrayList<>();
+        for(ParseUser user: parseUsers){
+            result.add(user.getObjectId());
+        }
+        return result;
+    }
+
 }

@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +30,7 @@ import com.example.schedulein_20.fragments.SettingsFragment;
 import com.example.schedulein_20.fragments.UserProfileFragment;
 import com.example.schedulein_20.fragments.UserSearchFragment;
 import com.example.schedulein_20.models.DateTime;
+import com.example.schedulein_20.parseDatabaseComms.UserSession;
 import com.google.android.material.navigation.NavigationView;
 import com.parse.ParseUser;
 
@@ -46,20 +48,18 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
     public static MenuItem searchItem;
     public static MenuItem progressItem;
     public static SearchView searchView;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_layout);
-        Log.e(TAG, "onCreate Activity");
+        context = this;
         /* ---------------------------------------------------------------------------------------------
                                       REPLACING ACTION BAR FOR TOOLBAR TO USE NAV DRAWER
         --------------------------------------------------------------------------------------------- */
-        //onPrepareOptionsMenu((Menu) this);
         toolbar = findViewById(R.id.my_awesome_toolbar);
         setSupportActionBar(toolbar);
-        //toolbar.setLogo(R.drawable.calendar_icon);
-        //toolbar.setDisplayUseLogoEnabled(true);
 
         /* ---------------------------------------------------------------------------------------------
                                                 DRAWER CONFIGURATION
@@ -81,13 +81,8 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
         headNavDate = navHeader.findViewById(R.id.nav_menu_date);
         headNavUser.setText("Signed in as:\n" + currentUser.getString("name") + " " + currentUser.getString("surname"));
         headNavDate.setText(DateTime.getFormalCurrentDate());
-        /*Glide.with(ActivityDrawerLayout.this)
-                .load(R.drawable.welcome_pic)
-                .into(headNavPicture);*/
 
         /* --------------------------------------------------------------------------------------------- */
-
-        //showProgressBar();
 
     }
 
@@ -104,7 +99,8 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
             fragment = new CalendarViewFragment();
         }
         else if (id == R.id.nav_menu_log_out){
-            logout();
+            UserSession.logout(context);
+            finish();
             return true;
         }
         else if (id == R.id.nav_menu_edit_profile){
@@ -124,21 +120,12 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
         return true;
     }
 
-    private void logout() {
-        ParseUser.logOut();
-        Toast.makeText(DrawerLayoutActivity.this, "logout successful", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, LoginOrSignupActivity.class);
-        startActivity(intent);
-        finish();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.e(TAG, "onCreateOptionsMenu");
         /* ----------------- WE INFLATE A MENU CONTAINING THE SEARCH BAR ----------------- */
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_user_profile, menu);
-        //progressItem = menu.findItem(R.id.miActionProgress);
 
         /* -------------------------------------------------------------------------------------
         *             IF SEARCH BAR IS PRESSED WE INITIALIZE USER SEARCH FRAGMENT
@@ -153,36 +140,14 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
                 fragmentManager.beginTransaction().replace(R.id.host_frame, fragment).commit();
             }
         });
-
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        /*if(item.getItemId() == R.id.notifications_icon){
-            Fragment fragment = new Notifications();
-            fragmentManager.beginTransaction().replace(R.id.host_frame, fragment).commit();
-        }*/
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // Store instance of the menu item containing progress
-        //progressItem = menu.findItem(R.id.miActionProgress);
-        Log.e(TAG, "onPrepareOptionsMenu");
-
-        // Return to finish
-        return super.onPrepareOptionsMenu(menu);
-    }
-
     public static void showProgressBar() {
-        Log.e(TAG, String.valueOf(progressItem) );
         progressItem.setVisible(true);
     }
 
     public static void hideProgressBar() {
-        // Hide progress item
         progressItem.setVisible(false);
     }
 

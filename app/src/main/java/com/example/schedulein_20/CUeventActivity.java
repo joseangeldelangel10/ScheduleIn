@@ -3,8 +3,11 @@ package com.example.schedulein_20;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.usage.UsageEvents;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +23,9 @@ import com.example.schedulein_20.fragments.CalendarDialogFragment;
 import com.example.schedulein_20.fragments.HourDialogFragment;
 import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.models.Events;
+import com.example.schedulein_20.models.Group;
+import com.example.schedulein_20.models.GroupMembersSearchAdapter;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -28,8 +34,10 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class CUeventActivity extends AppCompatActivity implements CalendarDialogFragment.EditCalendarDateListener, HourDialogFragment.EditTimeListener {
     private final String TAG = "CreateEventAct";
@@ -50,11 +58,20 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
     Date endDate;
     String eventTitle;
     Events event2update;
+    Group joinedEventGroup;
+    RecyclerView rvInvitees;
+    List<ParseUser> possibleInvitees;
+    List<ParseUser> selectedInvitees;
+    GroupMembersSearchAdapter adapter;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cu_event);
+        context = this;
+        possibleInvitees = new ArrayList<>();
+        selectedInvitees = new ArrayList<>();
         /* ----------------------------------------------------------------------------------------
                                     CREATING TOOLBAR
       ---------------------------------------------------------------------------------------- */
@@ -71,6 +88,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         tvStartTime = findViewById(R.id.CUeventStartTimeTv);
         tvEndDate = findViewById(R.id.CUeventEndDateTv);
         tvEndTime = findViewById(R.id.CUeventEndTimeTv);
+        rvInvitees = findViewById(R.id.CUeventInviteesRv);
         btCreateEv = findViewById(R.id.CUeventsCUFinalButt);
         btDeleteEv = findViewById(R.id.CUeventsDeleteEventBt);
         btUpdateEv = findViewById(R.id.CUeventsUpdateEventBt);
@@ -149,6 +167,14 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         });
 
         /* ----------------------------------------------------------------------------------------
+                                             SET UP RV
+      ---------------------------------------------------------------------------------------- */
+        adapter = new GroupMembersSearchAdapter(context, possibleInvitees, selectedInvitees);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        rvInvitees.setLayoutManager(linearLayoutManager); // we bind a layout manager to RV
+        rvInvitees.setAdapter(adapter);
+
+        /* ----------------------------------------------------------------------------------------
                             MODIFY BEHAVIOUR TO C-U-D EVENTS
       ---------------------------------------------------------------------------------------- */
 
@@ -163,9 +189,57 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             startDate = event2update.getStartDate();
             endDate = event2update.getEndDate();
             updateDatesText();
+            queryInvitees(event2update);
             btCreateEv.setVisibility(View.INVISIBLE);
             btCreateEv.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
+        }else if (flag.equals("CreateJoinedEvent")){
+            joinedEventGroup = Parcels.unwrap(getIntent().getParcelableExtra("Group"));
+            queryGroupMembers(joinedEventGroup.getMembers());
+            UDeventBt.setVisibility(View.INVISIBLE);
+            UDeventBt.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
         }
+    }
+
+    public void cleanRv(){
+        possibleInvitees.clear();
+        possibleInvitees.addAll(selectedInvitees);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void queryGroupMembers(ArrayList<String> membersIds) {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereContainedIn("objectId", membersIds);
+
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e != null){
+                    Toast.makeText(context, "there was a problem retrieving invitees", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                selectedInvitees.addAll(objects);
+                cleanRv();
+            }
+        });
+
+    }
+
+    private void queryInvitees(Events event2update) {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereContainedIn("objectId", event2update.getInvitees());
+
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e != null){
+                    Toast.makeText(context, "there was a problem retrieving invitees", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                selectedInvitees.addAll(objects);
+                cleanRv();
+            }
+        });
+
     }
 
     private void deleteEventInDB(Events event2update) {
@@ -229,6 +303,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         event.setTitle(eventTitle);
         event.setStartDate(startDate);
         event.setEndDate(endDate);
+        event.setInvitees(Group.parseUsers2Ids((ArrayList<ParseUser>) selectedInvitees));
 
         if (startDate.compareTo(endDate) == 1) {
             Toast.makeText(CUeventActivity.this, "starting date cannot be after end", Toast.LENGTH_LONG).show();
@@ -323,4 +398,6 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         //tvEndTime.setText(DateTime.onlyTime(endDate));
         updateDatesText();
     }
+
+
 }
