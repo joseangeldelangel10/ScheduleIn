@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.schedulein_20.DrawerLayoutActivity;
+import com.example.schedulein_20.R;
 import com.parse.FindCallback;
 import com.parse.FunctionCallback;
 import com.parse.ParseCloud;
@@ -20,25 +21,34 @@ import java.util.List;
 public class RelationRelatedQueries {
     public static final String TAG = "RelationRelatedQueries";
 
-    public static void AcceptRequest(Context context, ParseUser currentUser, ParseUser user, SaveCallback callback){
-        ArrayList<String> relations = (ArrayList<String>) currentUser.get("relations");
-        relations.add( user.getObjectId() );
 
-        // we must receive a SaveCallback
-        if (callback != null){
-            currentUser.saveInBackground(callback);
+    public static void queryUserRelations(ParseUser user, FindCallback<ParseUser> callback) {
+        /* ---------------------------------------------------------------------------
+        THIS METHOD GETS USER RELATIONS IDS AND MAKES A QUERY THAT OBTAINS PARSE USERS
+                INPUT: list[str] ---> list[ParseUser]
+        -------------------------------------------------------------------------------*/
+        ArrayList<String> relationsIds = (ArrayList<String>) user.get("relations");
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereContainedIn("objectId", relationsIds);
+
+        query.findInBackground(callback);
+
+    }
+
+    public static void AcceptRequest(Context context, ParseUser currentUser, ParseUser relatingUser){
+        ArrayList<String> relations = (ArrayList<String>) currentUser.get("relations");
+        relations.add( relatingUser.getObjectId() );
+
+        if (context == null){
+            currentUser.saveInBackground();
         }else {
-            //default callback makes toasts
             currentUser.saveInBackground(e -> {
                 if(e==null){
-                    //Save successful
                     Log.e(TAG, "Accepting request = success");
-                    Toast.makeText(context, "Request accepted!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.request_accepted), Toast.LENGTH_SHORT).show();
                 }else{
                     Log.e(TAG, "Accepting request = error");
-                    Toast.makeText(context, "There was a problem accepting the request", Toast.LENGTH_SHORT).show();
-                    // Something went wrong while saving
-                    //Toast.makeText(getContext(), "relate request failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.problem_accepting_request), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -60,22 +70,23 @@ public class RelationRelatedQueries {
                 public void done(String object, ParseException e) {
                     if (e == null) {
                         Log.e(TAG, "Decline Request = Success");
-                        Toast.makeText(context, "Request declined", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, context.getString(R.string.request_declined), Toast.LENGTH_LONG).show();
                     } else {
                         Log.e(TAG, "Decline Request = fail " + e);
-                        Toast.makeText(context, "There was a problem declining request", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, context.getString(R.string.problem_declining_request), Toast.LENGTH_LONG).show();
                     }
                 }
             });
         }
     }
 
-    public static void unrelate(Context context, ParseUser currentUser, ParseUser user, SaveCallback unrelatinCurrentUserCallback, FunctionCallback unrelatingOtherUserCallback) {
-        String otherUserName = user.getString("username");
+    // !_!__!_!!_!_!!__!!_ MISSING : CHANGE STRINGS TO STR RES FILE
+    public static void unrelate(Context context, ParseUser currentUser, ParseUser otherUser, SaveCallback unrelatinCurrentUserCallback, FunctionCallback unrelatingOtherUserCallback) {
+        String otherUserName = otherUser.getString("username");
 
         // we unrelate current user fro other user
         ArrayList<String> currentUserRelations = (ArrayList<String>) currentUser.get("relations");
-        currentUserRelations.remove(user.getObjectId());
+        currentUserRelations.remove(otherUser.getObjectId());
         currentUser.put("relations", currentUserRelations);
         if (unrelatinCurrentUserCallback != null){
             currentUser.saveInBackground(unrelatinCurrentUserCallback);
@@ -91,14 +102,12 @@ public class RelationRelatedQueries {
             });
         }
 
-
-        ArrayList<String> otherUserRelations = (ArrayList<String>) user.get("relations");
-        // if related, delete relation else (request sent) do nothing else
+        ArrayList<String> otherUserRelations = (ArrayList<String>) otherUser.get("relations");
         if ( otherUserRelations.contains( currentUser.getObjectId() )) {
 
             otherUserRelations.remove(currentUser.getObjectId());
             HashMap<String, Object> params = new HashMap<String, Object>();
-            params.put("objectId", user.getObjectId());
+            params.put("objectId", otherUser.getObjectId());
             params.put("newRelations", otherUserRelations);
 
             if (unrelatingOtherUserCallback != null) {
@@ -121,22 +130,22 @@ public class RelationRelatedQueries {
         }
     }
 
-    public static void sendRelateRequest(Context context, ParseUser currentUser, ParseUser user, SaveCallback callback) {
+    public static void sendRelateRequest(Context context, ParseUser currentUser, ParseUser user) {
 
         ArrayList<String> relations = (ArrayList<String>) currentUser.get("relations");
         relations.add( user.getObjectId() );
         currentUser.put("relations", relations);
 
-        if (callback != null){
-            currentUser.saveInBackground(callback);
+        if (context == null){
+            currentUser.saveInBackground();
         }else {
             currentUser.saveInBackground(e -> {
                 if(e==null){
                     //Save successful
-                    Toast.makeText(context, "relate request sent!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.request_sent), Toast.LENGTH_SHORT).show();
                 }else{
                     // Something went wrong while saving
-                    Toast.makeText(context, "relate request failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.failed_sending_request), Toast.LENGTH_SHORT).show();
                 }
             });
         }

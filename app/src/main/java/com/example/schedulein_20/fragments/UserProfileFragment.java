@@ -150,7 +150,6 @@ public class UserProfileFragment extends Fragment {
         FindCallback onWeekEventsFound = weekEventsCallback(view);
         EventQueries.queryWeekEvents(context, currentUser, onWeekEventsFound);
 
-
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                         ADD CREATE EVENT FUNCTIONALITY
         ------------------------------------------------------------------------------------------------------------------------------------*/

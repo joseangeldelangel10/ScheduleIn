@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.fragments.RelationsFragment;
+import com.example.schedulein_20.parseDatabaseComms.RelationRelatedQueries;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -86,7 +87,7 @@ public class RelationRequestsAdapter extends RecyclerView.Adapter<RelationReques
                     .into(profilePic);
 
             userName.setText(relatingUser.getString("name") + " " + relatingUser.getString("surname"));
-            userDetails.setText("username: " + relatingUser.getString("username"));
+            userDetails.setText(context.getString(R.string.username) + ": " + relatingUser.getString("username"));
 
             /* ----------------------------------------------------------------------------------------
             *                           BINDING BUTTONS LOGIC
@@ -95,7 +96,7 @@ public class RelationRequestsAdapter extends RecyclerView.Adapter<RelationReques
                 @Override
                 public void onClick(View v) {
                     // we accept the request (backend logic) and discard RV item
-                    RelationsFragment.AcceptRequest(context, currentUser, relatingUser);
+                    RelationRelatedQueries.AcceptRequest(context, currentUser, relatingUser);
                     discardItem(position);
                     // we call the interface method implemented in Relations to add the new relation to the relations
                     // rv
@@ -108,7 +109,7 @@ public class RelationRequestsAdapter extends RecyclerView.Adapter<RelationReques
                 @Override
                 public void onClick(View v) {
                     // we decline the request (backend logic) and discard RV item
-                    RelationsFragment.DeclineRequest(context, currentUser, relatingUser);
+                    RelationRelatedQueries.DeclineRequest(context, currentUser, relatingUser, null);
                     discardItem(position);
                 }
             });

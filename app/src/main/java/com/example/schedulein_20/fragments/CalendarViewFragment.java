@@ -1,5 +1,6 @@
 package com.example.schedulein_20.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,9 +10,18 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.schedulein_20.LayoutGenerators.CalendarViewsGenerator;
 import com.example.schedulein_20.R;
+import com.example.schedulein_20.models.Events;
+import com.example.schedulein_20.parseDatabaseComms.EventQueries;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +29,9 @@ import com.example.schedulein_20.R;
  * create an instance of this fragment.
  */
 public class CalendarViewFragment extends Fragment {
+    Context context;
+    ParseUser currentUser;
+    List<Events> weekEvents;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,5 +83,32 @@ public class CalendarViewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        context = getContext();
+        currentUser = ParseUser.getCurrentUser();
+        weekEvents = new ArrayList<>();
+
+        FindCallback onWeekEventsFound = weekEventsCallback(view);
+        EventQueries.queryWeekEvents(context, currentUser, onWeekEventsFound);
     }
+
+    private FindCallback<Events> weekEventsCallback(View view){
+        return new FindCallback<Events>() {
+            @Override
+            public void done(List<Events> objects, ParseException e) {
+                if(e!=null){
+                    Toast.makeText(context, R.string.loading_events_problem, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(objects.size() == 0){
+                    Toast.makeText(context, getString(R.string.no_events_loaded_this_week), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                weekEvents.addAll(objects);
+                Toast.makeText(context, getString(R.string.events_loaded_succesfully), Toast.LENGTH_SHORT).show();
+                CalendarViewsGenerator.generateWeekView(view, context, (ArrayList<Events>) weekEvents, CalendarViewFragment.this);
+            }
+        };
+    }
+
+
 }

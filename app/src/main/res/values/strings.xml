@@ -16,4 +16,16 @@
     <string name="events_loaded_succesfully">your events loaded successfully</string>
     <string name="no_events_loaded_this_week">has no events this week</string>
     <string name="Event">Event</string>
+    <string name="relations_loaded_succesfully">your relations loaded successfully</string>
+    <string name="no_relations_found">you have no relations right now</string>
+    <string name="loading_relations_problem">there was a problem loading relations</string>
+    <string name="username">username</string>
+    <string name="request_accepted">Request accepted!</string>
+    <string name="problem_accepting_request">There was a problem accepting the request</string>
+    <string name="request_declined">Request declined</string>
+    <string name="problem_declining_request">There was a problem declining request</string>
+    <string name="request_sent">Relate request sent</string>
+    <string name="failed_sending_request">failed sending request</string>
+    <string name="problem_searching_users">a problem occurred when searching for users</string>
+    <string name="no_results_found">No results found :(</string>
 </resources>

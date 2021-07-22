@@ -19,6 +19,8 @@ import com.example.schedulein_20.DrawerLayoutActivity;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.models.RelationRequestsAdapter;
 import com.example.schedulein_20.models.UserRelationsAdapter;
+import com.example.schedulein_20.parseDatabaseComms.RelationRelatedQueries;
+import com.parse.FindCallback;
 import com.parse.FunctionCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
@@ -41,9 +43,10 @@ public class RelationsFragment extends Fragment implements RelationRequestsAdapt
     private RecyclerView rvRelationReq;
     private UserRelationsAdapter relAdapter;
     private RelationRequestsAdapter reqAdapter;
-    List<ParseUser> relations;
-    List<ParseUser> requests;
+    private List<ParseUser> relations;
+    private List<ParseUser> requests;
     Context context;
+    ParseUser currentUser;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -98,6 +101,7 @@ public class RelationsFragment extends Fragment implements RelationRequestsAdapt
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         //super.onViewCreated(view, savedInstanceState);
+        currentUser = ParseUser.getCurrentUser();
 
         /* --------------------------------------------------------------------------------
                                     WE REFERENCE RECYCLER VIEWS
@@ -115,7 +119,8 @@ public class RelationsFragment extends Fragment implements RelationRequestsAdapt
         rvRelations.setLayoutManager(relLinearLayoutManager); // we bind a layout manager to RV
         rvRelations.setAdapter(relAdapter);
 
-        queryRelations(ParseUser.getCurrentUser());
+        //queryRelations(ParseUser.getCurrentUser());
+        RelationRelatedQueries.queryUserRelations(currentUser, queryRelationsCallback());
 
         /* --------------------------------------------------------------------------------
                                WE CONFIGURE AND POPULATE REQUESTS RV
@@ -129,36 +134,28 @@ public class RelationsFragment extends Fragment implements RelationRequestsAdapt
         queryRequests(ParseUser.getCurrentUser());
     }
 
-    private void queryRelations(ParseUser currentUser) {
-        DrawerLayoutActivity.showProgressBar();
+    private FindCallback<ParseUser> queryRelationsCallback(){
 
-        ArrayList<String> relationsIds = (ArrayList<String>) currentUser.get("relations");
-        Log.e(TAG, relationsIds.toString());
-
-        // WE QUERY FOR ALL USERS INCLUDED IN CURRENT USER RELATIONS ARRAY
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereContainedIn("objectId", relationsIds);
-
-        query.findInBackground((users, e) -> {
-            if (e == null) {
-                // The query was successful, returns the users that matches
-                // the criteria.
-                for(ParseUser user1 : users) {
-                    Log.d(TAG,"Query Relations - userlist = " + user1.getUsername());
-                    relations.add(user1);
+        return new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e != null) {
+                    Toast.makeText(context, getString(R.string.loading_relations_problem), Toast.LENGTH_SHORT).show();
+                    return;
+                }if (objects.size() == 0){
+                    Toast.makeText(context, getString(R.string.no_relations_found), Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                Toast.makeText(context, getString(R.string.relations_loaded_succesfully), Toast.LENGTH_SHORT).show();
+                relations.addAll(objects);
                 relAdapter.notifyDataSetChanged();
-            } else {
-                // Something went wrong.
-                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        });
-
-        DrawerLayoutActivity.hideProgressBar();
+        };
     }
 
+    // !-!_!_!_!_!_!_! IMPORTANT NOTE : WE'LL LEAVE THIS HERE FOR THE MOMENT SINCE WE WILL
+    // !-!_!_!_!_!_!_! REDESIGN THE DB AGAIN
     private void queryRequests(ParseUser currentUser) {
-        DrawerLayoutActivity.showProgressBar();
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("relations", currentUser.getObjectId() );// we check for all users where current user id is contained in their relations
@@ -179,8 +176,6 @@ public class RelationsFragment extends Fragment implements RelationRequestsAdapt
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
-        DrawerLayoutActivity.hideProgressBar();
     }
 
     private boolean notPartOfUserRelations(ParseUser user) {
@@ -196,194 +191,5 @@ public class RelationsFragment extends Fragment implements RelationRequestsAdapt
         relations.add(user);
         relAdapter.notifyDataSetChanged();
     }
-
-    /* -------------------------------------------------------------------------------------------------------------------------------------
-       ------------------------------------------------------------------------------------------------------------------------------------
-                                                       STATIC RELATIONS METHODS
-    *  -------------------------------------------------------------------------------------------------------------------------------------
-       ------------------------------------------------------------------------------------------------------------------------------------- */
-
-    public static void AcceptRequest(Context context,ParseUser currentUser, ParseUser user){
-        ArrayList<String> relations = (ArrayList<String>) currentUser.get("relations");
-        relations.add( user.getObjectId() );
-
-        currentUser.put("relations", relations);
-
-        currentUser.saveInBackground(e -> {
-            if(e==null){
-                //Save successful
-                Log.e(TAG, "Accepting request = success");
-                Toast.makeText(context, "Request accepted!", Toast.LENGTH_SHORT).show();
-            }else{
-                Log.e(TAG, "Accepting request = error");
-                Toast.makeText(context, "There was a problem accepting the request", Toast.LENGTH_SHORT).show();
-                // Something went wrong while saving
-                //Toast.makeText(getContext(), "relate request failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public static void DeclineRequest(Context context, ParseUser currentUser, ParseUser relatingUser) {
-        ArrayList<String> relations = (ArrayList<String>) relatingUser.get("relations");
-        relations.remove(currentUser.getObjectId());
-
-        HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put("objectId", relatingUser.getObjectId());
-        params.put("newRelations", relations );
-        ParseCloud.callFunctionInBackground("editUserRelations", params, new FunctionCallback<String>() {
-            @Override
-            public void done(String object, ParseException e) {
-                if(e == null){
-                    Log.e(TAG, "Decline Request = Success");
-                    Toast.makeText(context, "Request declined", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Log.e(TAG, "Decline Request = fail " + e);
-                    Toast.makeText(context, "There was a problem declining request", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-    }
-
-    public static void unrelate(Context context, ParseUser currentUser, ParseUser user) {
-        String otherUserName = user.getString("username");
-
-        ArrayList<String> currentUserRelations = (ArrayList<String>) currentUser.get("relations");
-        currentUserRelations.remove(user.getObjectId());
-
-        currentUser.put("relations", currentUserRelations);
-        currentUser.saveInBackground(e -> {
-            if(e==null){
-                //Save successful
-                Toast.makeText(context, "You are no longer related to " + otherUserName, Toast.LENGTH_SHORT).show();
-            }else{
-                // Something went wrong while saving
-                Toast.makeText(context, "There was a problem unrelating you from  " + otherUserName, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        ArrayList<String> otherUserRelations = (ArrayList<String>) user.get("relations");
-        // if related decline request else (request sent) do nothing else
-        if ( otherUserRelations.contains( currentUser.getObjectId() )){
-            otherUserRelations.remove(currentUser.getObjectId());
-
-            //relatingUser.put("relations", relations);
-
-            HashMap<String, Object> params = new HashMap<String, Object>();
-            params.put("objectId", user.getObjectId());
-            params.put("newRelations", otherUserRelations );
-            ParseCloud.callFunctionInBackground("editUserRelations", params, new FunctionCallback<String>() {
-                @Override
-                public void done(String object, ParseException e) {
-                    if(e == null){
-                        Log.e(TAG, "other user relation deleted");
-                        Toast.makeText(context, otherUserName + " is no longer related to you", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        Log.e(TAG, "fail on other user relation deleted" + e);
-                        Toast.makeText(context, "There was a problem unrelating " + otherUserName + " from you", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
-    }
-
-    public static void sendRelateRequest(Context context, ParseUser currentUser, ParseUser user) {
-
-        ArrayList<String> relations = (ArrayList<String>) currentUser.get("relations");
-        relations.add( user.getObjectId() );
-
-        currentUser.put("relations", relations);
-
-        currentUser.saveInBackground(e -> {
-            if(e==null){
-                //Save successful
-                Toast.makeText(context, "relate request sent!", Toast.LENGTH_SHORT).show();
-            }else{
-                // Something went wrong while saving
-                Toast.makeText(context, "relate request failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public static int getUsersRelation(ParseUser currentUser, ParseUser user) {
-        /*
-        * IN THIS FUNCTION WE EVALUATE THE RELATION BETWEEN THE CURRENT USER AND ANOTHER USER,
-        * BASED ON 4 RELATION STATUSES THAT WILL BE RETURNED, SUCH STATUSES ARE THE FOLLOWING
-        *   0 - NOT RELATED
-        *   1 - REQUEST RECEIVED
-        *   2 - REQUEST SENT
-        *   3 - RELATED
-        * THIS NUMBERS ARE THE DECIMAL REPRESENTATION OF THE BINARY-BOOLEAN CONDITION:
-        *                 BIT 1                     |            BIT 2
-        * CURRENT USER RELATIONS CONTAIN OTHER USER | OTHER USER RELATIONS CONTAIN OTHER USER
-        * */
-
-        ArrayList<String> CUrelations = (ArrayList<String>) currentUser.get("relations");
-        ArrayList<String> OUserRelations = (ArrayList<String>) user.get("relations");
-        String Ouser = user.getObjectId();
-        String Cuser = currentUser.getObjectId();
-        if (!CUrelations.contains(Ouser) && !OUserRelations.contains(Cuser)){
-            return 0;
-        }else if (!CUrelations.contains(Ouser) && OUserRelations.contains(Cuser)){
-            return 1;
-        }else if (CUrelations.contains(Ouser) && !OUserRelations.contains(Cuser)){
-            return 2;
-        }else if (CUrelations.contains(Ouser) && OUserRelations.contains(Cuser)){
-            return 3;
-        }else {
-            return -1;
-        }
-
-        /*if ( CUrelations.contains(user.getObjectId()) && OUserRelations.contains(currentUser.getObjectId()) ){
-            return 1; // related
-        }else if( CUrelations.contains(user.getObjectId()) ){
-            return 0; // request sent
-        }else {
-            return -1; // not related
-        }*/
-    }
-
-    public static void queryRelatedUsersWhere(ParseUser currentUser, String query) {
-        DrawerLayoutActivity.showProgressBar();
-
-        List<ParseUser> searchResults = new ArrayList<>();
-        // we clear recycler view so that previous search results won't show up anymore
-        ArrayList<String> cuRelations = (ArrayList<String>) currentUser.get("relations");
-
-        // we define several queries in order to search a user by username, name, or surname
-
-        ParseQuery<ParseUser> mainQuery = ParseUser.getQuery();
-        mainQuery.whereStartsWith("name", query);
-        mainQuery.whereContainedIn("objectId", cuRelations);
-        mainQuery.whereEqualTo("relations", currentUser.getObjectId());
-        //mainQuery.whereNotContainedIn("objectId", searchResultsIds);
-        //mainQuery.setLimit(50);
-
-        mainQuery.findInBackground((users, e) -> {
-            if (e == null) {
-                // The query was successful, returns the users that matches
-                // the criteria.
-                for(ParseUser user1 : users) {
-                    Log.d(TAG, "Username: " + user1.getUsername());
-                    searchResults.add(user1);
-                }
-                /*if (searchResults.size() == 0){
-                    Toast.makeText(context, "No results found :(", Toast.LENGTH_SHORT).show();
-                }*/
-                Log.e("searchingPossibleMembers", searchResults.toString());
-
-            } else {
-                // Something went wrong.
-                //Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("searchingPossibleMembers", "st went wrong");
-
-            }
-            DrawerLayoutActivity.hideProgressBar();
-        });
-    }
-
-
 
 }

@@ -27,6 +27,8 @@ import com.example.schedulein_20.LayoutGenerators.CalendarViewsGenerator;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.models.Events;
+import com.example.schedulein_20.parseDatabaseComms.EventQueries;
+import com.example.schedulein_20.parseDatabaseComms.RelationRelatedQueries;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -148,7 +150,7 @@ public class ProfileFragment extends Fragment {
                             WE SHOW THE CORRESPONDING WEEK PREVIEW AND "RELATE BUTTON"
             --------------------------------------------------------------------------------*/
 
-            if (RelationsFragment.getUsersRelation(currentUser, user) == 0){
+            if (RelationRelatedQueries.getUsersRelation(currentUser, user) == 0){
                 calView.setVisibility(View.GONE);
                 textBanner.setVisibility(View.VISIBLE);
                 textBanner.setText("Relate with " + user.get("name").toString() + " to see each others availability");
@@ -157,7 +159,7 @@ public class ProfileFragment extends Fragment {
                 relate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        RelationsFragment.sendRelateRequest(context,currentUser, user);
+                        RelationRelatedQueries.sendRelateRequest(context,currentUser, user);
 
                         // WE CREATE A NEW FRAGMENT SO USER CAN SE INSTANT RESPONSE FOR HIS ACTIONS
                         Fragment fragment = ProfileFragment.newInstance(user, "some string");
@@ -166,7 +168,7 @@ public class ProfileFragment extends Fragment {
                                 .commit();
                     }
                 });
-            }else if(RelationsFragment.getUsersRelation(currentUser, user) == 1){
+            }else if(RelationRelatedQueries.getUsersRelation(currentUser, user) == 1){
                 calView.setVisibility(View.GONE);
                 textBanner.setVisibility(View.VISIBLE);
                 textBanner.setText("Relate with " + user.get("name").toString() + " to see each others availability");
@@ -176,7 +178,7 @@ public class ProfileFragment extends Fragment {
                 relate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        RelationsFragment.AcceptRequest(context,currentUser, user);
+                        RelationRelatedQueries.AcceptRequest(context,currentUser, user);
 
                         // WE CREATE A NEW FRAGMENT SO USER CAN SE INSTANT RESPONSE FOR HIS ACTIONS
                         Fragment fragment = ProfileFragment.newInstance(user, "some string");
@@ -186,7 +188,7 @@ public class ProfileFragment extends Fragment {
                     }
                 });
             }
-            else if (RelationsFragment.getUsersRelation(currentUser, user) == 2){
+            else if (RelationRelatedQueries.getUsersRelation(currentUser, user) == 2){
                 calView.setVisibility(View.GONE);
                 textBanner.setVisibility(View.VISIBLE);
                 textBanner.setText("Request sent!");
@@ -195,7 +197,7 @@ public class ProfileFragment extends Fragment {
                 relate.setBackground(  new ColorDrawable(getResources().getColor(R.color.gray))  );
                 relate.setClickable(false);
 
-            }else if (RelationsFragment.getUsersRelation(currentUser, user) == 3){
+            }else if (RelationRelatedQueries.getUsersRelation(currentUser, user) == 3){
                 banner.setVisibility(View.GONE);
                 calView.setVisibility(View.VISIBLE);
                 weekEvents = new ArrayList<>();

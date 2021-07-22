@@ -25,6 +25,7 @@ import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.models.Events;
 import com.example.schedulein_20.models.Group;
 import com.example.schedulein_20.models.GroupMembersSearchAdapter;
+import com.example.schedulein_20.models.ParseUserExtraAttributes;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -303,7 +304,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         event.setTitle(eventTitle);
         event.setStartDate(startDate);
         event.setEndDate(endDate);
-        event.setInvitees(Group.parseUsers2Ids((ArrayList<ParseUser>) selectedInvitees));
+        event.setInvitees(ParseUserExtraAttributes.parseUsers2Ids((ArrayList<ParseUser>) selectedInvitees));
 
         if (startDate.compareTo(endDate) == 1) {
             Toast.makeText(CUeventActivity.this, "starting date cannot be after end", Toast.LENGTH_LONG).show();

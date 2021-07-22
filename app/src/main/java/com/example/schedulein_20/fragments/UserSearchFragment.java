@@ -21,7 +21,11 @@ import android.widget.Toast;
 
 import com.example.schedulein_20.DrawerLayoutActivity;
 import com.example.schedulein_20.R;
+import com.example.schedulein_20.models.ParseUserExtraAttributes;
 import com.example.schedulein_20.models.UserSearchAdapter;
+import com.example.schedulein_20.parseDatabaseComms.UserSearchQueries;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -35,10 +39,9 @@ import java.util.List;
  */
 public class UserSearchFragment extends Fragment {
     private final String TAG = "SearchFragment";
-    Context context = getContext();
-    List<ParseUser> searchResults;
-    List<String> searchResultsIds;
-    UserSearchAdapter adapter;
+    private Context context = getContext();
+    public List<ParseUser> searchResults;
+    private UserSearchAdapter adapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -89,20 +92,27 @@ public class UserSearchFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        //super.onViewCreated(view, savedInstanceState);
+        context = getContext();
+        /* --------------------------------------------------------------------------------
+                            WE REFERENCE VIEWS & SHOW BANNER WHEN INITIALIZING
+        * -------------------------------------------------------------------------------- */
         LinearLayout banner = view.findViewById(R.id.UserSearchBanner);
         RecyclerView rvUserSearch = view.findViewById(R.id.UserSearchRv);
-        context = getContext();
-
         banner.setVisibility(View.VISIBLE);
         rvUserSearch.setVisibility(View.GONE);
 
+         /* --------------------------------------------------------------------------------
+                                            WE SET UP RV
+        * -------------------------------------------------------------------------------- */
         searchResults = new ArrayList<>();
-        searchResultsIds = new ArrayList<>();
         adapter = new UserSearchAdapter(context, searchResults);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rvUserSearch.setLayoutManager(linearLayoutManager); // we bind a layout manager to RV
         rvUserSearch.setAdapter(adapter);
+
+         /* --------------------------------------------------------------------------------
+                            WE REFERENCE SEARCH VIEW & BIND FUNCTIONALITY
+        * -------------------------------------------------------------------------------- */
 
         MenuItem searchItem = DrawerLayoutActivity.searchItem;
         SearchView searchView = DrawerLayoutActivity.searchView;
@@ -113,7 +123,8 @@ public class UserSearchFragment extends Fragment {
                 banner.setVisibility(View.GONE);
                 rvUserSearch.setVisibility(View.VISIBLE);
 
-                searchForUsers(query);
+                cleanRv();
+                UserSearchQueries.searchForAnyUser(query, searchUsersCallback());
                 //------ collapse search view -----
                 searchView.clearFocus();
                 searchView.setQuery("", false);
@@ -132,54 +143,27 @@ public class UserSearchFragment extends Fragment {
 
     }
 
-    private void searchForUsers(String text) {
-        DrawerLayoutActivity.showProgressBar();
-        // we clear recycler view so that previous search results won't show up anymore
+    private void cleanRv(){
         searchResults.clear();
-        searchResultsIds.clear();
         adapter.notifyDataSetChanged();
+    }
 
-        // we define several queries in order to search a user by username, name, or surname
-
-        ParseQuery<ParseUser> usernameQuery = ParseUser.getQuery();
-        usernameQuery.whereStartsWith("username", text);
-
-        ParseQuery<ParseUser> nameQuery = ParseUser.getQuery();
-        nameQuery.whereStartsWith("name", text);
-
-        ParseQuery<ParseUser> surnameQuery = ParseUser.getQuery();
-        nameQuery.whereStartsWith("surname", text);
-
-        List<ParseQuery<ParseUser>> queries = new ArrayList<>();
-        queries.add(usernameQuery);
-        queries.add(nameQuery);
-        //queries.add(surnameQuery);
-
-        ParseQuery<ParseUser> mainQuery = ParseQuery.or(queries);
-
-        //mainQuery.whereNotContainedIn("objectId", searchResultsIds);
-        //mainQuery.setLimit(50);
-
-        mainQuery.findInBackground((users, e) -> {
-            if (e == null) {
-                // The query was successful, returns the users that matches
-                // the criteria.
-                for(ParseUser user1 : users) {
-                    Log.d(TAG, "Username: " + user1.getUsername());
-                    searchResults.add(user1);
-                    searchResultsIds.add(user1.getObjectId());
+    private FindCallback<ParseUser> searchUsersCallback(){
+        return new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> users, ParseException e) {
+                    if (e != null) {
+                        Toast.makeText(context, getString(R.string.problem_searching_users), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (users.size() == 0){
+                        Toast.makeText(context, getString(R.string.no_results_found), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    searchResults.addAll(users);
+                    adapter.notifyDataSetChanged();
                 }
-
-                if (searchResults.size() == 0){
-                    Toast.makeText(context, "No results found :(", Toast.LENGTH_SHORT).show();
-                }
-                adapter.notifyDataSetChanged();
-            } else {
-                // Something went wrong.
-                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-            DrawerLayoutActivity.hideProgressBar();
-        });
+        };
     }
 
 }

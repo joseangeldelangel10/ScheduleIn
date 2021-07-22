@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.fragments.RelationsFragment;
+import com.example.schedulein_20.parseDatabaseComms.RelationRelatedQueries;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -89,7 +90,7 @@ public class UserRelationsAdapter extends RecyclerView.Adapter<UserRelationsAdap
             butt1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RelationsFragment.unrelate( context, currentUser, user);
+                    RelationRelatedQueries.unrelate(context, currentUser, user, null, null);
                     discardItem(position);
                 }
             });
@@ -98,10 +99,10 @@ public class UserRelationsAdapter extends RecyclerView.Adapter<UserRelationsAdap
              *                       DEFINING RELATION TYPE INDICATOR BEHAVIOUR
              * ---------------------------------------------------------------------------------------- */
             butt2.setClickable(false);
-            if ( RelationsFragment.getUsersRelation(currentUser, user) == 3){
+            if ( RelationRelatedQueries.getUsersRelation(currentUser, user) == 3){
                 butt2.setText("Related");
                 butt2.setBackground(  new ColorDrawable(itemView.getResources().getColor(R.color.emphasis2))    );
-            }else if ( RelationsFragment.getUsersRelation(currentUser, user) == 2){
+            }else if ( RelationRelatedQueries.getUsersRelation(currentUser, user) == 2){
                 butt2.setText("Request sent");
                 butt2.setBackground(  new ColorDrawable(itemView.getResources().getColor(R.color.gray))    );
             }
