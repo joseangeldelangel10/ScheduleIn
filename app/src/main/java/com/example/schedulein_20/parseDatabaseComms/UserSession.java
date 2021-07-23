@@ -2,12 +2,22 @@ package com.example.schedulein_20.parseDatabaseComms;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.schedulein_20.DrawerLayoutActivity;
+import com.example.schedulein_20.LoginActivity;
 import com.example.schedulein_20.LoginOrSignupActivity;
 import com.example.schedulein_20.R;
+import com.example.schedulein_20.models.ParseUserExtraAttributes;
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
+import com.parse.SignUpCallback;
+
+import java.io.File;
 
 public class UserSession {
 
@@ -16,5 +26,25 @@ public class UserSession {
         Toast.makeText(context, context.getResources().getString(R.string.logout_successful), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(context, LoginOrSignupActivity.class);
         context.startActivity(intent);
+    }
+
+    public static void createUser(Context context, String username, String email, String password, String name, String surname, boolean googleUser, SignUpCallback callback) {
+        ParseUser user = new ParseUser();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.put(ParseUserExtraAttributes.KEY_NAME, name);
+        user.put(ParseUserExtraAttributes.KEY_SURNAME, surname);
+        user.put(ParseUserExtraAttributes.KEY_GOOGLE_USER, googleUser);
+
+        if (callback != null){
+            user.signUpInBackground(callback);
+        }else {
+            user.signUpInBackground();
+        }
+    }
+
+    public static void loginUser(String username, String password, LogInCallback callback) {
+        ParseUser.logInInBackground(username, password, callback);
     }
 }

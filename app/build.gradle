@@ -51,4 +51,7 @@ dependencies {
     implementation 'org.parceler:parceler-api:1.1.12'
     annotationProcessor 'org.parceler:parceler:1.1.12'
 
+    // sign in with google
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
+
 }

@@ -3,6 +3,8 @@ package com.example.schedulein_20.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,24 +12,32 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.schedulein_20.CUeventActivity;
+import com.example.schedulein_20.DrawerLayoutActivity;
 import com.example.schedulein_20.LayoutGenerators.CalendarViewsGenerator;
 import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.models.Events;
 import com.example.schedulein_20.models.ParseUserExtraAttributes;
 import com.example.schedulein_20.parseDatabaseComms.EventQueries;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -53,6 +63,7 @@ public class UserProfileFragment extends Fragment {
     private TextView userInfo;
     private Button cancelNextEvent;
     private Button newEvent;
+    LinearLayout calView;
     private ParseUser currentUser;
     public ArrayList<Events> weekEvents;
     private Context context;
@@ -116,6 +127,8 @@ public class UserProfileFragment extends Fragment {
         userInfo = view.findViewById(R.id.ProfileFragmentExtraInfo);
         cancelNextEvent = view.findViewById(R.id.ProfileFragmentRelateButt);
         newEvent = view.findViewById(R.id.create_new_event);
+        //calView = view.findViewById(R.id.week_view_HorizontalScrollView);
+        calView = view.findViewById(R.id.week_view_mainLinearLayout);
 
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                         RETRIEVING THE DATA TO GENERATE THE VIEWS
@@ -134,11 +147,12 @@ public class UserProfileFragment extends Fragment {
                     .load(currentUserProfileImage.getUrl())
                     .placeholder(R.drawable.profile_picture_placeholder)
                     .into(ivUserImage);
-        }else {
+        } else {
             Glide.with(context)
                     .load(R.drawable.profile_picture_placeholder)
                     .into(ivUserImage);
         }
+
 
         greeting.setText(DateTime.timeBasedGreeting(context) + " " + user_name +"!"); // good morning-afternoon-night user
         userInfo.setText(getString(R.string.now_attending_to) + current_event + "\n" + getString(R.string.next_event) + next_event);
@@ -163,6 +177,34 @@ public class UserProfileFragment extends Fragment {
                 startActivityForResult(intent, CREATE_EVENT_REQUEST_CODE);
             }
         });
+
+        /* ------------------------------------------------------------------------------------------------------------------------------------
+                                                        ADD WEEK VIEW GESTURE
+        ------------------------------------------------------------------------------------------------------------------------------------*/
+
+        calView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Fragment week_view = new CalendarViewFragment();
+                Fragment currentFragment = DrawerLayoutActivity.getVisibleFragment(((FragmentActivity) context).getSupportFragmentManager());
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Transition explodeTransform = TransitionInflater.from(context).
+                            inflateTransition(android.R.transition.explode);
+
+                    currentFragment.setExitTransition(explodeTransform);
+                    //week_view.setEnterTransition(explodeTransform);
+                }
+
+                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.host_frame, week_view)
+                        .addToBackStack("transaction2")
+                        .commit();
+                return true;
+            }
+        });
+
+
     }
 
     @Override

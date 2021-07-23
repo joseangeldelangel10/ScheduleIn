@@ -10,7 +10,8 @@
         android:id="@+id/UserSearchItemProfilePic"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        android:transitionName="userProfilePic"/>
 
     <TextView
         android:id="@+id/UserSearchItemUserName"
@@ -21,7 +22,8 @@
         android:layout_marginTop="15dp"
         android:layout_toEndOf="@+id/UserSearchItemProfilePic"
         android:text="TextView"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:transitionName="userProfileName" />
 
     <TextView
         android:id="@+id/UserSearchItemExtraInfo"
@@ -31,5 +33,6 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/UserSearchItemProfilePic"
-        android:text="TextView" />
+        android:text="TextView"
+        android:transitionName="userProfileDetails" />
 </RelativeLayout>

@@ -145,10 +145,10 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         /* ----------------------------------------------------------------------------------------
                             SETTING ONCLICK LISTENER TO CREATE EVENT
       ---------------------------------------------------------------------------------------- */
-        eventTitle = etTitle.getText().toString();
         btCreateEv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                eventTitle = etTitle.getText().toString();
                 EventQueries.createEventInDB(context,
                         eventTitle,
                         startDate,
@@ -161,6 +161,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         btUpdateEv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                eventTitle = etTitle.getText().toString();
                 EventQueries.updateEventInDB(context,
                         event2update,
                         eventTitle,

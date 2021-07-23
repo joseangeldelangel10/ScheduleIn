@@ -35,7 +35,8 @@
                     android:layout_marginTop="35dp"
                     tools:layout_editor_absoluteX="42dp"
                     tools:layout_editor_absoluteY="40dp"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    tools:srcCompat="@tools:sample/avatars"
+                    android:transitionName="userProfilePic"/>
 
                 <TextView
                     android:id="@+id/ProfileFragmentName"
@@ -49,7 +50,8 @@
                     android:layout_toEndOf="@+id/ProfileFragmentProfilePic"
                     android:text="TextView"
                     android:textSize="18sp"
-                    tools:text="Good Morning Jose!" />
+                    tools:text="Good Morning Jose!"
+                    android:transitionName="userProfileName"/>
 
                 <TextView
                     android:id="@+id/ProfileFragmentExtraInfo"
@@ -62,7 +64,8 @@
                     android:layout_marginEnd="25dp"
                     android:layout_toEndOf="@+id/ProfileFragmentProfilePic"
                     android:text="TextView"
-                    tools:text="Now Attending to: Event1" />
+                    tools:text="Now Attending to: Event1"
+                    android:transitionName="userProfileEvents"/>
 
                 <Button
                     android:id="@+id/ProfileFragmentRelateButt"

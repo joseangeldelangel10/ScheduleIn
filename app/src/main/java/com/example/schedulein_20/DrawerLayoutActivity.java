@@ -31,8 +31,13 @@ import com.example.schedulein_20.fragments.UserProfileFragment;
 import com.example.schedulein_20.fragments.UserSearchFragment;
 import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.parseDatabaseComms.UserSession;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.parse.ParseUser;
+
+import java.util.List;
 
 public class DrawerLayoutActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG = "ActivityDrawerLayout";
@@ -99,6 +104,14 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
             fragment = new CalendarViewFragment();
         }
         else if (id == R.id.nav_menu_log_out){
+            if ((boolean) currentUser.get("googleUser")){
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .requestProfile()
+                        .build();
+                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+                mGoogleSignInClient.signOut();
+            }
             UserSession.logout(context);
             finish();
             return true;
@@ -149,6 +162,18 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
 
     public static void hideProgressBar() {
         progressItem.setVisible(false);
+    }
+
+
+    public static Fragment getVisibleFragment(FragmentManager fragmentManager){
+        List<Fragment> fragments = fragmentManager.getFragments();
+        if(fragments != null){
+            for(Fragment fragment : fragments){
+                if(fragment != null && fragment.isVisible())
+                    return fragment;
+            }
+        }
+        return null;
     }
 
 

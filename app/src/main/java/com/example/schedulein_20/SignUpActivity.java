@@ -2,6 +2,7 @@ package com.example.schedulein_20;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.schedulein_20.parseDatabaseComms.UserSession;
+import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 public class SignUpActivity extends AppCompatActivity {
     private final String TAG = "ActivitySignUp";
@@ -22,11 +26,13 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText etEmail;
     private EditText etPassword;
     private Button signUpButt;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        context = this;
 
         /* ----------------------------------------------------------------------------------------
                                         VIEW REFERENCING
@@ -52,31 +58,29 @@ public class SignUpActivity extends AppCompatActivity {
                 String name = etName.getText().toString();
                 String surname = etSurname.getText().toString();
 
-                createUser(username, email, password, name, surname);
-            }
-        });
-
-    }
-
-    public void createUser(String username, String email, String password, String name, String surname) {
-        ParseUser user = new ParseUser();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setEmail(email);
-        user.put(NAME_KEY, name);
-        user.put(SURNAME_KEY, surname);
-
-        user.signUpInBackground(e -> {
-            if (e == null) {
-                Log.e(TAG, "new user created");
-                Toast.makeText(this, "User created!", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent();
-                setResult(RESULT_OK, intent);
-                finish();
-            } else {
-                Toast.makeText(this, "there was a problem at sign up", Toast.LENGTH_LONG).show();
-                Log.e(TAG, "st went wrong when creating your user");
+                UserSession.createUser(context, username, email, password, name, surname,  false,  scheduleInUserSignUpCallback());
+                //createUser(username, email, password, name, surname);
             }
         });
     }
+
+
+    private SignUpCallback scheduleInUserSignUpCallback(){
+        return new SignUpCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.e(TAG, "new user created");
+                    Toast.makeText(context, "User created!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
+                } else {
+                    Toast.makeText(context, "there was a problem at sign up", Toast.LENGTH_LONG).show();
+                    Log.e(TAG, "st went wrong when creating your user");
+                }
+            }
+        };
+    }
+
 }

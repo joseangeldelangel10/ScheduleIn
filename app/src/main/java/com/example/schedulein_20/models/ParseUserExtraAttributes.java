@@ -17,6 +17,7 @@ public class ParseUserExtraAttributes {
     public static final String KEY_SURNAME = "surname";
     public static final String KEY_RELATIONS = "relations";
     public static final String KEY_PROFILE_PIC = "profilePic";
+    public static final String KEY_GOOGLE_USER = "googleUser";
 
     public static ArrayList<String> parseUsers2Ids(ArrayList<ParseUser> parseUsers){
         ArrayList<String> result = new ArrayList<>();

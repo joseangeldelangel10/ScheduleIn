@@ -1,6 +1,9 @@
 package com.example.schedulein_20.models;
 
 import android.content.Context;
+import android.os.Build;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.bumptech.glide.Glide;
+import com.example.schedulein_20.DrawerLayoutActivity;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.fragments.ProfileFragment;
 import com.parse.ParseUser;
@@ -82,11 +86,29 @@ public class UserSearchAdapter extends Adapter<UserSearchAdapter.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Fragment fragment = ProfileFragment.newInstance(user, "some str");
+                    Fragment fragmentOne = DrawerLayoutActivity.getVisibleFragment(((FragmentActivity)context).getSupportFragmentManager());
+                    Fragment fragmentTwo = ProfileFragment.newInstance(user, "some str");
+
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        Transition slideLeftTransform = TransitionInflater.from(context).
+                                inflateTransition(android.R.transition.slide_left);
+                        Transition slideRightTransform = TransitionInflater.from(context).
+                                inflateTransition(android.R.transition.slide_right);
+
+                        fragmentTwo.setEnterTransition(slideLeftTransform);
+                        fragmentOne.setReturnTransition(slideRightTransform);
+
+
+                    }
 
                     ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.host_frame, fragment)
+                            .replace(R.id.host_frame, fragmentTwo)
+                            .addToBackStack("transaction")
                             .commit();
+
+
+
                 }
             });
 
