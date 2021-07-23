@@ -26,6 +26,8 @@ import com.example.schedulein_20.models.Events;
 import com.example.schedulein_20.models.Group;
 import com.example.schedulein_20.models.GroupMembersSearchAdapter;
 import com.example.schedulein_20.models.ParseUserExtraAttributes;
+import com.example.schedulein_20.parseDatabaseComms.EventQueries;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -81,7 +83,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         setSupportActionBar(toolbar);
 
         /* ----------------------------------------------------------------------------------------
-                                    REFERENCING WINDOW VIEWS
+                                    REFERENCING VIEWS
       ---------------------------------------------------------------------------------------- */
 
         etTitle = findViewById(R.id.etCUeventTitle);
@@ -143,27 +145,36 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         /* ----------------------------------------------------------------------------------------
                             SETTING ONCLICK LISTENER TO CREATE EVENT
       ---------------------------------------------------------------------------------------- */
-
+        eventTitle = etTitle.getText().toString();
         btCreateEv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                eventTitle = etTitle.getText().toString();
-                createEventInDB();
+                EventQueries.createEventInDB(context,
+                        eventTitle,
+                        startDate,
+                        endDate,
+                        ParseUserExtraAttributes.parseUsers2Ids((ArrayList<ParseUser>) selectedInvitees),
+                        createEventCallback());
             }
         });
 
         btUpdateEv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                eventTitle = etTitle.getText().toString();
-                updateEventInDB(event2update);
+                EventQueries.updateEventInDB(context,
+                        event2update,
+                        eventTitle,
+                        startDate,
+                        endDate,
+                        ParseUserExtraAttributes.parseUsers2Ids((ArrayList<ParseUser>) selectedInvitees),
+                        updateEventCallback());
             }
         });
 
         btDeleteEv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteEventInDB(event2update);
+                EventQueries.deleteEventInDB(context, event2update, deleteEventCallback());
             }
         });
 
@@ -190,105 +201,24 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             startDate = event2update.getStartDate();
             endDate = event2update.getEndDate();
             updateDatesText();
-            queryInvitees(event2update);
+            ParseUserExtraAttributes.Ids2ParseUsers(event2update.getInvitees(), ids2ParseUsersCallback());
             btCreateEv.setVisibility(View.INVISIBLE);
             btCreateEv.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
         }else if (flag.equals("CreateJoinedEvent")){
             joinedEventGroup = Parcels.unwrap(getIntent().getParcelableExtra("Group"));
-            queryGroupMembers(joinedEventGroup.getMembers());
+            ParseUserExtraAttributes.Ids2ParseUsers(joinedEventGroup.getMembers(), ids2ParseUsersCallback());
             UDeventBt.setVisibility(View.INVISIBLE);
             UDeventBt.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
         }
     }
 
+    /* ---------------------------------------------------------------------------------------------------
+                                                UI METHODS
+    ------------------------------------------------------------------------------------------------------*/
     public void cleanRv(){
         possibleInvitees.clear();
         possibleInvitees.addAll(selectedInvitees);
         adapter.notifyDataSetChanged();
-    }
-
-    private void queryGroupMembers(ArrayList<String> membersIds) {
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereContainedIn("objectId", membersIds);
-
-        query.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> objects, ParseException e) {
-                if (e != null){
-                    Toast.makeText(context, "there was a problem retrieving invitees", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                selectedInvitees.addAll(objects);
-                cleanRv();
-            }
-        });
-
-    }
-
-    private void queryInvitees(Events event2update) {
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereContainedIn("objectId", event2update.getInvitees());
-
-        query.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> objects, ParseException e) {
-                if (e != null){
-                    Toast.makeText(context, "there was a problem retrieving invitees", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                selectedInvitees.addAll(objects);
-                cleanRv();
-            }
-        });
-
-    }
-
-    private void deleteEventInDB(Events event2update) {
-        ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
-        query.getInBackground(event2update.getObjectId(), (object, e) -> {
-            if (e == null) {
-                // Deletes the fetched ParseObject from the database
-                object.deleteInBackground(e2 -> {
-                    if(e2==null){
-                        Toast.makeText(this, "Delete Successful", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent();
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }else{
-                        //Something went wrong while deleting the Object
-                        Toast.makeText(this, "Error deleting event", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }else{
-                //Something went wrong while retrieving the Object
-                Toast.makeText(this, "Error connecting to database", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void updateEventInDB(Events event2update) {
-            ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
-
-            // Retrieve the object by id
-            query.getInBackground(event2update.getObjectId(), (object, e) -> {
-                if (e == null) {
-                    // Update the fields we want to
-                    object.put(Events.KEY_START_DATE, startDate);
-                    object.put(Events.KEY_END_DATE, endDate);
-                    object.put(Events.KEY_TITLE, eventTitle);
-
-                    // All other fields will remain the same
-                    object.saveInBackground();
-                    Toast.makeText(this, "Event updated successfully", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent();
-                    setResult(RESULT_OK, intent);
-                    finish();
-
-                } else {
-                    // something went wrong
-                    Toast.makeText(this, "Failed when updating event", Toast.LENGTH_SHORT).show();
-                }
-            });
     }
 
     private void updateDatesText() {
@@ -298,21 +228,30 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         tvEndTime.setText( DateTime.onlyTime(endDate) );
     }
 
-    private void createEventInDB() {
-        Events event = new Events();
-        event.setUser(ParseUser.getCurrentUser());
-        event.setTitle(eventTitle);
-        event.setStartDate(startDate);
-        event.setEndDate(endDate);
-        event.setInvitees(ParseUserExtraAttributes.parseUsers2Ids((ArrayList<ParseUser>) selectedInvitees));
+    /* ---------------------------------------------------------------------------------------------------
+                                                HELPER CALLBACKS
+    ------------------------------------------------------------------------------------------------------*/
 
-        if (startDate.compareTo(endDate) == 1) {
-            Toast.makeText(CUeventActivity.this, "starting date cannot be after end", Toast.LENGTH_LONG).show();
-            Toast.makeText(CUeventActivity.this, "Please change the dates", Toast.LENGTH_SHORT).show();
-            return;
-        }
+    private FindCallback<ParseUser> ids2ParseUsersCallback(){
+        return new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e != null){
+                    Toast.makeText(context, "there was a problem retrieving invitees", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                selectedInvitees.addAll(objects);
+                cleanRv();
+            }
+        };
+    }
 
-        event.saveInBackground(new SaveCallback() {
+    /* ---------------------------------------------------------------------------------------------------
+                                                CRUD OPERATIONS
+    ------------------------------------------------------------------------------------------------------*/
+
+    private SaveCallback createEventCallback(){
+        return new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e != null){
@@ -327,8 +266,46 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
                 setResult(RESULT_OK, intent);
                 finish();
             }
-        });
+        };
     }
+
+    private DeleteCallback deleteEventCallback(){
+        return new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e==null){
+                    Toast.makeText(context, "Delete Successful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }else{
+                    //Something went wrong while deleting the Object
+                    Toast.makeText(context, "Error deleting event", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+    }
+
+
+    private SaveCallback updateEventCallback(){
+        return new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null){
+                    Toast.makeText(context, "Event updated successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }else {
+                    Toast.makeText(context, "Failed updating event", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+    }
+
+
+
+    /* !_!_!_!_!_!_!_!_ FOLLOWING METHODS ARE NECESSARY TO EDIT DATE WITH CALENDAR VIEW AS WELL AS TIME !_!_!_!_!_!_!_!_*/
 
     private void showEditTimeDialog(String flag) {
         FragmentManager fm = getSupportFragmentManager();

@@ -32,8 +32,15 @@ public class RelationRelatedQueries {
         query.whereContainedIn("objectId", relationsIds);
 
         query.findInBackground(callback);
-
     }
+
+    public static void queryReceivedRequests(ParseUser currentUser, FindCallback<ParseUser> callback){
+
+            ParseQuery<ParseUser> query = ParseUser.getQuery();
+            query.whereEqualTo("relations", currentUser.getObjectId() );// we check for all users where current user id is contained in their relations
+            query.findInBackground(callback);
+    }
+
 
     public static void AcceptRequest(Context context, ParseUser currentUser, ParseUser relatingUser){
         ArrayList<String> relations = (ArrayList<String>) currentUser.get("relations");
@@ -53,6 +60,8 @@ public class RelationRelatedQueries {
             });
         }
     }
+
+
 
     public static void DeclineRequest(Context context, ParseUser currentUser, ParseUser relatingUser, FunctionCallback callback) {
         ArrayList<String> relations = (ArrayList<String>) relatingUser.get("relations");
@@ -217,4 +226,16 @@ public class RelationRelatedQueries {
             });
         }
     }
+
+
+    /*private Requests getRequestBetween(ParseUser fromUser, ParseUser toUser){
+        ParseQuery<Requests> query = ParseQuery.getQuery(Requests.class);
+
+        query.whereEqualTo(Requests.KEY_FROM, fromUser);
+        query.whereEqualTo(Requests.KEY_TO, toUser);
+
+        query.findInBackground();
+    }*/
+
+
 }

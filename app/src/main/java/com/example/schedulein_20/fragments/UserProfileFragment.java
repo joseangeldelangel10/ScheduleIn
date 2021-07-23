@@ -147,7 +147,7 @@ public class UserProfileFragment extends Fragment {
                                                        WE GENERATE USER'S WEEK PREVIEW
         ------------------------------------------------------------------------------------------------------------------------------------*/
 
-        FindCallback onWeekEventsFound = weekEventsCallback(view);
+        FindCallback onWeekEventsFound = weekEventsCallback(context, view);
         EventQueries.queryWeekEvents(context, currentUser, onWeekEventsFound);
 
         /* ------------------------------------------------------------------------------------------------------------------------------------
@@ -182,7 +182,7 @@ public class UserProfileFragment extends Fragment {
         }
     }
 
-    private FindCallback<Events> weekEventsCallback(View view){
+    private FindCallback<Events> weekEventsCallback(Context context, View view){
         return new FindCallback<Events>() {
             @Override
             public void done(List<Events> events, ParseException e) {

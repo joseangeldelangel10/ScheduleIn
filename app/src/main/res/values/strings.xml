@@ -12,8 +12,8 @@
     <string name="generic_greeting">Hey!</string>
     <string name="now_attending_to">- Now attending to: </string>
     <string name="next_event">- Next event:</string>
-    <string name="loading_events_problem">There was a problem loading your events</string>
-    <string name="events_loaded_succesfully">your events loaded successfully</string>
+    <string name="loading_events_problem">There was a problem loading events</string>
+    <string name="events_loaded_succesfully"> events loaded successfully</string>
     <string name="no_events_loaded_this_week">has no events this week</string>
     <string name="Event">Event</string>
     <string name="relations_loaded_succesfully">your relations loaded successfully</string>
@@ -28,4 +28,7 @@
     <string name="failed_sending_request">failed sending request</string>
     <string name="problem_searching_users">a problem occurred when searching for users</string>
     <string name="no_results_found">No results found :(</string>
+    <string name="groups_loaded_successfully">groups loaded successfully!</string>
+    <string name="problem_loading_groups">There was a problem loading groups</string>
+    <string name="no_groups_loaded">This groups list is empty</string>
 </resources>

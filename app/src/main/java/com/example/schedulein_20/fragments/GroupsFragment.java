@@ -24,6 +24,7 @@ import com.example.schedulein_20.models.Events;
 import com.example.schedulein_20.models.Group;
 import com.example.schedulein_20.models.GroupMembersSearchAdapter;
 import com.example.schedulein_20.models.GroupsAdapter;
+import com.example.schedulein_20.parseDatabaseComms.GroupQueries;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -39,8 +40,8 @@ import java.util.List;
  */
 public class GroupsFragment extends Fragment {
     private final String TAG = "GroupsFragment";
-    RecyclerView rvGroups;
-    Button newGroupButt;
+    private RecyclerView rvGroups;
+    private Button newGroupButt;
     Context context;
     GroupsAdapter adapter;
     List<Group> groups;
@@ -95,21 +96,27 @@ public class GroupsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        // DELETE LATER ->
-        super.onViewCreated(view, savedInstanceState);
-        // --------------------------------------------------------
         context = getContext();
         groups = new ArrayList<>();
         currentUser = ParseUser.getCurrentUser();
 
+        /* ---------------------------------------------------------------------------
+                                    VIEW REFERENCING
+        --------------------------------------------------------------------------- */
         newGroupButt = view.findViewById(R.id.GroupsNewgroupButt);
         rvGroups = view.findViewById(R.id.GroupsRv);
 
+        /* ---------------------------------------------------------------------------
+                                    WE SET UP GROUPS RV
+        --------------------------------------------------------------------------- */
         adapter = new GroupsAdapter(context, groups);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rvGroups.setLayoutManager(linearLayoutManager); // we bind a layout manager to RV
         rvGroups.setAdapter(adapter);
 
+        /* ---------------------------------------------------------------------------
+                              WE ADD CREATE GROUP FUNCTIONALITY
+        --------------------------------------------------------------------------- */
         newGroupButt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,36 +126,37 @@ public class GroupsFragment extends Fragment {
             }
         });
 
-        queryGroups();
+        /* ---------------------------------------------------------------------------
+                                    WE POPULATE GROUPS RV
+        --------------------------------------------------------------------------- */
+
+        GroupQueries.queryUserGroups(currentUser, queryUserGroupsCallback());
 
     }
 
-    public void queryGroups(){
-        ParseQuery<Group> query = ParseQuery.getQuery(Group.class);
-
-        query.whereEqualTo(Group.KEY_CREATOR, currentUser);
-
-        query.findInBackground(new FindCallback<Group>() {
+    private FindCallback<Group> queryUserGroupsCallback(){
+        return new FindCallback<Group>() {
             @Override
             public void done(List<Group> objects, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Issue with getting groups", e);
-                    Toast.makeText(context, "There was a problem loading your groups", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, getString(R.string.problem_loading_groups), Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (objects.size() == 0){
                     Log.i(TAG, "groups query empty");
+                    Toast.makeText(context, getString(R.string.no_groups_loaded), Toast.LENGTH_LONG).show();
                 }
                 // for debugging purposes let's print every post description to logcat
                 for (Group group : objects) {
                     Log.i(TAG, "Group: " + group.getTitle() );
                     groups.add(group);
                 }
-                Toast.makeText(context, "group loaded successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, getString(R.string.groups_loaded_successfully), Toast.LENGTH_SHORT).show();
                 adapter.notifyDataSetChanged();
                 Log.e(TAG, "groups = " + groups.toString());
             }
-        });
+        };
     }
 
 }

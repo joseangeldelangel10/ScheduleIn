@@ -114,8 +114,12 @@ public class ProfileFragment extends Fragment {
          This fragment is initialized when the user taps on a search result and thus is
          called on the UserSearchAdapter onBindViewHolder method
         -------------------------------------------------------------------------------- */
-        //super.onViewCreated(view, savedInstanceState);
+        currentUser = ParseUser.getCurrentUser();
+        context = getContext();
 
+        /* --------------------------------------------------------------------------------
+                                        VIEW REFERENCING
+            --------------------------------------------------------------------------------*/
 
         userName = view.findViewById(R.id.ProfileFragmentName);
         userDetails = view.findViewById(R.id.ProfileFragmentExtraInfo);
@@ -126,11 +130,12 @@ public class ProfileFragment extends Fragment {
         banner = view.findViewById(R.id.ProfileFragmentNonRelatedBanner);
         textBanner = view.findViewById(R.id.ProfileFragmentNonRelatedBannerText);
 
+        /* --------------------------------------------------------------------------------
+                           WE RETRIEVE THE USER SELECTED IN THE SEARCH VIEW
+         --------------------------------------------------------------------------------*/
         user = getArguments().getParcelable("user");
 
         if(user != null) {
-            currentUser = ParseUser.getCurrentUser();
-            context = getContext();
 
             /* --------------------------------------------------------------------------------
                             WE FILL OUR PROFILE VIEW HEADER WITH USER DATA
@@ -155,6 +160,7 @@ public class ProfileFragment extends Fragment {
                 textBanner.setVisibility(View.VISIBLE);
                 textBanner.setText("Relate with " + user.get("name").toString() + " to see each others availability");
 
+                relate.setText("Send request");
                 relate.setBackground(  new ColorDrawable(getResources().getColor(R.color.emphasis1))  );
                 relate.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -201,7 +207,7 @@ public class ProfileFragment extends Fragment {
                 banner.setVisibility(View.GONE);
                 calView.setVisibility(View.VISIBLE);
                 weekEvents = new ArrayList<>();
-                queryWeekEvents(view, user);
+                EventQueries.queryWeekEvents(context, user, queryWeekEventsCallback(view));
 
                 relate.setText("Related");
                 relate.setBackground(  new ColorDrawable(getResources().getColor(R.color.emphasis2))  );
@@ -214,54 +220,26 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    public void queryWeekEvents(View view, ParseUser user) {
-        DrawerLayoutActivity.showProgressBar();
-
-        ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
-        // include data referred by user key
-        query.include(Events.KEY_USER);
-        query.whereGreaterThan(Events.KEY_START_DATE, DateTime.weekStart());
-        query.whereLessThan(Events.KEY_START_DATE, DateTime.weekEnding());
-        query.whereEqualTo(Events.KEY_USER, user);
-        query.addAscendingOrder(Events.KEY_START_DATE);
-
-        query.findInBackground(new FindCallback<Events>() {
+    private FindCallback<Events> queryWeekEventsCallback(View view){
+        return new FindCallback<Events>() {
             @Override
             public void done(List<Events> objects, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Issue with getting events", e);
-                    Toast.makeText(getContext(), "There was a problem loading your events", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), getString(R.string.loading_events_problem), Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (objects.size() == 0){
-                    Log.i(TAG, user.getString("name") + "'s week events query empty");
+                    Log.i(TAG, user.getString("name") + getString(R.string.no_events_loaded_this_week));
                 }
                 // for debugging purposes let's print every post description to logcat
                 for (Events event : objects) {
-                    Log.i(TAG, "Event: " + event.getTitle() + ", username: " +
-                            event.getUser().getUsername() + "\nstarts: " + event.getStartDate() +
-                            " ends: " + event.getEndDate() + "\nonday: " + event.getWeekDay()
-                    );
                     weekEvents.add(event);
                 }
-                Toast.makeText(getContext(), user.getString("name") +"'s week view loaded successfully!", Toast.LENGTH_LONG).show();
-                //generateWeekView(view);
+                Toast.makeText(getContext(), user.getString("name") + getString(R.string.events_loaded_succesfully), Toast.LENGTH_LONG).show();
                 CalendarViewsGenerator.generateWeekView(view, context, (ArrayList<Events>) weekEvents, ProfileFragment.this);
             }
-        });
-
-        DrawerLayoutActivity.hideProgressBar();
+        };
     }
 
-    /*public static int userIsRelated(ParseUser currentUser, ParseUser user) {
-        ArrayList<String> relations = (ArrayList<String>) currentUser.get("relations");
-        ArrayList<String> OUserRelations = (ArrayList<String>) user.get("relations");
-        if ( relations.contains(user.getObjectId()) && OUserRelations.contains(currentUser.getObjectId())){
-            return 1; // related
-        }else if( relations.contains(user.getObjectId()) ){
-            return 0; // request sent
-        }else {
-            return -1; // not related
-        }
-    }*/
 }

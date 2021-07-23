@@ -15,21 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.schedulein_20.DrawerLayoutActivity;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.models.RelationRequestsAdapter;
 import com.example.schedulein_20.models.UserRelationsAdapter;
 import com.example.schedulein_20.parseDatabaseComms.RelationRelatedQueries;
 import com.parse.FindCallback;
-import com.parse.FunctionCallback;
-import com.parse.ParseCloud;
 import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -88,7 +82,6 @@ public class RelationsFragment extends Fragment implements RelationRequestsAdapt
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        context = getContext();
     }
 
     @Override
@@ -102,6 +95,7 @@ public class RelationsFragment extends Fragment implements RelationRequestsAdapt
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         //super.onViewCreated(view, savedInstanceState);
         currentUser = ParseUser.getCurrentUser();
+        context = getContext();
 
         /* --------------------------------------------------------------------------------
                                     WE REFERENCE RECYCLER VIEWS
@@ -119,7 +113,6 @@ public class RelationsFragment extends Fragment implements RelationRequestsAdapt
         rvRelations.setLayoutManager(relLinearLayoutManager); // we bind a layout manager to RV
         rvRelations.setAdapter(relAdapter);
 
-        //queryRelations(ParseUser.getCurrentUser());
         RelationRelatedQueries.queryUserRelations(currentUser, queryRelationsCallback());
 
         /* --------------------------------------------------------------------------------
@@ -131,7 +124,7 @@ public class RelationsFragment extends Fragment implements RelationRequestsAdapt
         rvRelationReq.setLayoutManager(reqLinearLayoutManager); // we bind a layout manager to RV
         rvRelationReq.setAdapter(reqAdapter);
 
-        queryRequests(ParseUser.getCurrentUser());
+        RelationRelatedQueries.queryReceivedRequests(currentUser, queryReceivedRequestsCallback());
     }
 
     private FindCallback<ParseUser> queryRelationsCallback(){
@@ -153,29 +146,27 @@ public class RelationsFragment extends Fragment implements RelationRequestsAdapt
         };
     }
 
-    // !-!_!_!_!_!_!_! IMPORTANT NOTE : WE'LL LEAVE THIS HERE FOR THE MOMENT SINCE WE WILL
-    // !-!_!_!_!_!_!_! REDESIGN THE DB AGAIN
-    private void queryRequests(ParseUser currentUser) {
 
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereEqualTo("relations", currentUser.getObjectId() );// we check for all users where current user id is contained in their relations
-        query.findInBackground((users, e) -> {
-            if (e == null) {
-                // The query was successful, returns the users that matches
-                // the criteria.
-                for(ParseUser user1 : users) {
-                    Log.d(TAG, "Query requests - userlist = " + user1.getUsername());
-                    // we add to the requests only the users that aren't part of current user relations
-                    if (notPartOfUserRelations(user1)){
-                        requests.add(user1);
+    private FindCallback<ParseUser> queryReceivedRequestsCallback () {
+        return new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+                    // The query was successful, returns the users that matches
+                    // the criteria.
+                    for(ParseUser user1 : objects) {
+                        Log.d(TAG, "Query requests - userlist = " + user1.getUsername());
+                        // we add to the requests only the users that aren't part of current user relations
+                        if (notPartOfUserRelations(user1)){
+                            requests.add(user1);
+                        }
                     }
+                    reqAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-                reqAdapter.notifyDataSetChanged();
-            } else {
-                // Something went wrong.
-                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        });
+        };
     }
 
     private boolean notPartOfUserRelations(ParseUser user) {
