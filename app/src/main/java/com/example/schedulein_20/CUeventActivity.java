@@ -340,7 +340,6 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         startDate.setMonth(selectedDate.get(Calendar.MONTH));
         startDate.setDate(selectedDate.get(Calendar.DAY_OF_MONTH));
 
-        //tvStartDate.setText(DateTime.onlyDate(startDate));
         updateDatesText();
     }
 
@@ -350,7 +349,6 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         endDate.setMonth(selectedDate.get(Calendar.MONTH));
         endDate.setDate(selectedDate.get(Calendar.DAY_OF_MONTH));
 
-        //tvEndDate.setText(DateTime.onlyDate(endDate));
         updateDatesText();
     }
 
@@ -363,7 +361,6 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         startDate.setMinutes(calendar.get(Calendar.MINUTE));
         startDate.setSeconds(calendar.get(Calendar.SECOND));
 
-        //tvStartTime.setText(DateTime.onlyTime(startDate));
         updateDatesText();
     }
 
@@ -373,7 +370,6 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         endDate.setMinutes(calendar.get(Calendar.MINUTE));
         endDate.setSeconds(calendar.get(Calendar.SECOND));
 
-        //tvEndTime.setText(DateTime.onlyTime(endDate));
         updateDatesText();
     }
 

@@ -2,6 +2,7 @@ package com.example.schedulein_20;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,7 +19,10 @@ import android.widget.Toast;
 import com.example.schedulein_20.models.Events;
 import com.example.schedulein_20.models.Group;
 import com.example.schedulein_20.models.GroupMembersSearchAdapter;
+import com.example.schedulein_20.models.ParseUserExtraAttributes;
+import com.example.schedulein_20.parseDatabaseComms.GroupQueries;
 import com.example.schedulein_20.parseDatabaseComms.RelationRelatedQueries;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -58,15 +62,15 @@ public class CUgroupsActivity extends AppCompatActivity implements GroupMembersS
         selectedUsersIds = new ArrayList<>();
         currentUser = ParseUser.getCurrentUser();
 
-        String flag = (String) getIntent().getExtras().get("Flag");
-        Toast.makeText(context, flag, Toast.LENGTH_SHORT).show();
+        /* ---------------------------------------------------------------------------------------------
+                                    REPLACING ACTION BAR FOR TOOLBAR TO USE NAV DRAWER
+        --------------------------------------------------------------------------------------------- */
+        Toolbar toolbar = findViewById(R.id.groups_my_awesome_toolbar);
+        setSupportActionBar(toolbar);
 
         /* ---------------------------------------------------------------------------------------------
-                                      REPLACING ACTION BAR FOR TOOLBAR TO USE NAV DRAWER
+                                                REFERENCING VIEWS
         --------------------------------------------------------------------------------------------- */
-        //onPrepareOptionsMenu((Menu) this);
-        androidx.appcompat.widget.Toolbar toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.groups_my_awesome_toolbar);
-        setSupportActionBar(toolbar);
 
         etName = findViewById(R.id.CUGroupName);
         searchView = findViewById(R.id.DGroupMembersSv);
@@ -77,38 +81,25 @@ public class CUgroupsActivity extends AppCompatActivity implements GroupMembersS
         updateGroup = findViewById(R.id.CUGroupUpdateGroup);
 
 
+        /* ---------------------------------------------------------------------------------------------
+                                            SETTING UP USER SEARCH RV
+        --------------------------------------------------------------------------------------------- */
         adapter = new GroupMembersSearchAdapter(context, possibleMembers, selectedUsers);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rvSearchResults.setLayoutManager(linearLayoutManager); // we bind a layout manager to RV
         rvSearchResults.setAdapter(adapter);
 
+        /* ---------------------------------------------------------------------------------------------
+                                            DEFINING USER SEARCH LOGIC
+        --------------------------------------------------------------------------------------------- */
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 cleanRv();
-                FindCallback callback = new FindCallback<ParseUser>() {
-                    @Override
-                    public void done(List<ParseUser> objects, ParseException e) {
-                        if (e == null) {
-                            if (objects.size() == 0){
-                                Toast.makeText(context, "No results :(", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                            for (ParseUser user : objects) {
-                                possibleMembers.add(user);
-                            }
-                            adapter.notifyDataSetChanged();
-                            DrawerLayoutActivity.hideProgressBar();
-                            return;
-                        }
-                        Log.e(TAG, "problem ocurred when looking for possible members");
-                    }
-                };
-
+                FindCallback callback = findRelatedUsersCallback();
                 RelationRelatedQueries.queryRelatedUsersWhere(currentUser, query, callback, selectedUsersIds);
-
-                return false;
+                return true;
             }
 
             @Override
@@ -116,127 +107,126 @@ public class CUgroupsActivity extends AppCompatActivity implements GroupMembersS
                 if(newText.equals("")){
                     cleanRv();
                 }
-                return false;
+                return true;
             }
         });
 
+        /* ---------------------------------------------------------------------------------------------
+                          WE EVALUATE FLAGS TO CHECK IF WE ARE UPDATING OR CREATING A GROUP
+        --------------------------------------------------------------------------------------------- */
+        String flag = (String) getIntent().getExtras().get("Flag");
+
         if (flag.equals("Create") ){
-            //udButtons.setVisibility(View.INVISIBLE);
+            // WE HIDE UPDATE BUTTONS
             udButtons.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
-            //createGroup.setVisibility(View.VISIBLE);
             createGroup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    createGroupInDB(context, currentUser, etName.getText().toString(), (ArrayList<String>) selectedUsersIds);
+                    GroupQueries.createGroupInDB(context,
+                            currentUser,
+                            etName.getText().toString(),
+                            (ArrayList<String>) selectedUsersIds,
+                            createGroupInDBCallback());
                 }
             });
         }else if(flag.equals("UpdateDelete") ){
-            Log.e(TAG, "eneterin UD mode of a group");
-
-            //udButtons.setVisibility(View.VISIBLE);
-            //createGroup.setVisibility(View.INVISIBLE);
+            // WE HIDE CREATE BUTTONS
             createGroup.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
-
+            // WE RETRIEVE THE GROUP PASSED AS AN EXTRA
             Group updatingGroup = Parcels.unwrap(getIntent().getExtras().getParcelable("Group"));
+            // WE BIND GROUP DETAILS TO THE RESPECTIVE VIEWS
             etName.setText(updatingGroup.getTitle());
+            ArrayList<String> groupMembersIds = updatingGroup.getMembers();
+            ParseUserExtraAttributes.Ids2ParseUsers(groupMembersIds, queryGroupMembersCallback());
 
-            ArrayList<String> updatingEventSelectedUsersIds = updatingGroup.getMembers();
-            querySelectedUsers(updatingEventSelectedUsersIds);
-
+            // WE SET BUTTON LISTENERS
             deleteGroup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    deleteEventFromDB(context, updatingGroup);
+                    GroupQueries.deleteGroupFromDB(context, updatingGroup, deleteGroupInDBCallback());
                 }
             });
 
             updateGroup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    updateEventInDB(context, updatingGroup, etName.getText().toString(), selectedUsersIds);
+                    GroupQueries.updateGroupInDB(context,
+                            updatingGroup,
+                            etName.getText().toString(),
+                            selectedUsersIds,
+                            updateGroupInDBCallback());
                 }
             });
 
         }
-
     }
 
-    private void updateEventInDB(Context context, Group updatingGroup, String newName, List<String> selectedUsersIds) {
-        ParseQuery<Group> query = ParseQuery.getQuery(Group.class);
+    /* -----------------------------------------------------------------------------------------------------------------------
+                                            UI METHODS
+    ---------------------------------------------------------------------------------------------------------------------- */
 
-        // Retrieve the object by id
-        query.getInBackground(updatingGroup.getObjectId(), (object, e) -> {
-            if (e == null) {
-                // Update the fields we want to
-                object.put(Group.KEY_NAME, newName);
-                object.put(Group.KEY_MEMBERS, selectedUsersIds);
-
-                // All other fields will remain the same
-                object.saveInBackground();
-                Toast.makeText(context, "Group updated successfully", Toast.LENGTH_SHORT).show();
-                //Intent intent = new Intent();
-                //setResult(RESULT_OK, intent);
-                finish();
-
-            } else {
-                // something went wrong
-                Toast.makeText(this, "Failed when updating group", Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void cleanRv(){
+        possibleMembers.clear();
+        possibleMembers.addAll(selectedUsers);
+        adapter.notifyDataSetChanged();
     }
 
-    private void deleteEventFromDB(Context context, Group updatingGroup) {
-        ParseQuery<Group> query = ParseQuery.getQuery(Group.class);
-        query.getInBackground(updatingGroup.getObjectId(), (object, e) -> {
-            if (e == null) {
-                // Deletes the fetched ParseObject from the database
-                object.deleteInBackground(e2 -> {
-                    if(e2==null){
-                        Toast.makeText(this, "Delete Successful", Toast.LENGTH_SHORT).show();
-                        //Intent intent = new Intent();
-                        //setResult(RESULT_OK, intent);
-                        finish();
-                    }else{
-                        //Something went wrong while deleting the Object
-                        Toast.makeText(this, "Error deleting group", Toast.LENGTH_SHORT).show();
+    // THE IMPLEMENTATION OF THIS METHOD ALLOWS US TO KEEP SELECTED USERS IN RV HIGHLIGHTED AT THE TOP
+    @Override
+    public void userSelected(ParseUser user) {
+        selectedUsers.add(user);
+        selectedUsersIds.add(user.getObjectId());
+    }
+
+    /* -----------------------------------------------------------------------------------------------------------------------
+                                            USER QUERYING CALLBACKS
+    ---------------------------------------------------------------------------------------------------------------------- */
+
+    // THIS CALLBACK ALLOWS US TO BIND SEARCH RESULTS TO THE RV
+    private FindCallback<ParseUser> findRelatedUsersCallback(){
+        return new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+                    if (objects.size() == 0){
+                        Toast.makeText(context, "No results :(", Toast.LENGTH_SHORT).show();
+                        return;
                     }
-                });
-            }else{
-                //Something went wrong while retrieving the Object
-                Toast.makeText(this, "Error connecting to database", Toast.LENGTH_SHORT).show();
+                    possibleMembers.addAll(objects);
+                    adapter.notifyDataSetChanged();
+                    return;
+                }
+                Log.e(TAG, "problem ocurred when looking for possible members");
             }
-        });
+        };
     }
 
-    private void querySelectedUsers(ArrayList<String> updatingEventSelectedUsersIds) {
-        ParseQuery<ParseUser> mainQuery = ParseUser.getQuery();
-        mainQuery.whereContainedIn("objectId", updatingEventSelectedUsersIds);
-
-        mainQuery.findInBackground(new FindCallback<ParseUser>() {
+    // THIS CALLBACK ALLOWS US TO BIND GROUP MEMBERS TO THE RV
+    private FindCallback<ParseUser> queryGroupMembersCallback(){
+        return new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
                 if (e != null){
-                    Toast.makeText(context, "st went wrong while retrieveing group members", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "st went wrong while retrieveing group members", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "error getting users" + e);
                     return;
                 }
                 for (ParseUser user: objects){
                     selectedUsers.add(user);
                     selectedUsersIds.add(user.getObjectId());
-                    Toast.makeText(context, "success while retrieving group members", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "success while retrieving group members", Toast.LENGTH_SHORT).show();
                 }
                 cleanRv();
             }
-        });
+        };
     }
 
-    private void createGroupInDB(Context context, ParseUser creator, String groupName, ArrayList<String> membersIds) {
-        Group group = new Group();
-        group.setCreator(creator);
-        group.setTitle(groupName);
-        group.setMembers(membersIds);
+    /* -----------------------------------------------------------------------------------------------------------------------
+                                            CRUD OPERATIONS
+    ---------------------------------------------------------------------------------------------------------------------- */
 
-        group.saveInBackground(new SaveCallback() {
+    private SaveCallback createGroupInDBCallback(){
+        return new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e != null){
@@ -245,23 +235,44 @@ public class CUgroupsActivity extends AppCompatActivity implements GroupMembersS
                     return;
                 }
                 Log.i(TAG, "group saving succeeded");
-                Toast.makeText(context, "Saving succeeded", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Group created", Toast.LENGTH_SHORT).show();
                 finish();
             }
-        });
+        };
     }
 
-    public void cleanRv(){
-        possibleMembers.clear();
-        possibleMembers.addAll(selectedUsers);
-        adapter.notifyDataSetChanged();
+    private SaveCallback updateGroupInDBCallback(){
+        return new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null){
+                    Toast.makeText(context, "Group updated successfully", Toast.LENGTH_SHORT).show();
+                    finish();
+                }else {
+                    Toast.makeText(context, "a problem occurred updating group", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
     }
 
-    @Override
-    public void userSelected(ParseUser user) {
-        selectedUsers.add(user);
-        selectedUsersIds.add(user.getObjectId());
+    private DeleteCallback deleteGroupInDBCallback(){
+        return new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e==null){
+                    Toast.makeText(context, "Delete Successful", Toast.LENGTH_SHORT).show();
+                    finish();
+                }else{
+                    //Something went wrong while deleting the Object
+                    Toast.makeText(context, "Error deleting group", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
     }
+
+
+
+
 
 }
 

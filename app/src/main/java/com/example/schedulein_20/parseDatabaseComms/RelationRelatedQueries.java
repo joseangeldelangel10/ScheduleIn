@@ -191,51 +191,19 @@ public class RelationRelatedQueries {
     }
 
     public static void queryRelatedUsersWhere(ParseUser currentUser, String query, FindCallback<ParseUser> callback, List<String> selectedUsersIds) {
-        DrawerLayoutActivity.showProgressBar();
-        List<ParseUser> searchResults = new ArrayList<>();
+
         ArrayList<String> currentUserRelations = (ArrayList<String>) currentUser.get("relations");
-
-
         ParseQuery<ParseUser> mainQuery = ParseUser.getQuery();
         mainQuery.whereStartsWith("name", query);
         mainQuery.whereContainedIn("objectId", currentUserRelations);
         mainQuery.whereEqualTo("relations", currentUser.getObjectId());
-        mainQuery.whereNotContainedIn("objectId", selectedUsersIds);
-        //mainQuery.whereNotContainedIn("objectId", searchResultsIds);
-        //mainQuery.setLimit(50);
+        mainQuery.whereNotContainedIn("objectId", selectedUsersIds);  // condition that avoids users that have already been selected to appear again
 
-        if (callback != null) {
-            mainQuery.findInBackground(callback);
-        } else {
-            mainQuery.findInBackground((users, e) -> {
-                if (e == null) {
-                    // The query was successful, returns the users that matches
-                    // the criteria.
-                    for (ParseUser user1 : users) {
-                        Log.d(TAG, "Username: " + user1.getUsername());
-                        searchResults.add(user1);
-                    }
-                    Log.e("searchingPossibleMembers", searchResults.toString());
+        mainQuery.findInBackground(callback);
 
-                } else {
-                    // Something went wrong.
-                    Log.e("searchingPossibleMembers", "st went wrong");
-
-                }
-                DrawerLayoutActivity.hideProgressBar();
-            });
-        }
     }
 
 
-    /*private Requests getRequestBetween(ParseUser fromUser, ParseUser toUser){
-        ParseQuery<Requests> query = ParseQuery.getQuery(Requests.class);
-
-        query.whereEqualTo(Requests.KEY_FROM, fromUser);
-        query.whereEqualTo(Requests.KEY_TO, toUser);
-
-        query.findInBackground();
-    }*/
 
 
 }
