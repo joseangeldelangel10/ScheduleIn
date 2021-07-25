@@ -1,12 +1,19 @@
 package com.example.schedulein_20.models;
 
 import android.content.Context;
+import android.os.Build;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,11 +23,15 @@ import com.bumptech.glide.Glide;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.fragments.RelationsFragment;
 import com.example.schedulein_20.parseDatabaseComms.RelationRelatedQueries;
+import com.parse.LogInCallback;
 import com.parse.ParseUser;
 
 import java.util.List;
 
+import okio.Timeout;
+
 public class RelationRequestsAdapter extends RecyclerView.Adapter<RelationRequestsAdapter.ViewHolder> {
+    private final String TAG = "RelationRequestAdapter";
     Context context;
     List<ParseUser> requests;
     ParseUser currentUser;
@@ -97,11 +108,12 @@ public class RelationRequestsAdapter extends RecyclerView.Adapter<RelationReques
                 public void onClick(View v) {
                     // we accept the request (backend logic) and discard RV item
                     RelationRelatedQueries.AcceptRequest(context, currentUser, relatingUser);
-                    discardItem(position);
                     // we call the interface method implemented in Relations to add the new relation to the relations
                     // rv
                     RelationRequestsAdapter.OnItemChangeListener listener = (OnItemChangeListener) fragment;
                     listener.onRequestItemAccepted(relatingUser);
+
+                    discardItem(position);
                 }
             });
 
@@ -112,6 +124,16 @@ public class RelationRequestsAdapter extends RecyclerView.Adapter<RelationReques
                     RelationRelatedQueries.DeclineRequest(context, currentUser, relatingUser, null);
                     discardItem(position);
                 }
+            });
+
+            itemView.setOnTouchListener(new OnSwipeTouchListener(context){
+
+                @Override
+                public void onSwipeRight() {
+                    RelationRelatedQueries.DeclineRequest(context, currentUser, relatingUser, null);
+                    discardItem(position);
+                }
+
             });
 
             /* ---------------------------------------------------------------------------------------- */

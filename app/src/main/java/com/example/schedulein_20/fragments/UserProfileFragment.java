@@ -17,6 +17,8 @@ import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -34,6 +36,7 @@ import com.example.schedulein_20.LayoutGenerators.CalendarViewsGenerator;
 import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.models.Events;
+import com.example.schedulein_20.models.OnPinchListener;
 import com.example.schedulein_20.models.ParseUserExtraAttributes;
 import com.example.schedulein_20.parseDatabaseComms.EventQueries;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -67,6 +70,7 @@ public class UserProfileFragment extends Fragment {
     private ParseUser currentUser;
     public ArrayList<Events> weekEvents;
     private Context context;
+    ScaleGestureDetector mScaleDetector;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -128,7 +132,26 @@ public class UserProfileFragment extends Fragment {
         cancelNextEvent = view.findViewById(R.id.ProfileFragmentRelateButt);
         newEvent = view.findViewById(R.id.create_new_event);
         //calView = view.findViewById(R.id.week_view_HorizontalScrollView);
-        calView = view.findViewById(R.id.week_view_mainLinearLayout);
+        calView = view.findViewById(R.id.week_view_days_container);
+
+        calView.setOnTouchListener(new OnPinchListener(context){
+            @Override
+            public void onPinchZoom() {
+                Fragment fragment = new CalendarViewFragment();
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Transition explodeTransform = TransitionInflater.from(context).
+                            inflateTransition(android.R.transition.explode);
+
+                    fragment.setEnterTransition(explodeTransform);
+                }
+
+                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.host_frame, fragment)
+                        .addToBackStack("transaction")
+                        .commit();
+            }
+        });
 
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                         RETRIEVING THE DATA TO GENERATE THE VIEWS
@@ -243,5 +266,6 @@ public class UserProfileFragment extends Fragment {
             }
         };
     }
+
 
 }

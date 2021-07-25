@@ -156,8 +156,10 @@
             android:id="@+id/week_view_HorizontalScrollView">
 
             <LinearLayout
+                android:id="@+id/week_view_days_container"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <View
                     android:layout_width="2dp"
