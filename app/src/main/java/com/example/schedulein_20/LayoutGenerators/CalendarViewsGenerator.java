@@ -86,7 +86,7 @@ public class CalendarViewsGenerator {
 
 
 
-    public static void generateDayView(@NonNull View view, Context context, ArrayList<Events> dayEvents, Fragment activity) {
+    public static void generateDayView(@NonNull View view, Context context, ArrayList<Events> dayEvents, Activity activity, RelativeLayout layout) {
         /* --------------------------------------------------------------------------------
         to generate the week preview we generate a button for each event in eventsList and
         we place the button in the corresponding day column (colums are Relative Layouts)
@@ -99,9 +99,13 @@ public class CalendarViewsGenerator {
         Float minsInDay = new Float(24*60);
         Float RelativeLayoutHeightDP = context.getResources().getDimension(R.dimen.day_view_hour_row_height) * 24; // height of a day column (hour block height times 24 hrs)
 
-        for(Events event: dayEvents) {
+        if (layout == null){
             // !_!_!_!_!_!_!_! CONSIDER WRITING THIS NEXT LINE OUT OF THE FOR LOOP !_!_!_!_!_!_!_!
-            RelativeLayout layout = view.findViewById(  R.id.day_view_users_day  ); // we evaluate the corresponding day column using a hash map
+            layout = view.findViewById(  R.id.day_view_users_day  ); // we evaluate the corresponding day column using a hash map
+
+        }
+
+        for(Events event: dayEvents) {
 
             //we make a ratio to calculate button height
             heightWDuration = new Float(RelativeLayoutHeightDP*event.getDurationInMins() );
@@ -117,7 +121,7 @@ public class CalendarViewsGenerator {
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams( RelativeLayout.LayoutParams.MATCH_PARENT, heightWDuration.intValue() );
             params.setMargins(0, marginTop.intValue() + titleOffset.intValue(), 0, 0);
             btnTag.setLayoutParams(params);
-            btnTag.setTextSize(0, 18);
+            btnTag.setTextSize(0, 28);
 
             if( currentUserId.equals(event.getUser().getObjectId()) ) {
                 btnTag.setText(event.getTitle());

@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.schedulein_20.LayoutGenerators.CalendarViewsGenerator;
@@ -23,6 +24,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,6 +36,8 @@ public class DayViewFragment extends Fragment {
     Context context;
     ParseUser currentUser;
     ArrayList<Events> dayEvents;
+    TextView dayHeaderTitle;
+    Date currentDate;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -87,10 +91,14 @@ public class DayViewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         context = getContext();
         currentUser = ParseUser.getCurrentUser();
+        currentDate = DateTime.currentDate();
         dayEvents = new ArrayList<>();
 
+        dayHeaderTitle = view.findViewById(R.id.day_view_column_header_title);
+        dayHeaderTitle.setText(DateTime.onlyDate(currentDate));
+
         FindCallback onDayEventsFound = dayEventsCallback(view);
-        EventQueries.queryDayEvents(context, currentUser, DateTime.currentDate(), onDayEventsFound);
+        EventQueries.queryDayEvents(context, currentUser, currentDate, onDayEventsFound);
     }
 
     private FindCallback<Events> dayEventsCallback(View view){
@@ -107,7 +115,7 @@ public class DayViewFragment extends Fragment {
                 }
                 dayEvents.addAll(objects);
                 Toast.makeText(context, getString(R.string.events_loaded_succesfully), Toast.LENGTH_SHORT).show();
-                CalendarViewsGenerator.generateDayView(view, context, dayEvents, DayViewFragment.this );
+                CalendarViewsGenerator.generateDayView(view, context, dayEvents, (FragmentActivity) context, null );
             }
         };
     }

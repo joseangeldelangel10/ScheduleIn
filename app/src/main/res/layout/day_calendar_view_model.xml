@@ -169,11 +169,13 @@
                     android:id="@+id/day_view_users_day"
                     android:background="@color/white">
                     <TextView
+                        android:id="@+id/day_view_column_header_title"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/day_view_header_ofset"
                         android:text="Sunday"
                         android:layout_alignParentTop="true"
-                        android:background="@color/secondary"></TextView>
+                        android:background="@color/secondary"
+                        android:gravity="center"></TextView>
 
                 </RelativeLayout>
 

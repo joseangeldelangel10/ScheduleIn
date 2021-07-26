@@ -11,6 +11,7 @@ import android.app.usage.UsageEvents;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -60,6 +61,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
     Button btCreateEv;
     Button btUpdateEv;
     Button btDeleteEv;
+    Button checkAvailability;
     Date startDate;
     Date endDate;
     String eventTitle;
@@ -102,6 +104,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         btUpdateEv = findViewById(R.id.CUeventsUpdateEventBt);
         UDeventBt = findViewById(R.id.CUeventsUDLinearLayout);
         inviteesSearchV = findViewById(R.id.CUeventSearchView);
+        checkAvailability = findViewById(R.id.CUeventCheckAvailabilityButton);
 
         /* ----------------------------------------------------------------------------------------
                             CALCULATING CURRENT DATE TO SET DEFAULT DATE FOR EVENT
@@ -162,7 +165,24 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+                if(newText.equals("")){
+                    cleanRv();
+                }
+                return true;
+            }
+        });
+
+        /* ----------------------------------------------------------------------------------------
+                            SETTING CHECK AVAILABILITY LISTENER
+      ---------------------------------------------------------------------------------------- */
+
+        checkAvailability.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CheckAvailabilityActivity.class);
+
+                intent.putExtra("selectedInvitees", Parcels.wrap(selectedInvitees));
+                startActivity(intent);
             }
         });
 

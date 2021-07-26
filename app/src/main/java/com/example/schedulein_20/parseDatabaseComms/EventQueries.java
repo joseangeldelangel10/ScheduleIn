@@ -88,15 +88,27 @@ public class EventQueries {
 
     public static void queryWeekEvents(Context context, ParseUser user, FindCallback callback) {
 
-        ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
+        ParseQuery<Events> userEventsQuery = ParseQuery.getQuery(Events.class);
+        ParseQuery<Events> eventsInvitedToQuery = ParseQuery.getQuery(Events.class);
 
-        query.include(Events.KEY_USER);
-        query.whereGreaterThan(Events.KEY_START_DATE, DateTime.weekStart());
-        query.whereLessThan(Events.KEY_END_DATE, DateTime.weekEnding());
-        query.whereEqualTo(Events.KEY_USER, user);
-        query.addAscendingOrder(Events.KEY_START_DATE);
+        userEventsQuery.whereGreaterThan(Events.KEY_START_DATE, DateTime.weekStart());
+        userEventsQuery.whereLessThan(Events.KEY_END_DATE, DateTime.weekEnding());
+        userEventsQuery.whereEqualTo(Events.KEY_USER, user);
+        //query.whereEqualTo(Events.KEY_INVITEES, user.getObjectId());
 
-        query.findInBackground(callback);
+
+        eventsInvitedToQuery.whereGreaterThan(Events.KEY_START_DATE, DateTime.weekStart());
+        eventsInvitedToQuery.whereLessThan(Events.KEY_END_DATE, DateTime.weekEnding());
+        eventsInvitedToQuery.whereEqualTo(Events.KEY_INVITEES, user.getObjectId());
+
+
+        List<ParseQuery<Events>> queries = new ArrayList<ParseQuery<Events>>();
+        queries.add(userEventsQuery);
+        queries.add(eventsInvitedToQuery);
+
+        ParseQuery<Events> mainQuery = ParseQuery.or(queries);
+        mainQuery.addAscendingOrder(Events.KEY_START_DATE);
+        mainQuery.findInBackground(callback);
 
     }
 
@@ -112,15 +124,27 @@ public class EventQueries {
         endOfDay.setMinutes(59);
         endOfDay.setSeconds(59);
 
-        ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
+        ParseQuery<Events> userEventsQuery = ParseQuery.getQuery(Events.class);
+        ParseQuery<Events> eventsInvitedToQuery = ParseQuery.getQuery(Events.class);
 
-        query.include(Events.KEY_USER);
-        query.whereGreaterThan(Events.KEY_START_DATE, startOfDay);
-        query.whereLessThan(Events.KEY_END_DATE, endOfDay);
-        query.whereEqualTo(Events.KEY_USER, user);
-        query.addAscendingOrder(Events.KEY_START_DATE);
+        userEventsQuery.whereGreaterThan(Events.KEY_START_DATE, startOfDay);
+        userEventsQuery.whereLessThan(Events.KEY_END_DATE, endOfDay);
+        userEventsQuery.whereEqualTo(Events.KEY_USER, user);
+        //query.whereEqualTo(Events.KEY_INVITEES, user.getObjectId());
 
-        query.findInBackground(callback);
+
+        eventsInvitedToQuery.whereGreaterThan(Events.KEY_START_DATE, startOfDay);
+        eventsInvitedToQuery.whereLessThan(Events.KEY_END_DATE, endOfDay);
+        eventsInvitedToQuery.whereEqualTo(Events.KEY_INVITEES, user.getObjectId());
+
+
+        List<ParseQuery<Events>> queries = new ArrayList<ParseQuery<Events>>();
+        queries.add(userEventsQuery);
+        queries.add(eventsInvitedToQuery);
+
+        ParseQuery<Events> mainQuery = ParseQuery.or(queries);
+        mainQuery.addAscendingOrder(Events.KEY_START_DATE);
+        mainQuery.findInBackground(callback);
 
     }
 }

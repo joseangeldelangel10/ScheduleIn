@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ScheduleIn20">
+        <activity android:name=".CheckAvailabilityActivity"></activity>
         <activity android:name=".CUgroupsActivity" />
         <activity android:name=".CUeventActivity" />
         <activity android:name=".SignUpActivity" />
