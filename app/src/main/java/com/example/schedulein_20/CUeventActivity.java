@@ -182,6 +182,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
                 Intent intent = new Intent(context, CheckAvailabilityActivity.class);
 
                 intent.putExtra("selectedInvitees", Parcels.wrap(selectedInvitees));
+                intent.putExtra("eventDate", startDate.getTime());
                 startActivity(intent);
             }
         });

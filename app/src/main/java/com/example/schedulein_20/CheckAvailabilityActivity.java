@@ -27,15 +27,18 @@ import org.parceler.Parcels;
 import org.parceler.converter.ArrayListParcelConverter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CheckAvailabilityActivity extends AppCompatActivity {
     private final String TAG = "CheckAvailabilityActivity";
     ArrayListParcelConverter arrayListParcelConverter;
     ArrayList<ParseUser> selectedInvitees;
+    Date eventDate;
     Context context;
     ParseUser currentUser;
     LinearLayout scheduleHolder;
+    TextView title;
 
 
     @Override
@@ -47,34 +50,19 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
         currentUser = ParseUser.getCurrentUser();
 
         scheduleHolder = findViewById(R.id.day_view_day_columns_container);
+        title = findViewById(R.id.check_availability_title);
+
+        selectedInvitees = Parcels.unwrap(getIntent().getParcelableExtra("selectedInvitees"));
+        eventDate = new Date(getIntent().getLongExtra("eventDate", DateTime.currentDate().getTime()));
 
         View currentView = findViewById(android.R.id.content);
-        EventQueries.queryDayEvents(context, currentUser, DateTime.currentDate(), queryCurrentUserEventsCallback( currentView ));
+        EventQueries.queryDayEvents(context, currentUser, eventDate, queryCurrentUserEventsCallback( currentView ));
+        
 
-        //Events event = Parcels.unwrap(getIntent().getParcelableExtra("Group"));
-        //ParseUserExtraAttributes.Ids2ParseUsers(joinedEventGroup.getMembers(), ids2ParseUsersCallback());
-        selectedInvitees = Parcels.unwrap(getIntent().getParcelableExtra("selectedInvitees"));
+        title.setText("Availability for your invitees on " + DateTime.onlyDate(eventDate));
 
         Log.e(TAG, selectedInvitees.toString());
 
-
-        /*
-        <RelativeLayout
-                    android:layout_width="@dimen/day_view_day_column_width"
-                    android:layout_height="match_parent"
-                    android:id="@+id/day_view_users_day"
-                    android:background="@color/white">
-                    <TextView
-                        android:id="@+id/day_view_column_header_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/day_view_header_ofset"
-                        android:text="Sunday"
-                        android:layout_alignParentTop="true"
-                        android:background="@color/secondary"
-                        android:gravity="center"></TextView>
-
-                </RelativeLayout>
-         */
         if (selectedInvitees != null & selectedInvitees.size() > 0){
             for (ParseUser invitee: selectedInvitees) {
                 RelativeLayout inviteeScheduleRL = new RelativeLayout(context);
@@ -91,7 +79,7 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
                 inviteeScheduleRL.addView(columnHeader);
                 scheduleHolder.addView(inviteeScheduleRL);
 
-                EventQueries.queryDayEvents(context, invitee, DateTime.currentDate(), queryInviteesEventsCallback(currentView, inviteeScheduleRL));
+                EventQueries.queryDayEvents(context, invitee, eventDate, queryInviteesEventsCallback(currentView, inviteeScheduleRL));
             }
         }
 
