@@ -189,7 +189,7 @@
                 android:textSize="26sp" />
 
             <androidx.appcompat.widget.SearchView
-                android:id="@+id/CUeventSv"
+                android:id="@+id/CUeventSearchView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -224,11 +224,18 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <TextView
+                <Button
+                    android:id="@+id/CUeventCheckAvailabilityButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="check availability">
+                </Button>
+
+                <!--<TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Reminders:">
-                </TextView>
+                </TextView>-->
 
             </LinearLayout>
 

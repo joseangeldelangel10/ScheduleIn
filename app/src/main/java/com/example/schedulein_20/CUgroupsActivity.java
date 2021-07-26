@@ -171,12 +171,21 @@ public class CUgroupsActivity extends AppCompatActivity implements GroupMembersS
         adapter.notifyDataSetChanged();
     }
 
-    // THE IMPLEMENTATION OF THIS METHOD ALLOWS US TO KEEP SELECTED USERS IN RV HIGHLIGHTED AT THE TOP
+    // THE IMPLEMENTATION OF THIS METHOD ALLOWS US TO KEEP SELECTED USERS IN RV HIGHLIGHTED AT THE TOP AND ADD USERS TO GROUP
     @Override
     public void userSelected(ParseUser user) {
         selectedUsers.add(user);
         selectedUsersIds.add(user.getObjectId());
     }
+
+    @Override
+    public void userUnselected(ParseUser user) {
+        selectedUsers.remove(user);
+        possibleMembers.remove(user);
+        selectedUsersIds.remove(user.getObjectId());
+        adapter.notifyDataSetChanged();
+    }
+
 
     /* -----------------------------------------------------------------------------------------------------------------------
                                             USER QUERYING CALLBACKS
@@ -214,7 +223,7 @@ public class CUgroupsActivity extends AppCompatActivity implements GroupMembersS
                 for (ParseUser user: objects){
                     selectedUsers.add(user);
                     selectedUsersIds.add(user.getObjectId());
-                    Toast.makeText(context, "success while retrieving group members", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "success while retrieving group members", Toast.LENGTH_SHORT).show();
                 }
                 cleanRv();
             }
@@ -236,6 +245,8 @@ public class CUgroupsActivity extends AppCompatActivity implements GroupMembersS
                 }
                 Log.i(TAG, "group saving succeeded");
                 Toast.makeText(context, "Group created", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
                 finish();
             }
         };
@@ -247,6 +258,8 @@ public class CUgroupsActivity extends AppCompatActivity implements GroupMembersS
             public void done(ParseException e) {
                 if (e == null){
                     Toast.makeText(context, "Group updated successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK, intent);
                     finish();
                 }else {
                     Toast.makeText(context, "a problem occurred updating group", Toast.LENGTH_SHORT).show();
@@ -261,6 +274,8 @@ public class CUgroupsActivity extends AppCompatActivity implements GroupMembersS
             public void done(ParseException e) {
                 if(e==null){
                     Toast.makeText(context, "Delete Successful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK, intent);
                     finish();
                 }else{
                     //Something went wrong while deleting the Object

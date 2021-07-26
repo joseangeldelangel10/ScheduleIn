@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.example.schedulein_20.DrawerLayoutActivity;
 import com.example.schedulein_20.R;
+import com.example.schedulein_20.models.ParseUserExtraAttributes;
 import com.parse.FindCallback;
 import com.parse.FunctionCallback;
 import com.parse.ParseCloud;
@@ -45,6 +46,7 @@ public class RelationRelatedQueries {
     public static void AcceptRequest(Context context, ParseUser currentUser, ParseUser relatingUser){
         ArrayList<String> relations = (ArrayList<String>) currentUser.get("relations");
         relations.add( relatingUser.getObjectId() );
+        currentUser.put("relations", relations);
 
         if (context == null){
             currentUser.saveInBackground();
@@ -191,10 +193,24 @@ public class RelationRelatedQueries {
     }
 
     public static void queryRelatedUsersWhere(ParseUser currentUser, String query, FindCallback<ParseUser> callback, List<String> selectedUsersIds) {
-
         ArrayList<String> currentUserRelations = (ArrayList<String>) currentUser.get("relations");
-        ParseQuery<ParseUser> mainQuery = ParseUser.getQuery();
-        mainQuery.whereStartsWith("name", query);
+
+        ParseQuery<ParseUser> usernameQuery = ParseUser.getQuery();
+        usernameQuery.whereContains(ParseUserExtraAttributes.KEY_USERNAME, query);
+
+        ParseQuery<ParseUser> nameQuery = ParseUser.getQuery();
+        nameQuery.whereContains(ParseUserExtraAttributes.KEY_NAME, query);
+
+        ParseQuery<ParseUser> surnameQuery = ParseUser.getQuery();
+        surnameQuery.whereContains(ParseUserExtraAttributes.KEY_SURNAME, query);
+
+        // we apply an or operator to all this queries
+        List<ParseQuery<ParseUser>> queries = new ArrayList<ParseQuery<ParseUser>>();
+        queries.add(usernameQuery);
+        queries.add(nameQuery);
+        queries.add(surnameQuery);
+
+        ParseQuery<ParseUser> mainQuery = ParseUser.getQuery().or(queries);
         mainQuery.whereContainedIn("objectId", currentUserRelations);
         mainQuery.whereEqualTo("relations", currentUser.getObjectId());
         mainQuery.whereNotContainedIn("objectId", selectedUsersIds);  // condition that avoids users that have already been selected to appear again
@@ -202,8 +218,5 @@ public class RelationRelatedQueries {
         mainQuery.findInBackground(callback);
 
     }
-
-
-
 
 }

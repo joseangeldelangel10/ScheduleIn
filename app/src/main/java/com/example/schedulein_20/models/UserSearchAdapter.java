@@ -86,7 +86,7 @@ public class UserSearchAdapter extends Adapter<UserSearchAdapter.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Fragment fragmentOne = DrawerLayoutActivity.getVisibleFragment(((FragmentActivity)context).getSupportFragmentManager());
+                    Fragment fragmentOne = FragmentHelpers.getVisibleFragment(((FragmentActivity)context).getSupportFragmentManager());
                     Fragment fragmentTwo = ProfileFragment.newInstance(user, "some str");
 
 

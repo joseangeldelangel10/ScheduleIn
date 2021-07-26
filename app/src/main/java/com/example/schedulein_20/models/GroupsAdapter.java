@@ -9,11 +9,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schedulein_20.CUeventActivity;
 import com.example.schedulein_20.CUgroupsActivity;
+import com.example.schedulein_20.DrawerLayoutActivity;
 import com.example.schedulein_20.R;
+import com.example.schedulein_20.fragments.GroupsFragment;
 
 import org.parceler.Parcels;
 
@@ -72,7 +76,9 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
                     Intent intent = new Intent(context, CUgroupsActivity.class);
                     intent.putExtra("Flag", "UpdateDelete");
                     intent.putExtra("Group", Parcels.wrap(group));
-                    context.startActivity(intent);
+                    Fragment currentFragment = FragmentHelpers.getVisibleFragment(((FragmentActivity)context).getSupportFragmentManager());
+                    //context.startActivity(intent);
+                    currentFragment.startActivityForResult(intent, GroupsFragment.UPDATE_GROUP_REQUEST_CODE);
                 }
             });
 

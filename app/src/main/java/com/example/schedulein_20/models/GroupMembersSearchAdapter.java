@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,6 +51,7 @@ public class GroupMembersSearchAdapter extends RecyclerView.Adapter<GroupMembers
 
     public interface onUserSelectedListener{
         void userSelected(ParseUser user);
+        void userUnselected(ParseUser user);
     }
 
 
@@ -80,13 +82,19 @@ public class GroupMembersSearchAdapter extends RecyclerView.Adapter<GroupMembers
             userName.setText(user.getString("name") + " " + user.getString("surname"));
             userDetails.setText("username: " + user.getString("username"));
 
-            butt1.setClickable(false);
+            butt1.setBackground(new ColorDrawable(context.getResources().getColor(R.color.emphasis1)));
+            butt1.setEnabled(false);
+            butt2.setEnabled(true);
             butt1.setVisibility(View.INVISIBLE);
 
             if (selectedUsers.contains(user)){
                 view.setBackground(new ColorDrawable(context.getResources().getColor(R.color.secondary)));
                 butt2.setBackground(new ColorDrawable(context.getResources().getColor(R.color.gray)));
                 Glide.with(context).load(R.drawable.accept_icon).into(butt2);
+
+                butt1.setVisibility(View.VISIBLE);
+                butt1.setEnabled(true);
+                butt2.setEnabled(false);
             }else {
                 view.setBackground(new ColorDrawable(context.getResources().getColor(R.color.white)));
                 butt2.setBackground(new ColorDrawable(context.getResources().getColor(R.color.emphasis2)));
@@ -100,8 +108,22 @@ public class GroupMembersSearchAdapter extends RecyclerView.Adapter<GroupMembers
                     butt2.setBackground(new ColorDrawable(context.getResources().getColor(R.color.gray)));
                     Glide.with(context).load(R.drawable.accept_icon).into(butt2);
 
+                    butt1.setVisibility(View.VISIBLE);
+                    butt1.setEnabled(true);
+                    butt2.setEnabled(false);
+
                     GroupMembersSearchAdapter.onUserSelectedListener listener = (GroupMembersSearchAdapter.onUserSelectedListener) context;
                     listener.userSelected(user);
+                }
+            });
+
+            butt1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "unselecting: " + user.getUsername(), Toast.LENGTH_SHORT).show();
+
+                    GroupMembersSearchAdapter.onUserSelectedListener listener = (GroupMembersSearchAdapter.onUserSelectedListener) context;
+                    listener.userUnselected(user);
                 }
             });
         }

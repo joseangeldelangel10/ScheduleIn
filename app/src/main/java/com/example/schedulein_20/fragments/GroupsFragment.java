@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +34,8 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link GroupsFragment#newInstance} factory method to
@@ -42,6 +45,8 @@ public class GroupsFragment extends Fragment {
     private final String TAG = "GroupsFragment";
     private RecyclerView rvGroups;
     private Button newGroupButt;
+    public static int UPDATE_GROUP_REQUEST_CODE = 210;
+    public static int CREATE_GROUP_REQUEST_CODE = 220;
     Context context;
     GroupsAdapter adapter;
     List<Group> groups;
@@ -122,7 +127,7 @@ public class GroupsFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent= new Intent(context, CUgroupsActivity.class);
                 intent.putExtra("Flag", "Create");
-                startActivity(intent);
+                startActivityForResult(intent, CREATE_GROUP_REQUEST_CODE);
             }
         });
 
@@ -159,4 +164,17 @@ public class GroupsFragment extends Fragment {
         };
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.e(TAG, "request code: " + String.valueOf(requestCode) + " result code : " + String.valueOf(resultCode));
+        if(requestCode == CREATE_GROUP_REQUEST_CODE || requestCode == UPDATE_GROUP_REQUEST_CODE){
+            if(resultCode == RESULT_OK){
+                Log.e(TAG, "updating groups fragment");
+                Fragment fragment = new GroupsFragment();
+                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.host_frame, fragment)
+                        .commit();
+            }
+        }
+    }
 }

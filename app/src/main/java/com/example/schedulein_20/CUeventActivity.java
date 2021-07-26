@@ -2,6 +2,7 @@ package com.example.schedulein_20;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +28,7 @@ import com.example.schedulein_20.models.Group;
 import com.example.schedulein_20.models.GroupMembersSearchAdapter;
 import com.example.schedulein_20.models.ParseUserExtraAttributes;
 import com.example.schedulein_20.parseDatabaseComms.EventQueries;
+import com.example.schedulein_20.parseDatabaseComms.RelationRelatedQueries;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -42,12 +44,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class CUeventActivity extends AppCompatActivity implements CalendarDialogFragment.EditCalendarDateListener, HourDialogFragment.EditTimeListener {
+public class CUeventActivity extends AppCompatActivity implements CalendarDialogFragment.EditCalendarDateListener, HourDialogFragment.EditTimeListener, GroupMembersSearchAdapter.onUserSelectedListener {
     private final String TAG = "CreateEventAct";
     public static final String FLAG_EDIT_START_DATE = "ChangeStartDate";
     public static final String FLAG_EDIT_END_DATE = "ChangeEndDate";
     public static final String FLAG_EDIT_START_TIME = "ChangeStartTime";
     public static final String FLAG_EDIT_END_TIME = "ChangeEndTime";
+    ParseUser currentUser;
     EditText etTitle;
     TextView tvStartDate;
     TextView tvStartTime;
@@ -63,6 +66,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
     Events event2update;
     Group joinedEventGroup;
     RecyclerView rvInvitees;
+    SearchView inviteesSearchV;
     List<ParseUser> possibleInvitees;
     List<ParseUser> selectedInvitees;
     GroupMembersSearchAdapter adapter;
@@ -73,6 +77,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cu_event);
         context = this;
+        currentUser = ParseUser.getCurrentUser();
         possibleInvitees = new ArrayList<>();
         selectedInvitees = new ArrayList<>();
         /* ----------------------------------------------------------------------------------------
@@ -96,6 +101,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         btDeleteEv = findViewById(R.id.CUeventsDeleteEventBt);
         btUpdateEv = findViewById(R.id.CUeventsUpdateEventBt);
         UDeventBt = findViewById(R.id.CUeventsUDLinearLayout);
+        inviteesSearchV = findViewById(R.id.CUeventSearchView);
 
         /* ----------------------------------------------------------------------------------------
                             CALCULATING CURRENT DATE TO SET DEFAULT DATE FOR EVENT
@@ -139,6 +145,24 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             @Override
             public void onClick(View v) {
                 showEditTimeDialog(FLAG_EDIT_END_TIME);
+            }
+        });
+
+        /* ----------------------------------------------------------------------------------------
+                            SETTING INVITEE SEARCH LOGIC
+      ---------------------------------------------------------------------------------------- */
+        inviteesSearchV.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                cleanRv();
+                FindCallback callback = findRelatedUsersCallback();
+                RelationRelatedQueries.queryRelatedUsersWhere(currentUser, query, callback, ParseUserExtraAttributes.parseUsers2Ids((ArrayList<ParseUser>) selectedInvitees));
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
             }
         });
 
@@ -243,6 +267,24 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
                 }
                 selectedInvitees.addAll(objects);
                 cleanRv();
+            }
+        };
+    }
+
+    private FindCallback<ParseUser> findRelatedUsersCallback(){
+        return new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+                    if (objects.size() == 0){
+                        Toast.makeText(context, "No results :(", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    possibleInvitees.addAll(objects);
+                    adapter.notifyDataSetChanged();
+                    return;
+                }
+                Log.e(TAG, "problem ocurred when looking for possible invitees");
             }
         };
     }
@@ -375,4 +417,16 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
     }
 
 
+    @Override
+    public void userSelected(ParseUser user) {
+        selectedInvitees.add(user);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void userUnselected(ParseUser user) {
+        selectedInvitees.remove(user);
+        possibleInvitees.remove(user);
+        adapter.notifyDataSetChanged();
+    }
 }

@@ -134,25 +134,6 @@ public class UserProfileFragment extends Fragment {
         //calView = view.findViewById(R.id.week_view_HorizontalScrollView);
         calView = view.findViewById(R.id.week_view_days_container);
 
-        calView.setOnTouchListener(new OnPinchListener(context){
-            @Override
-            public void onPinchZoom() {
-                Fragment fragment = new CalendarViewFragment();
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    Transition explodeTransform = TransitionInflater.from(context).
-                            inflateTransition(android.R.transition.explode);
-
-                    fragment.setEnterTransition(explodeTransform);
-                }
-
-                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.host_frame, fragment)
-                        .addToBackStack("transaction")
-                        .commit();
-            }
-        });
-
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                         RETRIEVING THE DATA TO GENERATE THE VIEWS
         ------------------------------------------------------------------------------------------------------------------------------------*/
@@ -205,25 +186,22 @@ public class UserProfileFragment extends Fragment {
                                                         ADD WEEK VIEW GESTURE
         ------------------------------------------------------------------------------------------------------------------------------------*/
 
-        calView.setOnLongClickListener(new View.OnLongClickListener() {
+        calView.setOnTouchListener(new OnPinchListener(context){
             @Override
-            public boolean onLongClick(View v) {
-                Fragment week_view = new CalendarViewFragment();
-                Fragment currentFragment = DrawerLayoutActivity.getVisibleFragment(((FragmentActivity) context).getSupportFragmentManager());
+            public void onPinchZoom() {
+                Fragment fragment = new CalendarViewFragment();
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     Transition explodeTransform = TransitionInflater.from(context).
                             inflateTransition(android.R.transition.explode);
 
-                    currentFragment.setExitTransition(explodeTransform);
-                    //week_view.setEnterTransition(explodeTransform);
+                    fragment.setEnterTransition(explodeTransform);
                 }
 
                 ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.host_frame, week_view)
-                        .addToBackStack("transaction2")
+                        .replace(R.id.host_frame, fragment)
+                        .addToBackStack("transaction")
                         .commit();
-                return true;
             }
         });
 
