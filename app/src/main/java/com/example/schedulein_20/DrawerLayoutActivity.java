@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.schedulein_20.fragments.CalendarViewFragment;
+import com.example.schedulein_20.fragments.DayViewFragment;
 import com.example.schedulein_20.fragments.EditProfileFragment;
 import com.example.schedulein_20.fragments.GroupsFragment;
 import com.example.schedulein_20.fragments.RelationsFragment;
@@ -103,8 +104,11 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
         if (id == R.id.nav_menu_home) {
             fragment = new UserProfileFragment();
         }
-        else if (id == R.id.nav_menu_my_day || id == R.id.nav_menu_my_week || id == R.id.nav_menu_my_month ) {
+        else if (id == R.id.nav_menu_my_week || id == R.id.nav_menu_my_month ) {
             fragment = new CalendarViewFragment();
+        }
+        else if (id == R.id.nav_menu_my_day) {
+            fragment = new DayViewFragment();
         }
         else if (id == R.id.nav_menu_log_out){
             if ((boolean) currentUser.get("googleUser")){

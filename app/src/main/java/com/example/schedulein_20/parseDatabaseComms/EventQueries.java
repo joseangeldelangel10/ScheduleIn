@@ -92,7 +92,31 @@ public class EventQueries {
 
         query.include(Events.KEY_USER);
         query.whereGreaterThan(Events.KEY_START_DATE, DateTime.weekStart());
-        query.whereLessThan(Events.KEY_START_DATE, DateTime.weekEnding());
+        query.whereLessThan(Events.KEY_END_DATE, DateTime.weekEnding());
+        query.whereEqualTo(Events.KEY_USER, user);
+        query.addAscendingOrder(Events.KEY_START_DATE);
+
+        query.findInBackground(callback);
+
+    }
+
+    public static void queryDayEvents(Context context,ParseUser user, Date day ,FindCallback callback) {
+        Date endOfDay = new Date(day.getTime());
+        Date startOfDay = new Date(day.getTime());
+
+        startOfDay.setHours(0);
+        startOfDay.setMinutes(00);
+        startOfDay.setSeconds(00);
+
+        endOfDay.setHours(23);
+        endOfDay.setMinutes(59);
+        endOfDay.setSeconds(59);
+
+        ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
+
+        query.include(Events.KEY_USER);
+        query.whereGreaterThan(Events.KEY_START_DATE, startOfDay);
+        query.whereLessThan(Events.KEY_END_DATE, endOfDay);
         query.whereEqualTo(Events.KEY_USER, user);
         query.addAscendingOrder(Events.KEY_START_DATE);
 

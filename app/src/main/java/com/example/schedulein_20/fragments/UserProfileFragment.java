@@ -204,8 +204,6 @@ public class UserProfileFragment extends Fragment {
                         .commit();
             }
         });
-
-
     }
 
     @Override

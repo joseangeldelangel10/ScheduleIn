@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/day_view_mainLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- _____________________ HOUR COLUMN LINEAR LAYOUT _____________________ -->
+
+        <LinearLayout
+            android:id="@+id/day_view_linearLayoutHours"
+            android:layout_width="@dimen/day_view_hour_column_width"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/secondary">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_header_ofset"
+                android:text="Hour"
+                android:background="@color/secondary"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="00 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="01 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="02 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="03 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="04 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="05 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="06 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="07 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="08 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="09 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="10 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="11 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="12 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="13 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="14 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="15 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="16 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="17 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="18 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="19 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="20 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="21 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="22 hrs"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/day_view_hour_row_height"
+                android:text="23 hrs"></TextView>
+
+        </LinearLayout>
+
+        <!-- _____________________ WEEK DAYS RELATIVE LAYOUT _____________________ -->
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/day_view_day_columns_container"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="?android:attr/listDivider" />
+
+                <RelativeLayout
+                    android:layout_width="@dimen/day_view_day_column_width"
+                    android:layout_height="match_parent"
+                    android:id="@+id/day_view_users_day"
+                    android:background="@color/white">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/day_view_header_ofset"
+                        android:text="Sunday"
+                        android:layout_alignParentTop="true"
+                        android:background="@color/secondary"></TextView>
+
+                </RelativeLayout>
+
+                
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+        <!-- _______________________________________________________ -->
+
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
+
+
