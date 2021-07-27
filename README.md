@@ -2,8 +2,9 @@
 A calendar tool where you can also follow your friends, colleges and families allowing user to view partners schedule and schedule joined events. app should also provide real time details (if users allow it) to let somebody know where you are and if you are available at the moment
 
 ## Table of Contents
-1. [Results](#Results)
-2. [App planing](#ScheduleIn-app-planing)
+* [Results](#Results)
+  * [Overview video](#overview video:)  
+* [App planing](#ScheduleIn-app-planing)
   * [Overview](#Overview)
   * [Product Spec](#Product-Spec)
   * [Wireframes](#Wireframes)
@@ -15,34 +16,46 @@ A calendar tool where you can also follow your friends, colleges and families al
 
 [<img src='http://img.youtube.com/vi/5VpohapXYQs/0.jpg' title='Current progress overview' width='1000' alt='Current progress overview' />](http://www.youtube.com/watch?v=5VpohapXYQs "Overview video")
 
-<img src='overview.gif' title='Current progress overview' width='' alt='Current progress overview' />
-
 ### Stories acomplished
-#### (Description included below each gif)
-<img src='Requirements1.gif' title='Current progress overview' width='' alt='Current progress overview' />
-
-**in this gif we can appreciate the implementation of the following user stories:**
 
    * [x] User can login with specific credentials
    * [x] User can log-out
    * [x] User can sign up
    * [x] User can view his week schedule on log in
-
-<img src='Requirements2.gif' title='Current progress overview' width='' alt='Current progress overview' />
-
-**in this gif we can appreciate the implementation of the following user stories:**
-
    * [x] User can add events to his schedule
    * [x] User is able to have a detailed view of a certain event
    * [x] User can Create, Read, Update and Delete an event
-
-<img src='Requirements3.gif' title='Current progress overview' width='' alt='Current progress overview' />
-
-**in this gif we can appreciate the implementation of the following user stories:**
-
    * [x] User can look for other users using the search bar
-   * [x] User can relate with other users
-   * [x] Once user is related with someone he can see a private view of the other person schedule
+   * [x] User can send to other users relate requests
+   * [x] User can accept or decline relate requests
+   * [x] User can Create, Read, Update and Delete his relations
+   * [x] Once user is related with someone he can see a private view of the other user's week schedule
+   * [x] User can pinch zoom in the week preview of the home tab to take him to a detailed view of his week
+   * [x] User can see his schedule week and day views
+   * [x] User can Login with google
+   * [x] User can discard his relate requests swiping right
+   * [x] User can invite his friends to any event when creating or updating the event
+   * [x] User can uninvite friends to an event
+   * [x] User can see the events he is invited to
+   * [x] When user invites people to an event he can see the availability of the invitees for the day of the event
+   * [x] User can see a detailed view of the events he is invited to
+   * [x] User can create groups of people which whom he usually hangs
+   * [x] User can create events with the people whitin such groups
+   * [x] User can Create, Read, Update and Delete his groups
+   * [x] App has nice transitions and animations
+   * [ ] App includes a library that gives visual polish
+  
+ ### Stories that could improve the app
+   * [ ] User is able to link the app with google calendar
+
+
+**Optional user stories:**
+* [ ] User is able to link his calendar with google calendar
+* [ ] User can choose if a certain event is private or public to his friends (when public the other user will be allowed to see the details of the event)
+
+* [ ] User can create groups of people which whom he usually hangs, store this groups and create events with the people whitin such groups
+* [ ] User can look for app features using the search bar
+
 
 # --------------------------------------------------
 # ScheduleIn-app-planing:
