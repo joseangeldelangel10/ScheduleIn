@@ -1,6 +1,20 @@
-# -----------------------------------------------------------------
-#                           Results:
-# -----------------------------------------------------------------
+# --------------------------------------------------
+#                           ScheduleIn
+# --------------------------------------------------
+
+A calendar tool where you can also follow your friends, colleges and families allowing user to view partners schedule and schedule joined events. app should also provide real time details (if users allow it) to let somebody know where you are and if you are available at the moment
+
+## Table of Contents
+1. [Results](#Results:)
+2. [App planing](#ScheduleIn - app planing:)
+  * [Overview](#Overview)
+  * [Product Spec](#Product-Spec)
+  * [Wireframes](#Wireframes)
+  * [Schema](#Schema)
+
+# --------------------------------------------------
+# Results:
+# --------------------------------------------------
 ## Overview video:
 
 [<img src='http://img.youtube.com/vi/5VpohapXYQs/0.jpg' title='Current progress overview' width='1000' alt='Current progress overview' />](http://www.youtube.com/watch?v=5VpohapXYQs "Overview video")
@@ -34,16 +48,9 @@
    * [x] User can relate with other users
    * [x] Once user is related with someone he can see a private view of the other person schedule
 
-# -----------------------------------------------------------------
-#                    ScheduleIn - app planing:
-# -----------------------------------------------------------------
-A calendar tool where you can also follow your friends, colleges and families allowing user to view partners schedule and schedule joined events. app should also provide real time details (if users allow it) to let somebody know where you are and if you are available at the moment
-
-## Table of Contents
-1. [Overview](#Overview)
-1. [Product Spec](#Product-Spec)
-1. [Wireframes](#Wireframes)
-2. [Schema](#Schema)
+# --------------------------------------------------
+# ScheduleIn - app planing:
+# --------------------------------------------------
 
 ## Overview
 ### Description
