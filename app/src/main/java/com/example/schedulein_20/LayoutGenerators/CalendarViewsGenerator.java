@@ -71,7 +71,20 @@ public class CalendarViewsGenerator {
                         activity.startActivityForResult(intent, UPDATE_EVENT_REQUEST_CODE);
                     }
                 });
-            }else if (event.hasPublicAccess() || event.getInvitees().contains(currentUserId)){
+            }else if( event.getInvitees().contains(currentUserId) ){
+                btnTag.setText(event.getTitle());
+                // We bind a listener to each button which allows the user to update or delete an event by taping on it
+                btnTag.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String flag = "InviteeView";
+                        Intent intent = new Intent(context, CUeventActivity.class);
+                        intent.putExtra("Flag", flag);
+                        intent.putExtra("Event", Parcels.wrap(event));
+                        activity.startActivityForResult(intent, UPDATE_EVENT_REQUEST_CODE);
+                    }
+                });
+            }else if ( event.hasPublicAccess() ){
                 btnTag.setText( event.getTitle() );
                 btnTag.setClickable(false);
             } else {
@@ -137,7 +150,20 @@ public class CalendarViewsGenerator {
                         activity.startActivityForResult(intent, UPDATE_EVENT_REQUEST_CODE);
                     }
                 });
-            }else if (event.hasPublicAccess() || event.getInvitees().contains(currentUserId)){
+            }else if( event.getInvitees().contains(currentUserId) ){
+                btnTag.setText(event.getTitle());
+                // We bind a listener to each button which allows the user to update or delete an event by taping on it
+                btnTag.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String flag = "InviteeView";
+                        Intent intent = new Intent(context, CUeventActivity.class);
+                        intent.putExtra("Flag", flag);
+                        intent.putExtra("Event", Parcels.wrap(event));
+                        activity.startActivityForResult(intent, UPDATE_EVENT_REQUEST_CODE);
+                    }
+                });
+            }else if (event.hasPublicAccess() ){
                 btnTag.setText( event.getTitle() );
                 btnTag.setClickable(false);
             } else {

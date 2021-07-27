@@ -69,6 +69,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
     Group joinedEventGroup;
     RecyclerView rvInvitees;
     SearchView inviteesSearchV;
+    TextView creatorTv;
     List<ParseUser> possibleInvitees;
     List<ParseUser> selectedInvitees;
     GroupMembersSearchAdapter adapter;
@@ -107,6 +108,8 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         UDeventBt = findViewById(R.id.CUeventsUDLinearLayout);
         inviteesSearchV = findViewById(R.id.CUeventSearchView);
         checkAvailability = findViewById(R.id.CUeventCheckAvailabilityButton);
+        creatorTv = findViewById(R.id.CUeventsCreatorTv);
+
 
         /* ----------------------------------------------------------------------------------------
                             CALCULATING CURRENT DATE TO SET DEFAULT DATE FOR EVENT
@@ -251,21 +254,72 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             ParseUserExtraAttributes.Ids2ParseUsers(event2update.getInvitees(), ids2ParseUsersCallback());
             btCreateEv.setVisibility(View.INVISIBLE);
             btCreateEv.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
+            evaluateRvSize();
+        }else if( flag.equals("InviteeView") ){
+            event2update = Parcels.unwrap(getIntent().getParcelableExtra("Event"));
+            etTitle.setText(event2update.getTitle());
+            startDate = event2update.getStartDate();
+            endDate = event2update.getEndDate();
+            updateDatesText();
+            ParseUserExtraAttributes.Ids2ParseUsers(event2update.getInvitees(), ids2ParseUsersCallback());
+            btCreateEv.setVisibility(View.INVISIBLE);
+            btCreateEv.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
+            UDeventBt.setVisibility(View.INVISIBLE);
+            UDeventBt.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
+            checkAvailability.setVisibility(View.INVISIBLE);
+            checkAvailability.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
+            ParseUser creator = null;
+            try {
+                creator = event2update.getUser().fetchIfNeeded();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            creatorTv.setText(creator.getString("name") + " " + creator.getString("surname"));
+            evaluateRvSize();
         }else if (flag.equals("CreateJoinedEvent")){
             joinedEventGroup = Parcels.unwrap(getIntent().getParcelableExtra("Group"));
             ParseUserExtraAttributes.Ids2ParseUsers(joinedEventGroup.getMembers(), ids2ParseUsersCallback());
             UDeventBt.setVisibility(View.INVISIBLE);
             UDeventBt.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
+            evaluateRvSize();
         }
     }
 
     /* ---------------------------------------------------------------------------------------------------
                                                 UI METHODS
     ------------------------------------------------------------------------------------------------------*/
+
+    /*
+    * <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/CUeventInviteesRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/CUeventSearchRelativeLayout"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="25dp" />
+                * */
+    private void evaluateRvSize(){
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) rvInvitees.getLayoutParams();
+        if (possibleInvitees.size() > 2){
+            params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+            params.height = 500;
+            //params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 200);
+        }else {
+            params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+            params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            //params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        }
+        rvInvitees.setLayoutParams(params);
+    }
+
     public void cleanRv(){
         possibleInvitees.clear();
         possibleInvitees.addAll(selectedInvitees);
         adapter.notifyDataSetChanged();
+        evaluateRvSize();
     }
 
     private void updateDatesText() {
@@ -304,6 +358,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
                     }
                     possibleInvitees.addAll(objects);
                     adapter.notifyDataSetChanged();
+                    evaluateRvSize();
                     return;
                 }
                 Log.e(TAG, "problem ocurred when looking for possible invitees");

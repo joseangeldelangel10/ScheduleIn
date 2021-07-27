@@ -18,14 +18,21 @@
                 android:background="?attr/colorPrimary">
             </androidx.appcompat.widget.Toolbar>
 
+            <!--  ______________________________________________ -->
+
+        <RelativeLayout
+            android:id="@+id/CUeventsTitleRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login_my_awesome_toolbar"
+            android:layout_marginTop="25dp">
+
             <TextView
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/login_my_awesome_toolbar"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="25dp"
                 android:text="Title:"
                 android:textSize="30sp" />
 
@@ -33,21 +40,23 @@
                 android:id="@+id/etCUeventTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/login_my_awesome_toolbar"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="25dp"
                 android:layout_marginEnd="15dp"
                 android:layout_toEndOf="@+id/textView12"
                 android:ems="10"
                 android:inputType="textPersonName" />
+
+        </RelativeLayout>
+
+            <!--  ______________________________________________ -->
 
             <LinearLayout
                 android:id="@+id/CUeventStartLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_below="@+id/textView12"
+                android:layout_below="@+id/CUeventsTitleRelativeLayout"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="19dp"
                 android:gravity="center_horizontal">
@@ -67,12 +76,12 @@
                         android:textColor="@color/emphasis1"
                         android:textSize="16sp" />
 
-                        <TextView
-                            android:id="@+id/textView16"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="at  "
-                            android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="at  "
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/CUeventStartTimeTv"
@@ -84,6 +93,7 @@
 
             </LinearLayout>
 
+            <!--  ______________________________________________ -->
 
             <LinearLayout
                 android:id="@+id/CUeventEndLinearLayout"
@@ -124,6 +134,8 @@
                     android:textSize="16sp" />
 
             </LinearLayout>
+
+            <!--  ______________________________________________ -->
 
             <LinearLayout
                 android:id="@+id/CUeventToggleLinearLayout"
@@ -172,109 +184,205 @@
 
             </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/CUeventSearchRelativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/CUeventToggleLinearLayout"
-            android:layout_marginTop="20dp"
-            android:gravity="center_vertical">
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="20dp"
-                android:text="With:"
-                android:textSize="26sp" />
+            <!--  ______________________________________________ -->
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/CUeventSearchView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_toEndOf="@+id/textView18"
-                app:iconifiedByDefault="false"
-                app:queryHint="invite people"></androidx.appcompat.widget.SearchView>
-
-        </RelativeLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/CUeventInviteesRv"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_below="@+id/CUeventSearchRelativeLayout"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="25dp" />
-
-
-
-        <LinearLayout
-                android:id="@+id/CUeventRemindersLinearLay"
+            <RelativeLayout
+                android:id="@+id/CUeventSearchRelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/CUeventInviteesRv"
-                android:layout_alignParentStart="true"
+                android:layout_below="@+id/CUeventToggleLinearLayout"
                 android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:gravity="center_vertical">
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="20dp"
+                    android:text="With:"
+                    android:textSize="26sp" />
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/CUeventSearchView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_toEndOf="@+id/textView18"
+                    app:iconifiedByDefault="false"
+                    app:queryHint="invite people"></androidx.appcompat.widget.SearchView>
+
+            </RelativeLayout>
+
+            <!--  ______________________________________________ -->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/CUeventInviteesRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/CUeventSearchRelativeLayout"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="25dp" />
+
+            <!--  ______________________________________________ -->
+
+
+            <RelativeLayout
+                    android:id="@+id/CUeventRemindersLinearLay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/CUeventInviteesRv"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="20dp">
 
                 <Button
                     android:id="@+id/CUeventCheckAvailabilityButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="check availability">
-                </Button>
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:text="check availability"
+                    android:textSize="10sp"></Button>
 
-                <!--<TextView
+                    <!--<TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reminders:">
+                    </TextView>-->
+
+                </RelativeLayout>
+
+            <!--  ______________________________________________ -->
+
+            <LinearLayout
+                android:id="@+id/CUeventsColorLinearLay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/CUeventRemindersLinearLay"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp">
+
+                <TextView
+                    android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Reminders:">
-                </TextView>-->
+                    android:text="Color: "
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@null"></ImageView>
+
+                <ImageButton
+                    android:id="@+id/CUGroupColorPrimary"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@color/primary"></ImageButton>
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@null"></ImageView>
+
+                <ImageButton
+                    android:id="@+id/CUGroupColorSecondary"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@color/secondary"></ImageButton>
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@null"></ImageView>
+
+                <ImageButton
+                    android:id="@+id/CUGroupColorEmphasis2"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@color/emphasis2"></ImageButton>
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@null"></ImageView>
+
+                <ImageButton
+                    android:id="@+id/CUGroupColorGray"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@color/gray"></ImageButton>
 
             </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/CUeventsCreatorLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/CUeventsColorLinearLay"
+                android:layout_marginTop="20dp"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/CUeventsCreatedby"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="created by: ">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/CUeventsCreatorTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="You"
+                    android:layout_toEndOf="@+id/CUeventsCreatedby"
+                    android:textColor="@color/primary">
+                </TextView>
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/CUeventsCUFinalButt"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/CUeventRemindersLinearLay"
+                android:layout_below="@+id/CUeventsCreatorLayout"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="26dp"
                 android:background="@color/primary"
-                android:text="Create + " />
+                android:text="Create + "
+                tools:visibility="invisible"/>
 
-        <LinearLayout
-            android:id="@+id/CUeventsUDLinearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/CUeventRemindersLinearLay"
-            android:layout_marginTop="26dp"
-            android:gravity="center_horizontal">
-
-            <Button
-                android:id="@+id/CUeventsDeleteEventBt"
-                android:layout_width="140dp"
+            <LinearLayout
+                android:id="@+id/CUeventsUDLinearLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/red"
-                android:text="Delete event"></Button>
+                android:layout_below="@+id/CUeventsCreatorLayout"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="match_parent"></ImageView>
+                <Button
+                    android:id="@+id/CUeventsDeleteEventBt"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/red"
+                    android:text="Delete event"></Button>
 
-            <Button
-                android:id="@+id/CUeventsUpdateEventBt"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:background="@color/primary"
-                android:text="update"></Button>
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"></ImageView>
+
+                <Button
+                    android:id="@+id/CUeventsUpdateEventBt"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/primary"
+                    android:text="update"></Button>
+            </LinearLayout>
 
     </RelativeLayout>
 
