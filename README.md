@@ -3,7 +3,7 @@ A calendar tool where you can also follow your friends, colleges and families al
 
 ## Table of Contents
 * [Results](#Results)
-  * [Overview video](#overview video:)  
+  * [Overview video](#overview-video:)  
 * [App planing](#ScheduleIn-app-planing)
   * [Overview](#Overview)
   * [Product Spec](#Product-Spec)
@@ -127,7 +127,7 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 **Flow Navigation** (Screen to Screen)
 
-<img src='NavigationFlow.jpg' title='Expected views' width='' alt='Expected Views' />
+<img src='NavigationFlow.jpg' title='Expected views' height='800' alt='Expected Views' />
 
 ## Wireframes
 
@@ -139,9 +139,9 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 ## Schema 
 ### Models
 #### Database Model:
-<img src='DBmodel.png' title='DB model' width='' alt='DB model' />
+<img src='DBmodel.png' title='DB model' height='800' alt='DB model' />
 #### Java objects:
-<img src='javaObjects.jpg' title='DB model' width='' alt='DB model' />
+<img src='javaObjects.jpg' title='DB model' height='800' alt='DB model' />
 
 
 
@@ -153,7 +153,7 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 * UserSearchQueries
 * UserSession
 
-#### APIs, SDKs and frameworks used
+### APIs, SDKs and frameworks used
 To acomplish app functionality the app uses the following APIs and SDKs
 * [Back4app SDK](https://www.back4app.com/)
 * [Google sign in SDK](https://developers.google.com/identity/sign-in/android/sign-in)
