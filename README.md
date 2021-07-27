@@ -157,6 +157,18 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 **Event entity:**
 
+| Property   | Type         | Description                                                                                                      |   |   |
+|------------|--------------|------------------------------------------------------------------------------------------------------------------|---|---|
+| ID         | String       | User unique identifier                                                                                           |   |   |
+| username   | String       | username                                                                                                         |   |   |
+| password   | String       | password used for OAuth of the user                                                                              |   |   |
+| email      | String       | user's email                                                                                                     |   |   |
+| name       | String       | user's first name                                                                                                |   |   |
+| surname    | String       | user's family name                                                                                               |   |   |
+| relations  | List[String] | list that stores the ids of the users whom which the user is related                                             |   |   |
+| profilePic | File         | user's profile picture                                                                                           |   |   |
+| googleUser | Boolean      | this element serves as a flag that allows us to determine is the current user was generated using google sign in |   |   |
+
 **Group entity:**
 
 
