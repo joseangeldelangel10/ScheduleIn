@@ -157,17 +157,15 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 **Event entity:**
 
-| Property   | Type         | Description                                                                                                      |   |   |
-|------------|--------------|------------------------------------------------------------------------------------------------------------------|---|---|
-| ID         | String       | User unique identifier                                                                                           |   |   |
-| username   | String       | username                                                                                                         |   |   |
-| password   | String       | password used for OAuth of the user                                                                              |   |   |
-| email      | String       | user's email                                                                                                     |   |   |
-| name       | String       | user's first name                                                                                                |   |   |
-| surname    | String       | user's family name                                                                                               |   |   |
-| relations  | List[String] | list that stores the ids of the users whom which the user is related                                             |   |   |
-| profilePic | File         | user's profile picture                                                                                           |   |   |
-| googleUser | Boolean      | this element serves as a flag that allows us to determine is the current user was generated using google sign in |   |   |
+| Property  | Type          | Description                                                                          |
+|-----------|---------------|--------------------------------------------------------------------------------------|
+| ID        | String        | event unique identifier                                                              |
+| creator   | Pointer[User] | points to the user that created the event                                            |
+| title     | String        | event's title                                                                        |
+| startDate | Date          | event's start date                                                                   |
+| endDate   | Date          | event's end date                                                                     |
+| invitees  | list[String]  | this attribute stores the ids of the users that are invited to a certain event       |
+| public    | Boolean       | if this attribute equals true user's friends can see the event name in his week view |
 
 **Group entity:**
 
