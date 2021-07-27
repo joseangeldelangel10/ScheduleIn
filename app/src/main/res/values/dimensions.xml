@@ -13,5 +13,9 @@
     <dimen name="day_view_hour_row_height">50dp</dimen>
     <dimen name="day_view_day_column_width">350dp</dimen>
 
+    <!--_______________________       __________________________-->
+    <dimen name="check_availability_column_width_small">100dp</dimen>
+    <dimen name="check_availability_column_width_large">200dp</dimen>
+
 
 </resources>

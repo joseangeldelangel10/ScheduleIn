@@ -55,7 +55,7 @@ public class CalendarViewsGenerator {
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams( RelativeLayout.LayoutParams.MATCH_PARENT, heightWDuration.intValue() );
             params.setMargins(0, marginTop.intValue() + titleOffset.intValue(), 0, 0);
             btnTag.setLayoutParams(params);
-            btnTag.setTextSize(0, 18);
+            btnTag.setTextSize(0, 25);
 
             if( currentUserId.equals(event.getUser().getObjectId()) ) {
                 btnTag.setText(event.getTitle());
@@ -71,7 +71,7 @@ public class CalendarViewsGenerator {
                         activity.startActivityForResult(intent, UPDATE_EVENT_REQUEST_CODE);
                     }
                 });
-            }else if (event.hasPublicAccess() ){
+            }else if (event.hasPublicAccess() || event.getInvitees().contains(currentUserId)){
                 btnTag.setText( event.getTitle() );
                 btnTag.setClickable(false);
             } else {
@@ -137,7 +137,7 @@ public class CalendarViewsGenerator {
                         activity.startActivityForResult(intent, UPDATE_EVENT_REQUEST_CODE);
                     }
                 });
-            }else if (event.hasPublicAccess() ){
+            }else if (event.hasPublicAccess() || event.getInvitees().contains(currentUserId)){
                 btnTag.setText( event.getTitle() );
                 btnTag.setClickable(false);
             } else {

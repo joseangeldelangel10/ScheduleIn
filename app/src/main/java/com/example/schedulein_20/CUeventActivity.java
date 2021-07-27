@@ -73,6 +73,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
     List<ParseUser> selectedInvitees;
     GroupMembersSearchAdapter adapter;
     Context context;
+    String flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         currentUser = ParseUser.getCurrentUser();
         possibleInvitees = new ArrayList<>();
         selectedInvitees = new ArrayList<>();
+        flag = (String) getIntent().getExtras().get("Flag");
         /* ----------------------------------------------------------------------------------------
                                     CREATING TOOLBAR
       ---------------------------------------------------------------------------------------- */
@@ -180,9 +182,10 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, CheckAvailabilityActivity.class);
-
+                intent.putExtra("Flag", flag);
                 intent.putExtra("selectedInvitees", Parcels.wrap(selectedInvitees));
-                intent.putExtra("eventDate", startDate.getTime());
+                intent.putExtra("eventStartDate", startDate.getTime());
+                intent.putExtra("eventEndDate", endDate.getTime());
                 startActivity(intent);
             }
         });
@@ -235,8 +238,6 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         /* ----------------------------------------------------------------------------------------
                             MODIFY BEHAVIOUR TO C-U-D EVENTS
       ---------------------------------------------------------------------------------------- */
-
-        String flag = (String) getIntent().getExtras().get("Flag");
 
         if(flag.equals("Create")){
             UDeventBt.setVisibility(View.INVISIBLE);

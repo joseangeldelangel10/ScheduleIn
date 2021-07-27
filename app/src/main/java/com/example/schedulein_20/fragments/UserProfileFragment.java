@@ -69,7 +69,7 @@ public class UserProfileFragment extends Fragment {
     LinearLayout calView;
     private ParseUser currentUser;
     public ArrayList<Events> weekEvents;
-    private Context context;
+    public Context context;
     ScaleGestureDetector mScaleDetector;
 
     // TODO: Rename parameter arguments, choose names that match
