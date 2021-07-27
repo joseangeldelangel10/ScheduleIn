@@ -3,7 +3,7 @@ A calendar tool where you can also follow your friends, colleges and families al
 
 ## Table of Contents
 * [Results](#Results)
-  * [Overview video](#overview-video:)  
+  * [Overview video](#overview-video)  
 * [App planing](#ScheduleIn-app-planing)
   * [Overview](#Overview)
   * [Product Spec](#Product-Spec)
@@ -137,9 +137,29 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 <img src='Interactive.gif' title='Interactive Prototype' width='' alt='Interactive Prototype' />
 
 ## Schema 
+
 ### Models
+
 #### Database Model:
-<img src='DBmodel.png' title='DB model' height='800' alt='DB model' />
+
+**User entity:**
+| Property   | Type         | Description                                                                                                      |
+|------------|--------------|------------------------------------------------------------------------------------------------------------------|
+| ID         | String       | User unique identifier                                                                                           |
+| username   | String       | username                                                                                                         |
+| password   | String       | password used for OAuth of the user                                                                              |
+| email      | String       | user's email                                                                                                     |
+| name       | String       | user's first name                                                                                                |
+| surname    | String       | user's family name                                                                                               |
+| relations  | List[String] | list that stores the ids of the users whom which the user is related                                             |
+| profilePic | File         | user's profile picture                                                                                           |
+| googleUser | Boolean      | this element serves as a flag that allows us to determine is the current user was generated using google sign in |
+
+**Event entity:**
+
+**Group entity:**
+
+
 #### Java objects:
 <img src='javaObjects.jpg' title='DB model' height='800' alt='DB model' />
 
