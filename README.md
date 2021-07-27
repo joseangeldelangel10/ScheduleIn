@@ -43,99 +43,67 @@ A calendar tool where you can also follow your friends, colleges and families al
    * [x] User can create events with the people whitin such groups
    * [x] User can Create, Read, Update and Delete his groups
    * [x] App has nice transitions and animations
-   * [ ] App includes a library that gives visual polish
+   * [x] App includes a library that gives visual polish
   
  ### Stories that could improve the app
    * [ ] User is able to link the app with google calendar
+   * [ ] User can assign to an event a color
+   * [ ] User can assign to a group a color
+   * [ ] User can update his profile picture
+   * [ ] User can set reminders for events
+   * [ ] App uses ML cluster algorithm and NLP to suggest a time for new event based on user habits  
+   * [ ] User can choose if a certain event is private or public to his friends (when public the other user will be allowed to see the name of the event but not the details of such event)
 
-
-**Optional user stories:**
-* [ ] User is able to link his calendar with google calendar
-* [ ] User can choose if a certain event is private or public to his friends (when public the other user will be allowed to see the details of the event)
-
-* [ ] User can create groups of people which whom he usually hangs, store this groups and create events with the people whitin such groups
-* [ ] User can look for app features using the search bar
-
-
-# --------------------------------------------------
 # ScheduleIn-app-planing:
-# --------------------------------------------------
 
-## Overview
 ### Description
 ScheduleIn is an app that aims to improve current calendar tools allowing the user to follow his friends, colleges and families in order to view partners aviability and to provide an easy way to create joined events, the user can also create gruops with other users which whom we usually hangs out with like family, work teams, etcetera and this will allow user easily create group events.
 
 ### App Evaluation
 - **Category:** Productivity, Social, communications, tools 
-- **Mobile:** This app will be developed initialy as a mobile app, however I consider that in the future the app should be responsive enough to give confort and practicity in tablets as well, on the other hand a webapp might be developed in the future as well.
-- **Story:** Allows user to orginize their time considering their peers time as well 
+- **Mobile:** This app will be developed initialy as a mobile app, however we consider that in the future the app should be responsive enough to give confort and practicity in tablets as well, on the other hand a webapp might be developed in the future as well.
+- **Story:** Allows user to orginize their time considering peers time as well 
 - **Market:** App's main target are companies and asociations, we want to allow them to improve their logistics and to have a clear scheduling
 - **Habit:** The user has total freedom to decide weather they want to register the tasks they will be doing or not, but the app will be much more useful with a constant usage.
 - **Scope:** Despite of the fact that the main target are the companies and executives, app will be open for anybody in the word.
 
 ## Product Spec
 
-### 1. User Stories (Required and Optional)
-**Required User stories:**
-
-* [x] User can login with specific credentials
-* [x] User can log-out
-* [x] User can sign up
-* [x] User can view his week schedule on log in
-* [x] User can add events to his schedule
-* [x] User is able to have a detailed view of a certain event
-* [x] User can Create, Read, Update and Delete an event
-* [ ] User can view the week view of his calendar at double tap in the main activity (add grow animation)
-* [x] User can look for other users using the search bar
-* [ ] User can see his schedule in month, week and day views
-* [x] User can relate with other users
-* [x] Once user is related with someone he can see a private view of the other person schedule
-* [ ] User can Login with google
-* [ ] User can see his notifications (reminders for next events) and his relations requests
-* [ ] User can discard his notifications and relate requests swiping right (does this counts as a gesture?)
-* [ ] User can cancel his next event with a shortcut button
-* [ ] User can CRUD his relations
-
-**Optional user stories:**
-* [ ] User is able to link his calendar with google calendar
-* [ ] User can choose if a certain event is private or public to his friends (when public the other user will be allowed to see the details of the event)
-* [ ] User can create joined events (of 2 people) in an easy manner
-* [ ] User can create groups of people which whom he usually hangs, store this groups and create events with the people whitin such groups
-* [ ] User can look for app features using the search bar
-
-**NOTES:**
-* Add swipe animation to the menu activity
-* Use glide to add curved borders to profile picture
-
-### 2. Screen Archetypes
+### 1. Screen Archetypes
 
 * Login or sign up
 * Login - 
     * User can login with specific credentials
-    * User is able to link his calendar with google calendar
-* Register - User signs up 
+    * User is able to sign in with google calendar
+* Sign up - User signs up 
 * User ProfileView -
     * User can view his week schedule on log in
     * User can add events to his schedule
-    * User can cancel his next event with a shortcut button
-    * User can view the week view of his calendar at double tap in the main activity (add grow animation)
+    * User can cancel his next event with a shortcut button [this feature hasn't been implemented yet]
+    * User can view the week view of his calendar at pinch zoom in the main activity
     * User can look for other users using the search bar
-* Edit profile -
-* Menu -
-    * User can see his schedule in month, week and day views
-* Notifications -
-    * User can see his notifications (reminders for next events) and his relations requests
 * Create/update event - 
     * User can Create, Read, Update and Delete an event
+* Check Availability -
+    * User can check the avilability of the event invitees for the day of the event 
 * General ProfileView -
-    * User can relate with other users
-    * Once user is related with someone he can see a private view of the other person schedule
+    * User can see other user profile
+    * User can send a relate request to other user if he isn't already related
+    * User can accept a relate request to other user if he isn't already related
+    * Once user is related with someone he can see a private view of the other person week schedule
+* Edit profile -
 * calendar view (day, week, month)
-    * User can see his schedule in month, week and day views
+    * User can see his schedule in week and day views
 * User relations
+    * User can see the people he is related to 
+    * User can unrelate to any user he is related to
+    * User can accept or decline relate requests 
 * User groups
-    * User can create joined events (of 2 people) in an easy manner
-    * User can create groups of people which whom he usually hangs, store this groups and create events with the people whitin such groups
+    * User can see his groups
+    * User can tap on his groups to see details and edit them if necessary
+    * There is a button to create a new group
+* Create/Update group  
+    * User can create groups of people which whom he usually hangs, 
     * User can CRUD his relations
 
 ### 3. Navigation
