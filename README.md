@@ -1,7 +1,4 @@
-# --------------------------------------------------
-#                           ScheduleIn
-# --------------------------------------------------
-
+# ScheduleIn
 A calendar tool where you can also follow your friends, colleges and families allowing user to view partners schedule and schedule joined events. app should also provide real time details (if users allow it) to let somebody know where you are and if you are available at the moment
 
 ## Table of Contents
@@ -12,9 +9,8 @@ A calendar tool where you can also follow your friends, colleges and families al
   * [Wireframes](#Wireframes)
   * [Schema](#Schema)
 
-# --------------------------------------------------
-# Results
-# --------------------------------------------------
+## Results
+
 ## Overview video:
 
 [<img src='http://img.youtube.com/vi/5VpohapXYQs/0.jpg' title='Current progress overview' width='1000' alt='Current progress overview' />](http://www.youtube.com/watch?v=5VpohapXYQs "Overview video")
