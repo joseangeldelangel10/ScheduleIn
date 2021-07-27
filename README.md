@@ -1,5 +1,10 @@
-# Current progress:
+# -----------------------------------------------------------------
+#                           Results:
+# -----------------------------------------------------------------
 ### Overview
+
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/5VpohapXYQs/0.jpg)](http://www.youtube.com/watch?v=5VpohapXYQs "Overview video")
+
 
 <img src='overview.gif' title='Current progress overview' width='' alt='Current progress overview' />
 
@@ -30,7 +35,9 @@
    * [x] User can relate with other users
    * [x] Once user is related with someone he can see a private view of the other person schedule
 
-# ScheduleIn
+# -----------------------------------------------------------------
+#                    ScheduleIn - app planing:
+# -----------------------------------------------------------------
 A calendar tool where you can also follow your friends, colleges and families allowing user to view partners schedule and schedule joined events. app should also provide real time details (if users allow it) to let somebody know where you are and if you are available at the moment
 
 ## Table of Contents
