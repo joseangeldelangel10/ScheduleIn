@@ -169,10 +169,12 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 **Group entity:**
 
-
-### Java objects:
-<img src='javaObjects.jpg' title='DB model' height='800' alt='DB model' />
-
+| Property | Type          | Description                                                           |
+|----------|---------------|-----------------------------------------------------------------------|
+| ID       | String        | group's unique identifier                                             |
+| creator  | Pointer[User] | points to the user that created the group                             |
+| name     | String        | group's name                                                          |
+| members  | list[String]  | this attribute stores the ids of the users that are part of the group |
 
 
 ## Networking
