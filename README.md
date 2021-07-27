@@ -51,6 +51,7 @@ A calendar tool where you can also follow your friends, colleges and families al
    * [ ] User can assign to a group a color
    * [ ] User can update his profile picture
    * [ ] User can set reminders for events
+   * [ ] App makes timing suggestions for new events based in invitees availability 
    * [ ] App uses ML cluster algorithm and NLP to suggest a time for new event based on user habits  
    * [ ] User can choose if a certain event is private or public to his friends (when public the other user will be allowed to see the name of the event but not the details of such event)
 
@@ -103,14 +104,26 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
     * User can tap on his groups to see details and edit them if necessary
     * There is a button to create a new group
 * Create/Update group  
-    * User can create groups of people which whom he usually hangs, 
-    * User can CRUD his relations
+    * User can create groups of people which whom he usually hangs 
+    * User can add new people to the group or remove group members
+    * User can Create, Read, Update and Delete a group 
 
 ### 3. Navigation
 
 **Tab Navigation** (Tab to Screen)
 
-* [Menu when optimized]
+* Home
+* My time
+  * My day
+  * My week
+  * My month
+* My profile
+  * Log out
+  * Edit Profile
+  * Privacy Settings
+*  My relations
+  * See my relations
+  * See my groups    
 
 **Flow Navigation** (Screen to Screen)
 
@@ -120,11 +133,8 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 <img src='AppViewsDrafts.jpg' title='Expected views' width='' alt='Expected Views' />
 
-### [BONUS] Digital Wireframes & Mockups
-
-### [BONUS] Interactive Prototype
+### Interactive Pre-Prototype
 <img src='Interactive.gif' title='Interactive Prototype' width='' alt='Interactive Prototype' />
-
 
 ## Schema 
 ### Models
@@ -136,35 +146,18 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 
 ### Networking
-##### Network request for this week events:
-```java
-        // specify what type of data we want to query
-        ParseQuery<Post> query = ParseQuery.getQuery(Event.class);
-        // include data referred by user key
-        query.include(Post.KEY_USER);
-        query.whereGreaterThan("start", current_monday_morning);
-        query.whereLessThan("start", current_sunday_night);
-        // start an asynchronous call for posts
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> posts, ParseException e) {
-                // check for errors
-                if (e != null) {
-                    Log.e(TAG, "Issue while retriving events", e);
-                    return;
-                }
+**App network requests are handled in the parseDatabaseComms package of the app, this package contains the following classes:**
+* EventQueries
+* GroupQueries
+* RelationRelatedQueries
+* UserSearchQueries
+* UserSession
 
-                // for debugging purposes let's print every post description to logcat
-                for (Post post : posts) {
-                    weekCalendar = new WeekCalendar(events);
-                }
-            }
-        });
-```
-... Other requests ...
+#### APIs, SDKs and frameworks used
+To acomplish app functionality the app uses the following APIs and SDKs
+* [Back4app SDK](https://www.back4app.com/)
+* [Google sign in SDK](https://developers.google.com/identity/sign-in/android/sign-in)
+* [Glide SDK](https://github.com/bumptech/glide)
+* [Parceler](https://github.com/johncarl81/parceler)
 
-- [OPTIONAL: List endpoints if using existing API such as Yelp]
-Instead of providing specific endpoints to make requests to calendar api and sign in with google api, google provides java libraries that allow us to communicate with both APIs
-   * Sign in library : https://developers.google.com/identity/sign-in/android/start-integrating
-   * Calendar library : https://developers.google.com/calendar/api/quickstart/java
 
