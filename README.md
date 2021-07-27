@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------
 ### Overview
 
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/5VpohapXYQs/0.jpg)](http://www.youtube.com/watch?v=5VpohapXYQs "Overview video")
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/5VpohapXYQs/0.jpg) width='800'](http://www.youtube.com/watch?v=5VpohapXYQs "Overview video")
 
 
 <img src='overview.gif' title='Current progress overview' width='' alt='Current progress overview' />
