@@ -138,8 +138,6 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 ## Schema 
 
-### **Models**
-
 ### Database Model:
 
 **User entity:**
