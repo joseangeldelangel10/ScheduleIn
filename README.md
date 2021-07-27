@@ -68,9 +68,9 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 - **Habit:** The user has total freedom to decide weather they want to register the tasks they will be doing or not, but the app will be much more useful with a constant usage.
 - **Scope:** Despite of the fact that the main target are the companies and executives, app will be open for anybody in the word.
 
-## Product Spec
+## Product Spec:
 
-### 1. Screen Archetypes
+## 1. Screen Archetypes
 
 * Login or sign up
 * Login - 
@@ -108,7 +108,7 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
     * User can add new people to the group or remove group members
     * User can Create, Read, Update and Delete a group 
 
-### 3. Navigation
+## 3. Navigation
 
 **Tab Navigation** (Tab to Screen)
 
@@ -133,14 +133,14 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 <img src='AppViewsDrafts.jpg' title='Expected views' width='' alt='Expected Views' />
 
-### Interactive Pre-Prototype
+## Interactive Pre-Prototype
 <img src='Interactive.gif' title='Interactive Prototype' width='' alt='Interactive Prototype' />
 
 ## Schema 
 
-### Models
+### **Models**
 
-#### Database Model:
+### Database Model:
 
 **User entity:**
 | Property   | Type         | Description                                                                                                      |
@@ -160,12 +160,12 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 **Group entity:**
 
 
-#### Java objects:
+### Java objects:
 <img src='javaObjects.jpg' title='DB model' height='800' alt='DB model' />
 
 
 
-### Networking
+## Networking
 **App network requests are handled in the parseDatabaseComms package of the app, this package contains the following classes:**
 * EventQueries
 * GroupQueries
@@ -173,7 +173,7 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 * UserSearchQueries
 * UserSession
 
-### APIs, SDKs and frameworks used
+## APIs, SDKs and frameworks used
 To acomplish app functionality the app uses the following APIs and SDKs
 * [Back4app SDK](https://www.back4app.com/)
 * [Google sign in SDK](https://developers.google.com/identity/sign-in/android/sign-in)
