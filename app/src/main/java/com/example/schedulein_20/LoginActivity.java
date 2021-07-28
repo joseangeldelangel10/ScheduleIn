@@ -186,13 +186,11 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 if (objects.size() == 0){
-                    //Uri googlePhoto = account.getPhotoUrl();
-                    //File fileFromPhoto = getPhotoFileUri(googlePhoto.getPath());
-                    //ParseFile newProfilePic = new ParseFile(fileFromPhoto);
+                    Uri googlePhoto = account.getPhotoUrl();
+                    File fileFromPhoto = getPhotoFileUri(googlePhoto.getPath());
+                    ParseFile newProfilePic = new ParseFile(fileFromPhoto);
 
                     UserSession.createUser(context, email, email, password, name, surname,true, googleUserSignUpCallback());
-
-                    //ParseFile googlePhotoFile = new ParseFile(fileFromPhoto);
                     return;
                 }
                 UserSession.loginUser(email, password, loginUserCallback());

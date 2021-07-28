@@ -120,7 +120,37 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:text="Create group +" />
+        android:text="Create group +"
+        tools:visibility="invisible"/>
+
+    <!--
+    <LinearLayout
+                android:id="@+id/CUeventsUDLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/CUeventsCreatorLayout"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/CUeventsDeleteEventBt"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/red"
+                    android:text="Delete event"></Button>
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"></ImageView>
+
+                <Button
+                    android:id="@+id/CUeventsUpdateEventBt"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/primary"
+                    android:text="update"></Button>
+            </LinearLayout>
+    -->
 
     <RelativeLayout
         android:id="@+id/CUGroupUDbuttons"
@@ -135,7 +165,7 @@
 
         <Button
             android:id="@+id/CUGroupDeleteGroup"
-            android:layout_width="170dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="Delete group"
             android:background="@color/red"
@@ -145,7 +175,7 @@
 
         <Button
             android:id="@+id/CUGroupUpdateGroup"
-            android:layout_width="170dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="update group"
             android:background="@color/primary"

@@ -166,6 +166,7 @@ public class UserProfileFragment extends Fragment {
         ------------------------------------------------------------------------------------------------------------------------------------*/
 
         FindCallback onWeekEventsFound = weekEventsCallback(context, view);
+        // TODO: progress bar crash
         EventQueries.queryWeekEvents(context, currentUser, onWeekEventsFound);
 
         /* ------------------------------------------------------------------------------------------------------------------------------------
