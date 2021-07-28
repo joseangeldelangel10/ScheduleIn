@@ -108,7 +108,7 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
     * User can add new people to the group or remove group members
     * User can Create, Read, Update and Delete a group 
 
-## 3. Navigation
+## 2. Navigation
 
 **Tab Navigation** (Tab to Screen)
 
@@ -129,14 +129,14 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 
 <img src='NavigationFlow.jpg' title='Expected views' height='800' alt='Expected Views' />
 
-## Wireframes
+## 3. Wireframes
 
 <img src='AppViewsDrafts.jpg' title='Expected views' width='' alt='Expected Views' />
 
-## Interactive Pre-Prototype
+## 4. Interactive Pre-Prototype
 <img src='Interactive.gif' title='Interactive Prototype' width='' alt='Interactive Prototype' />
 
-## Schema 
+## 5. Schema 
 
 ### Database Model:
 
@@ -175,7 +175,7 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 | members  | list[String]  | this attribute stores the ids of the users that are part of the group |
 
 
-## Networking
+## 6. Networking
 **App network requests are handled in the parseDatabaseComms package of the app, this package contains the following classes:**
 * EventQueries
 * GroupQueries
@@ -183,7 +183,7 @@ ScheduleIn is an app that aims to improve current calendar tools allowing the us
 * UserSearchQueries
 * UserSession
 
-## APIs, SDKs and frameworks used
+## 7. APIs, SDKs and frameworks used
 To acomplish app functionality the app uses the following APIs and SDKs
 * [Back4app SDK](https://www.back4app.com/)
 * [Google sign in SDK](https://developers.google.com/identity/sign-in/android/sign-in)
