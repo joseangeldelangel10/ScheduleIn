@@ -5,10 +5,13 @@ A calendar tool where you can also follow your friends, colleges and families al
 * [Results](#Results)
   * [Overview video](#overview-video)  
 * [App planing](#ScheduleIn-app-planing)
-  * [Overview](#Overview)
-  * [Product Spec](#Product-Spec)
-  * [Wireframes](#Wireframes)
-  * [Schema](#Schema)
+  * [Product Spec](#1-Product-Spec)
+  * [Navigation](#2-Product-Spec)
+  * [Wireframes](#3-Wireframes)
+  * [Interactive Pre-prototype](#4-Interactive-Pre-prototype)
+  * [Schema](#5-Schema)
+  * [Networking](#6-Networking)
+  * [APIs, SDKs and Frameworks used](#7-APIs,-SDKs-and-frameworks-used)
 
 # Results
 
