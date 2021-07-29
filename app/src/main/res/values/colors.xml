@@ -16,4 +16,5 @@
     <color name="emphasis2">#C2EDCE</color>
     <color name="gray">#C2C2C2</color>
     <color name="emphasis1_transparent">#388087F2</color>
+    <color name="red_transparent">#7CFF0000</color>
 </resources>

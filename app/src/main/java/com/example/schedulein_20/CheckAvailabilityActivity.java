@@ -40,31 +40,34 @@ import java.util.Random;
 public class CheckAvailabilityActivity extends AppCompatActivity {
     private final String TAG = "CheckAvailabilityActivity";
     public Context context;
-    private ArrayList<ParseUser> selectedInvitees;
-    private Date eventStartDate;
-    private Date eventEndDate;
     private ParseUser currentUser;
-    public Events eventPreview;
-    Boolean suggestionsGenerated;
-    Integer callbacksCompleted;
-    ArrayList<Integer> suggestedTime;
-    ArrayList<ArrayList<Events>> inviteesSchedules;
+    //--- views and layouts ---
+    View currentView;
     LinearLayout scheduleHolder;
     RelativeLayout userDay;
     TextView title;
     TextView userDayHeader;
-    ArrayList<Drawable> colors = new ArrayList<>();
-    String flag;
     Integer columnWidth;
+    ArrayList<Drawable> colors = new ArrayList<>();
+    //-- time suggestions data ---
+    ArrayList<Integer> suggestedTime;
+    ArrayList<ArrayList<Events>> inviteesSchedules;
+    //--- new event data ---
+    private Date eventStartDate;
+    private Date eventEndDate;
+    private ArrayList<ParseUser> selectedInvitees;
+    public Events eventPreview;
+    //--- flags ---
+    String flag;
+    Boolean suggestionsGenerated;
+    Integer callbacksCompleted;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_availability);
-        inviteesSchedules = new ArrayList<>();
-        suggestionsGenerated = false;
-        callbacksCompleted = 0;
 
         colors.add( new ColorDrawable( getColor(R.color.primary)) );
         colors.add( new ColorDrawable( getColor(R.color.secondary)) );
@@ -80,6 +83,10 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
         selectedInvitees = Parcels.unwrap(getIntent().getParcelableExtra("selectedInvitees"));
         eventStartDate = new Date(getIntent().getLongExtra("eventStartDate", DateTime.currentDate().getTime()));
         eventEndDate = new Date(getIntent().getLongExtra("eventEndDate", DateTime.currentDate().getTime()));
+        inviteesSchedules = new ArrayList<>();
+        suggestionsGenerated = false;
+        callbacksCompleted = 0;
+        currentView = findViewById(android.R.id.content);
 
         if (selectedInvitees.size() < 2){
             columnWidth = (int) getResources().getDimension(R.dimen.check_availability_column_width_large);
@@ -90,36 +97,30 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
         /* ----------------------------------------------------------------------------------------------------
                                         VIEW REFERENCING
          ---------------------------------------------------------------------------------------------------- */
-        scheduleHolder = findViewById(R.id.day_view_day_columns_container);
         title = findViewById(R.id.check_availability_title);
+        scheduleHolder = findViewById(R.id.day_view_day_columns_container);
         userDay = findViewById(R.id.day_view_users_day);
         userDayHeader = findViewById(R.id.day_view_column_header_title);
         title.setText("Availability for your invitees on " + DateTime.onlyDate(eventStartDate));
+        /* ----------------------------------------------------------------------------------------------------
+                                        WE GENERATE EVENT PREVIEW
+         ---------------------------------------------------------------------------------------------------- */
+
+        eventPreview = new Events();
+        eventPreview.setStartDate(eventStartDate);
+        eventPreview.setEndDate(eventEndDate);
+        eventPreview.setTitle("new event");
+
         /* ----------------------------------------------------------------------------------------------------
                                         WE SET UP USER DAY VIEW (DEFAULT)
          ---------------------------------------------------------------------------------------------------- */
         userDayHeader.setText("Your day");
         LinearLayout.LayoutParams userDayParams = new LinearLayout.LayoutParams(columnWidth, RelativeLayout.LayoutParams.MATCH_PARENT);
         userDay.setLayoutParams(userDayParams);
-        View currentView = findViewById(android.R.id.content);
         EventQueries.queryDayEvents(context, currentUser, eventStartDate, queryCurrentUserEventsCallback( currentView ));
 
         /* ----------------------------------------------------------------------------------------------------
-                                        WE GENERATE EVENT PREVIEW
-         ---------------------------------------------------------------------------------------------------- */
-
-        if( flag.equals("Create") || flag.equals("CreateJoinedEvent") ) {
-            eventPreview = new Events();
-            eventPreview.setStartDate(eventStartDate);
-            eventPreview.setEndDate(eventEndDate);
-            eventPreview.setTitle("new event");
-
-            Log.e(TAG, eventPreview.toString());
-        }
-
-
-        /* ----------------------------------------------------------------------------------------------------
-                                        WE CREATE A NEW VIEW FOR EACH INVITEE
+                                        WE CREATE A NEW DAY VIEW FOR EACH INVITEE
          ---------------------------------------------------------------------------------------------------- */
 
         if (selectedInvitees != null & selectedInvitees.size() > 0){
@@ -150,6 +151,10 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
             }
         }
 
+        /* ----------------------------------------------------------------------------------------------------
+                                        WE GENERATE TIME SUGGESTIONS
+         ---------------------------------------------------------------------------------------------------- */
+
         generateTimeSuggestions();
 
     }
@@ -160,8 +165,8 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if(callbacksCompleted == selectedInvitees.size()+1 & !suggestionsGenerated){
-                    Log.e(TAG, "generating sugestions");
+                if(callbacksCompleted == selectedInvitees.size()+1 && !suggestionsGenerated){
+                    Log.i(TAG, "generating time suggestions");
                     TimeSuggestions ts = new TimeSuggestions(inviteesSchedules, eventPreview.getDurationInMins());
                     suggestedTime = ts.generateSuggestions();
                     plotSuggestedTime();
@@ -206,7 +211,8 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
 
             //Log.e(TAG, "title: " + event.getTitle() + " duration: " + event.getDurationInMins());
 
-            //btnTag.setText(event.getTitle());
+            btnTag.setText("suggested");
+            btnTag.setTextColor(getColor(R.color.primary_green));
             btnTag.setClickable(false);
             // ----------------------------
 
@@ -225,54 +231,14 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
                 }
                 dayEvents.addAll(objects);
                 CalendarViewsGenerator.generateDayView(view, context, dayEvents, CheckAvailabilityActivity.this, layout );
-                generateNewEventPreview(eventPreview, layout);
+                if(flag.equals("Create") || flag.equals("CreateJoinedEvent")) {
+                    CalendarViewsGenerator.generateNewEventPreview(currentView, context, eventPreview, dayEvents, CheckAvailabilityActivity.this, layout);
+                }
                 inviteesSchedules.add(dayEvents);
                 callbacksCompleted++;
             }
         };
     }
-
-    private void generateNewEventPreview(Events event, RelativeLayout layout) {
-        /* --------------------------------------------------------------------------------
-        to generate the week preview we generate a button for each event in eventsList and
-        we place the button in the corresponding day column (colums are Relative Layouts)
-        at the corresponding height based in the event starting time and ending time
-        -------------------------------------------------------------------------------- */
-        if (event != null) {
-            Float titleOffset = context.getResources().getDimension(R.dimen.day_view_header_ofset); // dp height occupied by day tags (Monday, tuesday, wednesday, ...)
-            Float heightWDuration; // dp height of the event button based in its duration
-            Float marginTop; // dp height at which the event button is placed based event starting time
-            Float minsInDay = new Float(24 * 60);
-            Float RelativeLayoutHeightDP = context.getResources().getDimension(R.dimen.day_view_hour_row_height) * 24; // height of a day column (hour block height times 24 hrs)
-
-
-            //we make a ratio to calculate button height
-            heightWDuration = new Float(RelativeLayoutHeightDP * event.getDurationInMins());
-            heightWDuration = heightWDuration / minsInDay;
-
-            //we make a ratio to calculate margin top
-            marginTop = new Float(event.getStartInMins());
-            marginTop = marginTop * RelativeLayoutHeightDP;
-            marginTop = marginTop / minsInDay;
-
-            //we set the properties for the button
-            Button btnTag = new Button(context);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, heightWDuration.intValue());
-            params.setMargins(0, marginTop.intValue() + titleOffset.intValue(), 0, 0);
-            btnTag.setLayoutParams(params);
-            btnTag.setTextSize(0, 28);
-            btnTag.setBackground(new ColorDrawable(getColor(R.color.emphasis1_transparent)));
-
-            Log.e(TAG, "title: " + event.getTitle() + " duration: " + event.getDurationInMins());
-
-            btnTag.setText(event.getTitle());
-            btnTag.setClickable(false);
-            // ----------------------------
-
-            layout.addView(btnTag);
-        }
-    }
-
 
     private FindCallback queryCurrentUserEventsCallback(View view) {
         ArrayList<Events> dayEvents = new ArrayList<>();
@@ -286,7 +252,9 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
 
                 dayEvents.addAll(objects);
                 CalendarViewsGenerator.generateDayView(view, context, dayEvents, CheckAvailabilityActivity.this, null );
-                generateNewEventPreview(eventPreview, userDay);
+                if(flag.equals("Create") || flag.equals("CreateJoinedEvent")) {
+                    CalendarViewsGenerator.generateNewEventPreview(currentView, context, eventPreview, dayEvents, CheckAvailabilityActivity.this, userDay);
+                }
                 inviteesSchedules.add(dayEvents);
                 callbacksCompleted++;
             }

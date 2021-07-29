@@ -3,6 +3,7 @@ package com.example.schedulein_20.LayoutGenerators;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import com.example.schedulein_20.CUeventActivity;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.fragments.UserProfileFragment;
 import com.example.schedulein_20.models.Events;
+import com.example.schedulein_20.models.TimeSuggestions;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;
@@ -177,4 +179,54 @@ public class CalendarViewsGenerator {
     }
 
 
+    public static void generateNewEventPreview(@NonNull View view, Context context, Events event, ArrayList<Events> dayEvents, Activity activity, RelativeLayout layout) {
+        /* --------------------------------------------------------------------------------
+        to generate the week preview we generate a button for each event in eventsList and
+        we place the button in the corresponding day column (colums are Relative Layouts)
+        at the corresponding height based in the event starting time and ending time
+        -------------------------------------------------------------------------------- */
+        if (event != null) {
+            Float titleOffset = context.getResources().getDimension(R.dimen.day_view_header_ofset); // dp height occupied by day tags (Monday, tuesday, wednesday, ...)
+            Float heightWDuration; // dp height of the event button based in its duration
+            Float marginTop; // dp height at which the event button is placed based event starting time
+            Float minsInDay = new Float(24 * 60);
+            Float RelativeLayoutHeightDP = context.getResources().getDimension(R.dimen.day_view_hour_row_height) * 24; // height of a day column (hour block height times 24 hrs)
+
+
+            //we make a ratio to calculate button height
+            heightWDuration = new Float(RelativeLayoutHeightDP * event.getDurationInMins());
+            heightWDuration = heightWDuration / minsInDay;
+
+            //we make a ratio to calculate margin top
+            marginTop = new Float(event.getStartInMins());
+            marginTop = marginTop * RelativeLayoutHeightDP;
+            marginTop = marginTop / minsInDay;
+
+            //we set the properties for the button
+            Button btnTag = new Button(context);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, heightWDuration.intValue());
+            params.setMargins(0, marginTop.intValue() + titleOffset.intValue(), 0, 0);
+            btnTag.setLayoutParams(params);
+            btnTag.setTextSize(0, 28);
+            btnTag.setText(event.getTitle());
+            btnTag.setClickable(false);
+
+            // --------------- WE CHECK IF EVENT CROSSES WITH ANOTHER EVENT ------------
+            boolean crossesWithOtherEv = false;
+            for(Events dayEvent:dayEvents){
+                if(TimeSuggestions.compareForCrossings(event, dayEvent)){
+                    crossesWithOtherEv = true;
+                    break;
+                }
+            }
+            if(crossesWithOtherEv){
+                btnTag.setBackground(new ColorDrawable(activity.getColor(R.color.red_transparent)));
+            }else {
+                btnTag.setBackground(new ColorDrawable(activity.getColor(R.color.emphasis1_transparent)));
+            }
+            // ----------------------------
+
+            layout.addView(btnTag);
+        }
+    }
 }
