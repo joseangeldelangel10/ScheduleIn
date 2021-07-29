@@ -94,5 +94,14 @@ public class Events extends ParseObject {
         return startMinute;
     }
 
+    public int getEndInMins(){
+        Date end = getEndDate();
+        int minutesInHour = 60;
+
+        int endMinute = end.getHours() * minutesInHour + end.getMinutes();
+
+        return endMinute;
+    }
+
 
 }

@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -21,6 +23,7 @@ import com.example.schedulein_20.fragments.DayViewFragment;
 import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.models.Events;
 import com.example.schedulein_20.models.ParseUserExtraAttributes;
+import com.example.schedulein_20.models.TimeSuggestions;
 import com.example.schedulein_20.parseDatabaseComms.EventQueries;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -42,6 +45,10 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
     private Date eventEndDate;
     private ParseUser currentUser;
     public Events eventPreview;
+    Boolean suggestionsGenerated;
+    Integer callbacksCompleted;
+    ArrayList<Integer> suggestedTime;
+    ArrayList<ArrayList<Events>> inviteesSchedules;
     LinearLayout scheduleHolder;
     RelativeLayout userDay;
     TextView title;
@@ -55,6 +62,9 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_availability);
+        inviteesSchedules = new ArrayList<>();
+        suggestionsGenerated = false;
+        callbacksCompleted = 0;
 
         colors.add( new ColorDrawable( getColor(R.color.primary)) );
         colors.add( new ColorDrawable( getColor(R.color.secondary)) );
@@ -140,6 +150,68 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
             }
         }
 
+        generateTimeSuggestions();
+
+    }
+
+    private void generateTimeSuggestions() {
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if(callbacksCompleted == selectedInvitees.size()+1 & !suggestionsGenerated){
+                    Log.e(TAG, "generating sugestions");
+                    TimeSuggestions ts = new TimeSuggestions(inviteesSchedules, eventPreview.getDurationInMins());
+                    suggestedTime = ts.generateSuggestions();
+                    plotSuggestedTime();
+                    suggestionsGenerated = true;
+                }else {
+                    Log.e(TAG, "suggestions conditions haven't met");
+                    Log.e(TAG, "callbacks: " + callbacksCompleted);
+                    Log.e(TAG, "suggestions: " + suggestionsGenerated);
+                    handler.postDelayed(this, 500);
+                }
+            }
+        };
+        handler.postDelayed(runnable, 500);
+    }
+
+    private void plotSuggestedTime() {
+        if (suggestedTime.size() != 0) {
+            Float titleOffset = context.getResources().getDimension(R.dimen.day_view_header_ofset); // dp height occupied by day tags (Monday, tuesday, wednesday, ...)
+            Float heightWDuration; // dp height of the event button based in its duration
+            Float marginTop; // dp height at which the event button is placed based event starting time
+            Float minsInDay = new Float(24 * 60);
+            Float RelativeLayoutHeightDP = context.getResources().getDimension(R.dimen.day_view_hour_row_height) * 24; // height of a day column (hour block height times 24 hrs)
+
+
+            //we make a ratio to calculate button height
+            Float suggestedTimeDuration = Float.valueOf(suggestedTime.get(1) - suggestedTime.get(0));
+            heightWDuration = new Float(RelativeLayoutHeightDP * suggestedTimeDuration);
+            heightWDuration = heightWDuration / minsInDay;
+
+            //we make a ratio to calculate margin top
+            marginTop = new Float(suggestedTime.get(0));
+            marginTop = marginTop * RelativeLayoutHeightDP;
+            marginTop = marginTop / minsInDay;
+
+            //we set the properties for the button
+            Button btnTag = new Button(context);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, heightWDuration.intValue());
+            params.setMargins(0, marginTop.intValue() + titleOffset.intValue(), 0, 0);
+            btnTag.setLayoutParams(params);
+            //btnTag.setTextSize(0, 28);
+            btnTag.setBackground(getDrawable(R.drawable.custom_border));
+
+            //Log.e(TAG, "title: " + event.getTitle() + " duration: " + event.getDurationInMins());
+
+            //btnTag.setText(event.getTitle());
+            btnTag.setClickable(false);
+            // ----------------------------
+
+            userDay.addView(btnTag);
+        }
     }
 
     private FindCallback queryInviteesEventsCallback(View view, RelativeLayout layout) {
@@ -153,8 +225,9 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
                 }
                 dayEvents.addAll(objects);
                 CalendarViewsGenerator.generateDayView(view, context, dayEvents, CheckAvailabilityActivity.this, layout );
-
                 generateNewEventPreview(eventPreview, layout);
+                inviteesSchedules.add(dayEvents);
+                callbacksCompleted++;
             }
         };
     }
@@ -214,6 +287,8 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
                 dayEvents.addAll(objects);
                 CalendarViewsGenerator.generateDayView(view, context, dayEvents, CheckAvailabilityActivity.this, null );
                 generateNewEventPreview(eventPreview, userDay);
+                inviteesSchedules.add(dayEvents);
+                callbacksCompleted++;
             }
         };
     }
