@@ -1,6 +1,5 @@
 package com.example.schedulein_20;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -12,15 +11,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.schedulein_20.fragments.CalendarViewFragment;
 import com.example.schedulein_20.fragments.DayViewFragment;
@@ -36,12 +32,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.navigation.NavigationView;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 public class DrawerLayoutActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG = "ActivityDrawerLayout";
@@ -92,6 +86,14 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
         headNavDate.setText(DateTime.getFormalCurrentDate());
 
         /* --------------------------------------------------------------------------------------------- */
+
+        try {
+            GoogleCalendarQuickstart.main();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        }
 
     }
 

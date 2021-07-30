@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +63,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
     Button btUpdateEv;
     Button btDeleteEv;
     Button checkAvailability;
+    Switch publicSwitch;
     Date startDate;
     Date endDate;
     String eventTitle;
@@ -72,6 +74,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
     TextView creatorTv;
     List<ParseUser> possibleInvitees;
     List<ParseUser> selectedInvitees;
+    boolean eventIsPublic;
     GroupMembersSearchAdapter adapter;
     Context context;
     String flag;
@@ -101,6 +104,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         tvStartTime = findViewById(R.id.CUeventStartTimeTv);
         tvEndDate = findViewById(R.id.CUeventEndDateTv);
         tvEndTime = findViewById(R.id.CUeventEndTimeTv);
+        publicSwitch = findViewById(R.id.CUeventPublicSwitch);
         rvInvitees = findViewById(R.id.CUeventInviteesRv);
         btCreateEv = findViewById(R.id.CUeventsCUFinalButt);
         btDeleteEv = findViewById(R.id.CUeventsDeleteEventBt);
@@ -200,10 +204,12 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             @Override
             public void onClick(View v) {
                 eventTitle = etTitle.getText().toString();
+                eventIsPublic = publicSwitch.isChecked();
                 EventQueries.createEventInDB(context,
                         eventTitle,
                         startDate,
                         endDate,
+                        eventIsPublic,
                         ParseUserExtraAttributes.parseUsers2Ids((ArrayList<ParseUser>) selectedInvitees),
                         createEventCallback());
             }
@@ -213,11 +219,13 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             @Override
             public void onClick(View v) {
                 eventTitle = etTitle.getText().toString();
+                eventIsPublic = publicSwitch.isChecked();
                 EventQueries.updateEventInDB(context,
                         event2update,
                         eventTitle,
                         startDate,
                         endDate,
+                        eventIsPublic,
                         ParseUserExtraAttributes.parseUsers2Ids((ArrayList<ParseUser>) selectedInvitees),
                         updateEventCallback());
             }
@@ -250,6 +258,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             etTitle.setText(event2update.getTitle());
             startDate = event2update.getStartDate();
             endDate = event2update.getEndDate();
+            publicSwitch.setChecked(event2update.hasPublicAccess());
             updateDatesText();
             ParseUserExtraAttributes.Ids2ParseUsers(event2update.getInvitees(), ids2ParseUsersCallback());
             btCreateEv.setVisibility(View.INVISIBLE);
@@ -260,6 +269,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             etTitle.setText(event2update.getTitle());
             startDate = event2update.getStartDate();
             endDate = event2update.getEndDate();
+            publicSwitch.setChecked(event2update.hasPublicAccess());
             updateDatesText();
             ParseUserExtraAttributes.Ids2ParseUsers(event2update.getInvitees(), ids2ParseUsersCallback());
             btCreateEv.setVisibility(View.INVISIBLE);

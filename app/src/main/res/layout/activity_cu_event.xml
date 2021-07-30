@@ -177,10 +177,10 @@
                 </ImageView>
 
                 <Switch
-                    android:id="@+id/CUeventAllDaySwitch"
+                    android:id="@+id/CUeventPublicSwitch"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="All day" />
+                    android:text="Public" />
 
             </LinearLayout>
 
