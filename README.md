@@ -54,9 +54,9 @@ A calendar tool where you can also follow your friends, colleges and families al
    * [ ] User can assign to a group a color
    * [ ] User can update his profile picture
    * [ ] User can set reminders for events
-   * [ ] App makes timing suggestions for new events based in invitees availability 
+   * [x] App makes timing suggestions for new events based in invitees availability 
    * [ ] App uses ML cluster algorithm and NLP to suggest a time for new event based on user habits  
-   * [ ] User can choose if a certain event is private or public to his friends (when public the other user will be allowed to see the name of the event but not the details of such event)
+   * [x] User can choose if a certain event is private or public to his friends (when public the other user will be allowed to see the name of the event but not the details of such event)
 
 # ScheduleIn-app-planing:
 
