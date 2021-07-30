@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +30,7 @@ public class CalendarViewsGenerator {
 
     public static void generateWeekView(@NonNull View view, Context context, ArrayList<Events> weekEvents, Fragment activity) {
         /* --------------------------------------------------------------------------------
-        to generate the week preview we generate a button for each event in eventsList and
+        to generate the week view we generate a button for each event in eventsList and
         we place the button in the corresponding day column (colums are Relative Layouts)
         at the corresponding height based in the event starting time and ending time
         -------------------------------------------------------------------------------- */
@@ -103,7 +104,7 @@ public class CalendarViewsGenerator {
 
     public static void generateDayView(@NonNull View view, Context context, ArrayList<Events> dayEvents, Activity activity, RelativeLayout layout) {
         /* --------------------------------------------------------------------------------
-        to generate the week preview we generate a button for each event in eventsList and
+        to generate the day view we generate a button for each event in eventsList and
         we place the button in the corresponding day column (colums are Relative Layouts)
         at the corresponding height based in the event starting time and ending time
         -------------------------------------------------------------------------------- */
@@ -115,12 +116,18 @@ public class CalendarViewsGenerator {
         Float RelativeLayoutHeightDP = context.getResources().getDimension(R.dimen.day_view_hour_row_height) * 24; // height of a day column (hour block height times 24 hrs)
 
         if (layout == null){
-            // !_!_!_!_!_!_!_! CONSIDER WRITING THIS NEXT LINE OUT OF THE FOR LOOP !_!_!_!_!_!_!_!
-            layout = view.findViewById(  R.id.day_view_users_day  ); // we evaluate the corresponding day column using a hash map
+            layout = view.findViewById(  R.id.day_view_users_day  );
 
         }
 
         for(Events event: dayEvents) {
+            //ArrayList<Float> widthAndMargin = new ArrayList<>();
+            //widthAndMargin = generateWidthAndMargin(context, event, dayEvents, context.getResources().getDimension(R.dimen.day_view_day_column_width));
+
+            //Float columnWidth = widthAndMargin.get(0);
+            //Float marginLeft = widthAndMargin.get(1);
+            Float columnWidth = Float.valueOf(RelativeLayout.LayoutParams.MATCH_PARENT);
+            Float marginLeft = Float.valueOf(0);
 
             //we make a ratio to calculate button height
             heightWDuration = new Float(RelativeLayoutHeightDP*event.getDurationInMins() );
@@ -133,8 +140,8 @@ public class CalendarViewsGenerator {
 
             //we set the properties for the button
             Button btnTag = new Button(context);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams( RelativeLayout.LayoutParams.MATCH_PARENT, heightWDuration.intValue() );
-            params.setMargins(0, marginTop.intValue() + titleOffset.intValue(), 0, 0);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams( columnWidth.intValue(), heightWDuration.intValue() );
+            params.setMargins(marginLeft.intValue(), marginTop.intValue() + titleOffset.intValue(), 0, 0);
             btnTag.setLayoutParams(params);
             btnTag.setTextSize(0, 28);
 
@@ -178,13 +185,43 @@ public class CalendarViewsGenerator {
         }
     }
 
+    private static ArrayList<Float> generateWidthAndMargin(Context context, Events event, ArrayList<Events> dayEvents, Float defaultWidth) {
+        Float columnWidth = defaultWidth;
+        Float marginLeft = Float.valueOf(0);
+
+        /*
+        -1 -> error
+        0 -> Above unrelated
+        1 -> Below unrelated
+        2 -> Above cross
+        3 -> Below cross
+        4 -> ev2 inside ev1
+        5 -> ev1 inside ev2
+         */
+
+        for (Events otherEvent:dayEvents){
+            int relation = TimeSuggestions.evaluateCrossings(event, otherEvent);
+            if (event != otherEvent){
+                if(relation == 2 || relation == 5){
+                    columnWidth = columnWidth/2;
+                    marginLeft += columnWidth;
+                }else if(relation == 3 || relation == 4){
+                    columnWidth = columnWidth/2;
+                }
+            }
+        }
+
+        ArrayList<Float> res = new ArrayList<>();
+        res.add(columnWidth);
+        res.add(marginLeft);
+        return res;
+
+
+    }
+
 
     public static void generateNewEventPreview(@NonNull View view, Context context, Events event, ArrayList<Events> dayEvents, Activity activity, RelativeLayout layout) {
-        /* --------------------------------------------------------------------------------
-        to generate the week preview we generate a button for each event in eventsList and
-        we place the button in the corresponding day column (colums are Relative Layouts)
-        at the corresponding height based in the event starting time and ending time
-        -------------------------------------------------------------------------------- */
+
         if (event != null) {
             Float titleOffset = context.getResources().getDimension(R.dimen.day_view_header_ofset); // dp height occupied by day tags (Monday, tuesday, wednesday, ...)
             Float heightWDuration; // dp height of the event button based in its duration

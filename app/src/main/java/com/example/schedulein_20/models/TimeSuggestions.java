@@ -75,7 +75,7 @@ public class TimeSuggestions {
         WE MERGE THE EVENTS OVERLAPPED IN IT, WE ADD THE EVENTS FROM NEXT DAY AND
         REPEAT THE PROCEDURE UNTIL ALL EVENTS ARE MERGED
          */
-        Log.e(TAG, "starting merged schedule generator");
+        Log.i(TAG, "starting merged schedule generator");
         int inviteesSchedulesSize = inviteesSchedules.size();
         for(int i = 0; i<inviteesSchedulesSize; i++){
             sortMergedSchedule();
@@ -84,7 +84,7 @@ public class TimeSuggestions {
         }
         sortMergedSchedule();
         checkSelfCrossing();
-        Log.e(TAG, "RESULT : " + mergedSchedule.toString());
+        Log.i(TAG, "RESULT : " + mergedSchedule.toString());
     }
 
     private void checkSelfCrossing() {
@@ -142,8 +142,8 @@ public class TimeSuggestions {
         slot.add(newRangeStart);
         slot.add(newRangeEnd);
         freeSlots.add(slot);
-        Log.e(TAG, "free slots");
-        Log.e(TAG, freeSlots.toString());
+        Log.i(TAG, "free slots");
+        Log.i(TAG, freeSlots.toString());
     }
 
     private void filterFreeSlots() {
@@ -336,13 +336,7 @@ public class TimeSuggestions {
 
     public static boolean compareForCrossings(Events event1, Events event2) {
         /*
-        -1 -> error
-        0 -> Above unrelated
-        1 -> Below unrelated
-        2 -> Above cross
-        3 -> Below cross
-        4 -> ev2 inside ev1
-        5 -> ev1 inside ev2
+        true when event1 overlaps with event2
          */
         if (evaluateCrossings(event1, event2) == 2){
             return true;

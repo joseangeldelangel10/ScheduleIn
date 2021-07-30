@@ -196,6 +196,7 @@ public class UserProfileFragment extends Fragment {
                     Transition explodeTransform = TransitionInflater.from(context).
                             inflateTransition(android.R.transition.explode);
 
+
                     fragment.setEnterTransition(explodeTransform);
                 }
 
