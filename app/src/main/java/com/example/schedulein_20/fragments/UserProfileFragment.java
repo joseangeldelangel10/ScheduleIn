@@ -188,6 +188,7 @@ public class UserProfileFragment extends Fragment {
         ------------------------------------------------------------------------------------------------------------------------------------*/
 
         calView.setOnTouchListener(new OnPinchListener(context){
+
             @Override
             public void onPinchZoom() {
                 Fragment fragment = new CalendarViewFragment();
@@ -206,6 +207,7 @@ public class UserProfileFragment extends Fragment {
                         .commit();
             }
         });
+
     }
 
     @Override

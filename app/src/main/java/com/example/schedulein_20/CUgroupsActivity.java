@@ -8,14 +8,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.schedulein_20.models.Events;
 import com.example.schedulein_20.models.Group;
 import com.example.schedulein_20.models.GroupMembersSearchAdapter;
@@ -43,6 +48,8 @@ public class CUgroupsActivity extends AppCompatActivity implements GroupMembersS
     List<ParseUser> possibleMembers;
     List<ParseUser> selectedUsers;
     List<String> selectedUsersIds;
+    private ArrayList<ImageButton> colorButtons;
+    private int groupColor;
     Context context;
     GroupMembersSearchAdapter adapter;
     ParseUser currentUser;
@@ -60,7 +67,10 @@ public class CUgroupsActivity extends AppCompatActivity implements GroupMembersS
         possibleMembers = new ArrayList<>();
         selectedUsers = new ArrayList<>();
         selectedUsersIds = new ArrayList<>();
+        colorButtons = new ArrayList<>();
         currentUser = ParseUser.getCurrentUser();
+        groupColor = getColor(R.color.primary);
+        Glide.with(context).load(R.drawable.accept_icon).into((ImageButton) findViewById(R.id.CUGroupColorPrimary));
 
         /* ---------------------------------------------------------------------------------------------
                                     REPLACING ACTION BAR FOR TOOLBAR TO USE NAV DRAWER
@@ -80,6 +90,8 @@ public class CUgroupsActivity extends AppCompatActivity implements GroupMembersS
         deleteGroup = findViewById(R.id.CUGroupDeleteGroup);
         updateGroup = findViewById(R.id.CUGroupUpdateGroup);
 
+        loadColorButtons();
+        colorButtonsCallbacks();
 
         /* ---------------------------------------------------------------------------------------------
                                             SETTING UP USER SEARCH RV
@@ -125,6 +137,7 @@ public class CUgroupsActivity extends AppCompatActivity implements GroupMembersS
                     GroupQueries.createGroupInDB(context,
                             currentUser,
                             etName.getText().toString(),
+                            groupColor,
                             (ArrayList<String>) selectedUsersIds,
                             createGroupInDBCallback());
                 }
@@ -153,11 +166,53 @@ public class CUgroupsActivity extends AppCompatActivity implements GroupMembersS
                     GroupQueries.updateGroupInDB(context,
                             updatingGroup,
                             etName.getText().toString(),
+                            groupColor,
                             selectedUsersIds,
                             updateGroupInDBCallback());
                 }
             });
 
+        }
+    }
+
+    private void selectCurrentGroupColor(Group group){
+        int currentColor = group.getColor();
+        for(ImageButton button: colorButtons){
+            ColorDrawable buttonBackground;
+            buttonBackground = (ColorDrawable) button.getBackground();
+            if (buttonBackground.getColor() == currentColor){
+                unselectColors();
+                groupColor = currentColor;
+                Glide.with(context).load(R.drawable.accept_icon).into(button);
+            }
+        }
+    }
+
+    private void colorButtonsCallbacks(){
+        for(ImageButton button: colorButtons){
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    unselectColors();
+                    ColorDrawable buttonBackground;
+                    buttonBackground = (ColorDrawable) button.getBackground();
+                    groupColor = buttonBackground.getColor();
+                    Glide.with(context).load(R.drawable.accept_icon).into(button);
+                }
+            });
+        }
+    }
+
+    private void loadColorButtons() {
+        colorButtons.add(findViewById(R.id.CUGroupColorPrimary));
+        colorButtons.add(findViewById(R.id.CUGroupColorSecondary));
+        colorButtons.add(findViewById(R.id.CUGroupColorEmphasis2));
+        colorButtons.add(findViewById(R.id.CUGroupColorGray));
+    }
+
+    private void unselectColors(){
+        for(ImageButton button: colorButtons){
+            Glide.with(context).load((Drawable) null).into(button);
         }
     }
 

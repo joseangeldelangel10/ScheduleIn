@@ -7,21 +7,23 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.usage.UsageEvents;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.schedulein_20.fragments.CalendarDialogFragment;
 import com.example.schedulein_20.fragments.HourDialogFragment;
 import com.example.schedulein_20.models.DateTime;
@@ -34,8 +36,6 @@ import com.example.schedulein_20.parseDatabaseComms.RelationRelatedQueries;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -67,6 +67,8 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
     Date startDate;
     Date endDate;
     String eventTitle;
+    private int eventColor;
+    private ArrayList<ImageButton> colorButtons;
     Events event2update;
     Group joinedEventGroup;
     RecyclerView rvInvitees;
@@ -87,7 +89,11 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         currentUser = ParseUser.getCurrentUser();
         possibleInvitees = new ArrayList<>();
         selectedInvitees = new ArrayList<>();
+        colorButtons = new ArrayList<>();
         flag = (String) getIntent().getExtras().get("Flag");
+        eventColor = getColor(R.color.primary);
+        Glide.with(context).load(R.drawable.accept_icon).into((ImageButton) findViewById(R.id.CUEventColorPrimary));
+
         /* ----------------------------------------------------------------------------------------
                                     CREATING TOOLBAR
       ---------------------------------------------------------------------------------------- */
@@ -114,6 +120,8 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         checkAvailability = findViewById(R.id.CUeventCheckAvailabilityButton);
         creatorTv = findViewById(R.id.CUeventsCreatorTv);
 
+        loadColorButtons();
+        colorButtonsCallbacks();
 
         /* ----------------------------------------------------------------------------------------
                             CALCULATING CURRENT DATE TO SET DEFAULT DATE FOR EVENT
@@ -210,6 +218,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
                         startDate,
                         endDate,
                         eventIsPublic,
+                        eventColor,
                         ParseUserExtraAttributes.parseUsers2Ids((ArrayList<ParseUser>) selectedInvitees),
                         createEventCallback());
             }
@@ -226,6 +235,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
                         startDate,
                         endDate,
                         eventIsPublic,
+                        eventColor,
                         ParseUserExtraAttributes.parseUsers2Ids((ArrayList<ParseUser>) selectedInvitees),
                         updateEventCallback());
             }
@@ -259,6 +269,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             startDate = event2update.getStartDate();
             endDate = event2update.getEndDate();
             publicSwitch.setChecked(event2update.hasPublicAccess());
+            selectCurrentEventColor(event2update);
             updateDatesText();
             ParseUserExtraAttributes.Ids2ParseUsers(event2update.getInvitees(), ids2ParseUsersCallback());
             btCreateEv.setVisibility(View.INVISIBLE);
@@ -270,6 +281,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             startDate = event2update.getStartDate();
             endDate = event2update.getEndDate();
             publicSwitch.setChecked(event2update.hasPublicAccess());
+            selectCurrentEventColor(event2update);
             updateDatesText();
             ParseUserExtraAttributes.Ids2ParseUsers(event2update.getInvitees(), ids2ParseUsersCallback());
             btCreateEv.setVisibility(View.INVISIBLE);
@@ -295,22 +307,52 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         }
     }
 
+    private void selectCurrentEventColor(Events event){
+        int currentColor = event.getColor();
+        for(ImageButton button: colorButtons){
+            ColorDrawable buttonBackground;
+            buttonBackground = (ColorDrawable) button.getBackground();
+            if (buttonBackground.getColor() == currentColor){
+                unselectColors();
+                eventColor = currentColor;
+                Glide.with(context).load(R.drawable.accept_icon).into(button);
+            }
+        }
+    }
+
+    private void colorButtonsCallbacks(){
+        for(ImageButton button: colorButtons){
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    unselectColors();
+                    ColorDrawable buttonBackground;
+                    buttonBackground = (ColorDrawable) button.getBackground();
+                    eventColor = buttonBackground.getColor();
+                    Glide.with(context).load(R.drawable.accept_icon).into(button);
+                }
+            });
+        }
+    }
+
+    private void loadColorButtons() {
+        colorButtons.add(findViewById(R.id.CUEventColorPrimary));
+        colorButtons.add(findViewById(R.id.CUEventColorSecondary));
+        colorButtons.add(findViewById(R.id.CUEventColorEmphasis2));
+        colorButtons.add(findViewById(R.id.CUEventColorGray));
+    }
+
+    private void unselectColors(){
+        for(ImageButton button: colorButtons){
+            Glide.with(context).load((Drawable) null).into(button);
+        }
+    }
+
     /* ---------------------------------------------------------------------------------------------------
                                                 UI METHODS
     ------------------------------------------------------------------------------------------------------*/
 
-    /*
-    * <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/CUeventInviteesRv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/CUeventSearchRelativeLayout"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="25dp" />
-                * */
+
     private void evaluateRvSize(){
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) rvInvitees.getLayoutParams();
         if (possibleInvitees.size() > 2){

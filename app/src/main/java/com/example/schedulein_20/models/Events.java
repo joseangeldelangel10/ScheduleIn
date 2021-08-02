@@ -1,19 +1,13 @@
 package com.example.schedulein_20.models;
 
-import androidx.annotation.Nullable;
-
 import com.example.schedulein_20.R;
 import com.parse.ParseClassName;
-import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-
-import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 //@Parcel
 @ParseClassName("Events")
@@ -25,6 +19,7 @@ public class Events extends ParseObject {
     public static final String KEY_END_DATE = "endDate";
     public static final String KEY_INVITEES = "invitees";
     public static final String KEY_ACCESS = "public";
+    public static final String KEY_COLOR = "color";
     public static HashMap<Integer, Integer> dayInt2Layout = new HashMap<>();
 
     public Events(){
@@ -68,6 +63,10 @@ public class Events extends ParseObject {
     public boolean hasPublicAccess() { return getBoolean(KEY_ACCESS); }
 
     public void setPublicAccess(boolean access) { put(KEY_ACCESS, access); }
+
+    public int getColor() {return getInt(KEY_COLOR); };
+
+    public void setColor(int color) { put(KEY_COLOR, color ); };
 
     public int getWeekDay(){
         return getStartDate().getDay();

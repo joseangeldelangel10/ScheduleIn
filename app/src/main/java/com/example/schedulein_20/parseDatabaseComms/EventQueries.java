@@ -22,7 +22,7 @@ import java.util.List;
 
 public class EventQueries {
 
-    public static void createEventInDB(Context context, String eventTitle, Date startDate, Date endDate, boolean eventIsPublic, ArrayList<String> inviteesIds, SaveCallback callback) {
+    public static void createEventInDB(Context context, String eventTitle, Date startDate, Date endDate, boolean eventIsPublic, int eventColor, ArrayList<String> inviteesIds, SaveCallback callback) {
         Events event = new Events();
         event.setUser(ParseUser.getCurrentUser());
         event.setTitle(eventTitle);
@@ -30,6 +30,7 @@ public class EventQueries {
         event.setEndDate(endDate);
         event.setInvitees(inviteesIds);
         event.setPublicAccess(eventIsPublic);
+        event.setColor(eventColor);
 
         if (startDate.compareTo(endDate) == 1) {
             Toast.makeText(context, "starting date cannot be after end", Toast.LENGTH_SHORT).show();
@@ -44,7 +45,7 @@ public class EventQueries {
         }
     }
 
-    public static void updateEventInDB(Context context, Events event2update, String eventTitle, Date startDate, Date endDate, boolean eventIsPublic, ArrayList<String> inviteesIds, SaveCallback callback) {
+    public static void updateEventInDB(Context context, Events event2update, String eventTitle, Date startDate, Date endDate, boolean eventIsPublic, int eventColor, ArrayList<String> inviteesIds, SaveCallback callback) {
         ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
 
         // Retrieve the object by id
@@ -56,6 +57,7 @@ public class EventQueries {
                 object.put(Events.KEY_TITLE, eventTitle);
                 object.put(Events.KEY_INVITEES, inviteesIds);
                 object.put(Events.KEY_ACCESS, eventIsPublic);
+                object.put(Events.KEY_COLOR, eventColor);
 
                 // All other fields will remain the same
                 if(callback != null){
@@ -149,4 +151,5 @@ public class EventQueries {
         mainQuery.findInBackground(callback);
 
     }
+
 }

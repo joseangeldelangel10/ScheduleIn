@@ -62,6 +62,11 @@ public class CalendarViewsGenerator {
 
             if( currentUserId.equals(event.getUser().getObjectId()) ) {
                 btnTag.setText(event.getTitle());
+
+                if (event.getColor() != 0 ){
+                    btnTag.setBackgroundColor(event.getColor());
+                }
+
                 // We bind a listener to each button which allows the user to update or delete an event by taping on it
                 btnTag.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -76,6 +81,11 @@ public class CalendarViewsGenerator {
                 });
             }else if( event.getInvitees().contains(currentUserId) ){
                 btnTag.setText(event.getTitle());
+
+                if (event.getColor() != 0 ){
+                    btnTag.setBackgroundColor(event.getColor());
+                }
+
                 // We bind a listener to each button which allows the user to update or delete an event by taping on it
                 btnTag.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -88,6 +98,9 @@ public class CalendarViewsGenerator {
                     }
                 });
             }else if ( event.hasPublicAccess() ){
+                if (event.getColor() != 0 ){
+                    btnTag.setBackgroundColor(event.getColor());
+                }
                 btnTag.setText( event.getTitle() );
                 btnTag.setClickable(false);
             } else {
@@ -117,7 +130,6 @@ public class CalendarViewsGenerator {
 
         if (layout == null){
             layout = view.findViewById(  R.id.day_view_users_day  );
-
         }
 
         for(Events event: dayEvents) {
@@ -144,6 +156,9 @@ public class CalendarViewsGenerator {
             params.setMargins(marginLeft.intValue(), marginTop.intValue() + titleOffset.intValue(), 0, 0);
             btnTag.setLayoutParams(params);
             btnTag.setTextSize(0, 28);
+            if (event.getColor() != 0){
+                btnTag.setBackgroundColor(event.getColor());
+            }
 
             if( currentUserId.equals(event.getUser().getObjectId()) ) {
                 btnTag.setText(event.getTitle());

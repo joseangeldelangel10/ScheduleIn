@@ -14,6 +14,7 @@ public class Group  extends ParseObject{
     public static final String KEY_CREATOR = "creator";
     public static final String KEY_NAME = "name";
     public static final String KEY_MEMBERS = "members";
+    public static final String KEY_COLOR = "color";
 
     public Group(){}
 
@@ -32,5 +33,9 @@ public class Group  extends ParseObject{
     public void  setMembers(ArrayList<String> members){
         put(KEY_MEMBERS,members);
     }
+
+    public int getColor() {return getInt(KEY_COLOR); }
+
+    public void setColor(int color) { put(KEY_COLOR, color); }
 
 }

@@ -23,11 +23,12 @@ public class GroupQueries {
         query.findInBackground(callback);
     }
 
-    public static void createGroupInDB(Context context, ParseUser creator, String groupName, ArrayList<String> membersIds, SaveCallback callback) {
+    public static void createGroupInDB(Context context, ParseUser creator, String groupName, int color, ArrayList<String> membersIds, SaveCallback callback) {
         Group group = new Group();
         group.setCreator(creator);
         group.setTitle(groupName);
         group.setMembers(membersIds);
+        group.setColor(color);
 
         if (callback != null){
             group.saveInBackground(callback);
@@ -36,7 +37,7 @@ public class GroupQueries {
         }
     }
 
-    public static void updateGroupInDB(Context context, Group updatingGroup, String newName, List<String> selectedUsersIds, SaveCallback callback) {
+    public static void updateGroupInDB(Context context, Group updatingGroup, String newName, int color,  List<String> selectedUsersIds, SaveCallback callback) {
         ParseQuery<Group> query = ParseQuery.getQuery(Group.class);
 
         query.getInBackground(updatingGroup.getObjectId(), (object, e) -> {
@@ -44,6 +45,7 @@ public class GroupQueries {
                 // Update the fields we want to
                 object.put(Group.KEY_NAME, newName);
                 object.put(Group.KEY_MEMBERS, selectedUsersIds);
+                object.put(Group.KEY_COLOR, color);
 
                 if(callback != null){
                     object.saveInBackground(callback);
