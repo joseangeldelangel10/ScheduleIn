@@ -50,8 +50,8 @@ A calendar tool where you can also follow your friends, colleges and families al
   
  ### Stories that could improve the app
    * [ ] User is able to link the app with google calendar
-   * [ ] User can assign to an event a color
-   * [ ] User can assign to a group a color
+   * [x] User can assign to an event a color
+   * [x] User can assign to a group a color
    * [ ] User can update his profile picture
    * [ ] User can set reminders for events
    * [x] App makes timing suggestions for new events based in invitees availability 
