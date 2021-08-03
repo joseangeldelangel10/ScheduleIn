@@ -6,13 +6,32 @@
     tools:context=".fragments.DayViewFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-    <include
-        layout="@layout/day_calendar_view_model">
-    </include>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--<com.github.mmin18.widget.RealtimeBlurView
+            android:id="@+id/DayViewFragmentBluredMargin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/day_view_mainLinearLayout"
+            android:layout_alignBottom="@+id/day_view_mainLinearLayout"
+            android:layout_alignStart="@+id/day_view_mainLinearLayout"
+            android:layout_alignLeft="@+id/day_view_mainLinearLayout"
+            android:layout_alignEnd="@+id/day_view_mainLinearLayout"
+            android:layout_alignRight="@+id/day_view_mainLinearLayout"/>-->
+
+        <include
+            layout="@layout/day_calendar_view_model"
+            android:id="@+id/fragmentDayViewCalendarInclude"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp">
+        </include>
+
+    </RelativeLayout>
 
 </FrameLayout>

@@ -12,6 +12,10 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.TypefaceSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -62,6 +66,7 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
                                       REPLACING ACTION BAR FOR TOOLBAR TO USE NAV DRAWER
         --------------------------------------------------------------------------------------------- */
         toolbar = findViewById(R.id.my_awesome_toolbar);
+
         setSupportActionBar(toolbar);
 
         /* ---------------------------------------------------------------------------------------------

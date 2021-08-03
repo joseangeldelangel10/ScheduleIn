@@ -22,6 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/user_profile_header">
+
             <ImageView
                 android:id="@+id/ivUserImage"
                 android:layout_width="110dp"
@@ -32,7 +33,8 @@
                 android:layout_marginTop="35dp"
                 tools:layout_editor_absoluteX="42dp"
                 tools:layout_editor_absoluteY="40dp"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/avatars">
+            </ImageView>
 
             <TextView
                 android:id="@+id/ProfileFragmentName"
@@ -46,7 +48,8 @@
                 android:layout_toEndOf="@+id/ivUserImage"
                 android:text="TextView"
                 android:textSize="18sp"
-                tools:text="Good Morning Jose!" />
+                tools:text="Good Morning Jose!" >
+            </TextView>
 
             <TextView
                 android:id="@+id/ProfileFragmentExtraInfo"

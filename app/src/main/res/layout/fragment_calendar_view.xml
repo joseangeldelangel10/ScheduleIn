@@ -6,13 +6,15 @@
     tools:context=".fragments.CalendarViewFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="calendar fragment" />
+
 
     <include
-        layout="@layout/week_calendar_view_model">
+        layout="@layout/week_calendar_view_model"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp">
 
     </include>
 

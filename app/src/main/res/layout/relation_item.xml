@@ -27,6 +27,7 @@
         android:layout_marginEnd="10dp"
         android:layout_toStartOf="@+id/RelationsButt1"
         android:layout_toEndOf="@+id/RelationsProfilePic"
+        android:fontFamily="sans-serif"
         android:text="TextView"
         android:textSize="16sp" />
 

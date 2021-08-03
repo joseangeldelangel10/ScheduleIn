@@ -12,7 +12,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:text="TextView"
         android:textSize="30sp"
         tools:text="Monday, July 12th" />
@@ -33,7 +35,7 @@
         android:layout_below="@+id/nav_menu_date"
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="94dp"
+        android:layout_marginTop="70dp"
         android:text="TextView"
         android:textSize="18sp" />
 </RelativeLayout>

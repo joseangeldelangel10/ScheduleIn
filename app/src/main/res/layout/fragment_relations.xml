@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".fragments.RelationsFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -15,27 +15,41 @@
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Your Relations"
-            android:textSize="24sp"/>
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/josefin_sans"
+            android:text="your relations 👥"
+            android:textSize="28sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RelationsFragmentUserRelRv"
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="300dp"
+            android:layout_below="@+id/textView14"
+            android:layout_marginTop="0dp"/>
 
 
         <TextView
             android:id="@+id/textView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Relation requests"
-            android:textSize="24sp"/>
+            android:layout_below="@+id/RelationsFragmentUserRelRv"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/josefin_sans"
+            android:text="relation requests 🗣 "
+            android:textSize="28sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RelationsFragmentRelReq"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView15"
+            android:layout_marginTop="0dp"/>
+    </RelativeLayout>
 
 
 </FrameLayout>

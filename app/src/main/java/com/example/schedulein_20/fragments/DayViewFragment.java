@@ -1,6 +1,8 @@
 package com.example.schedulein_20.fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import com.example.schedulein_20.R;
 import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.models.Events;
 import com.example.schedulein_20.parseDatabaseComms.EventQueries;
+import com.github.mmin18.widget.RealtimeBlurView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -38,6 +42,7 @@ public class DayViewFragment extends Fragment {
     ArrayList<Events> dayEvents;
     TextView dayHeaderTitle;
     Date currentDate;
+    //RealtimeBlurView bluredMargin;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -95,6 +100,10 @@ public class DayViewFragment extends Fragment {
         dayEvents = new ArrayList<>();
 
         dayHeaderTitle = view.findViewById(R.id.day_view_column_header_title);
+        /*bluredMargin = view.findViewById(R.id.DayViewFragmentBluredMargin);
+        bluredMargin.setBlurRadius(0.1f);
+        bluredMargin.setOverlayColor(R.color.gray);*/
+
         dayHeaderTitle.setText(DateTime.onlyDate(currentDate));
 
         FindCallback onDayEventsFound = dayEventsCallback(view);
@@ -118,6 +127,23 @@ public class DayViewFragment extends Fragment {
                 CalendarViewsGenerator.generateDayView(view, context, dayEvents, (FragmentActivity) context, null );
             }
         };
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        Log.e("DayView", String.valueOf(requestCode));
+        if (requestCode == CalendarViewsGenerator.UPDATE_EVENT_REQUEST_CODE){
+            if (resultCode == Activity.RESULT_OK){
+                // WE CREATE A NEW FRAGMENT TO SHOW THE USER THE NEW EVENT HE HAS CREATED, DELETED OR UPDATED
+                // GIVING USER INSTANT RESPONSE
+                Fragment fragment = new DayViewFragment();
+                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.host_frame, fragment)
+                        .commit();
+            }
+        }
     }
 
 

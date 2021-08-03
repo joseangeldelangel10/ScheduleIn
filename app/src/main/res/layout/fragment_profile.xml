@@ -33,10 +33,10 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="35dp"
+                    android:transitionName="userProfilePic"
                     tools:layout_editor_absoluteX="42dp"
                     tools:layout_editor_absoluteY="40dp"
-                    tools:srcCompat="@tools:sample/avatars"
-                    android:transitionName="userProfilePic"/>
+                    tools:srcCompat="@tools:sample/avatars" />
 
                 <TextView
                     android:id="@+id/ProfileFragmentName"
@@ -50,8 +50,8 @@
                     android:layout_toEndOf="@+id/ProfileFragmentProfilePic"
                     android:text="TextView"
                     android:textSize="18sp"
-                    tools:text="Good Morning Jose!"
-                    android:transitionName="userProfileName"/>
+                    android:transitionName="userProfileName"
+                    tools:text="Good Morning Jose!" />
 
                 <TextView
                     android:id="@+id/ProfileFragmentExtraInfo"
@@ -64,8 +64,8 @@
                     android:layout_marginEnd="25dp"
                     android:layout_toEndOf="@+id/ProfileFragmentProfilePic"
                     android:text="TextView"
-                    tools:text="Now Attending to: Event1"
-                    android:transitionName="userProfileEvents"/>
+                    android:transitionName="userProfileEvents"
+                    tools:text="Now Attending to: Event1" />
 
                 <Button
                     android:id="@+id/ProfileFragmentRelateButt"
@@ -111,7 +111,8 @@
                 android:layout_height="400dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="25dp">
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="20dp">
 
             </include>
 
@@ -119,17 +120,17 @@
                 android:id="@+id/ProfileFragmentNonRelatedBanner"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
-                android:background="@color/gray"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="25dp"
                 android:layout_marginBottom="10dp"
+                android:background="@color/gray"
                 android:gravity="center">
+
                 <TextView
                     android:id="@+id/ProfileFragmentNonRelatedBannerText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                </TextView>
+                    android:layout_height="wrap_content"></TextView>
             </RelativeLayout>
 
             <!-- ___________________________________________________________________________________________________________________ -->

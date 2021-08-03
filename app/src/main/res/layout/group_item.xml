@@ -13,9 +13,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="0dp"
         android:background="@color/secondary">
 
         <TextView
@@ -28,7 +28,9 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
+            android:fontFamily="sans-serif-thin"
             android:text="Group name"
+            android:textColor="@color/black"
             android:textSize="30dp"></TextView>
 
         <TextView
@@ -44,14 +46,16 @@
         <Button
             android:id="@+id/groupItemJoinedEvent"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="20dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="10dp"
             android:layout_toEndOf="@+id/groupItemMembers"
+            android:background="@color/primary"
             android:text="joined event +"
+            android:textColor="@color/bone_white"
             android:textSize="9sp" />
 
     </RelativeLayout>

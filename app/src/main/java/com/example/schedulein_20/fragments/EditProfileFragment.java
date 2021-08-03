@@ -1,14 +1,27 @@
 package com.example.schedulein_20.fragments;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.schedulein_20.R;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+
+import java.io.File;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +29,17 @@ import com.example.schedulein_20.R;
  * create an instance of this fragment.
  */
 public class EditProfileFragment extends Fragment {
+    private ImageView userProfilePic;
+    private TextView userName;
+    private TextView userSurname;
+    private TextView userUsername;
+    private TextView userEmail;
+    private CheckBox userSIWGoogle;
+    private Button updatePassword;
+    private Button updateProfile;
+    ParseUser currentUser;
+    Context context;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,5 +86,39 @@ public class EditProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_edit_profile, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        currentUser = ParseUser.getCurrentUser();
+        context = getContext();
+
+        userProfilePic = view.findViewById(R.id.editProfileProfilePicture);
+        userName = view.findViewById(R.id.editProfileName);
+        userSurname = view.findViewById(R.id.editProfileSurname);
+        userUsername = view.findViewById(R.id.editProfileUsername);
+        userEmail = view.findViewById(R.id.editProfileEmail);
+        userSIWGoogle = view.findViewById(R.id.editProfileSIWGoogleCheckBox);
+        updatePassword = view.findViewById(R.id.editProfileUpdatePassword);
+        updateProfile = view.findViewById(R.id.editProfileUpdateProfile);
+
+        File profilePic = null;
+        try {
+            profilePic = currentUser.getParseFile("profilePic").getFile();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Uri image2load = Uri.parse(profilePic.getAbsolutePath());
+
+        Glide.with(context).load(image2load).placeholder(R.drawable.profile_picture_placeholder).into(userProfilePic);
+        userName.setText(currentUser.getString("name"));
+        userSurname.setText(currentUser.getString("surname"));
+        userUsername.setText(currentUser.getUsername());
+        userEmail.setText(currentUser.getEmail());
+
+
     }
 }

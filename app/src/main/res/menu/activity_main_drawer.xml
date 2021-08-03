@@ -1,45 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Home"
+    <item android:title="🏠 Home"
         android:id="@+id/nav_menu_home">
     </item>
     <item
         android:id="@+id/nav_menu_my_time_title"
         android:enabled="false"
-        android:title="My Time"></item>
-    <item android:title="   My day"
+        android:title="🕚 My Time"></item>
+    <item android:title="      My day"
         android:id="@+id/nav_menu_my_day">
     </item>
-    <item android:title="   My week"
+    <item android:title="       My week"
         android:id="@+id/nav_menu_my_week">
     </item>
-    <item android:title="   My month"
+    <item android:title="       My month"
         android:id="@+id/nav_menu_my_month">
     </item>
-    <item
-        android:id="@+id/nav_menu_my_profile"
-        android:enabled="false"
-        android:title="My profile"></item>
-    <item android:title="   Log out"
-        android:id="@+id/nav_menu_log_out">
-    </item>
-    <item android:title="   Edit Profile"
-        android:id="@+id/nav_menu_edit_profile">
-    </item>
-    <item android:title="   Privacy settings"
-        android:id="@+id/nav_menu_privacy_settings">
-    </item>
+
+
     <item
         android:id="@+id/nav_menu_my_relations"
         android:enabled="false"
-        android:title="My relations"></item>
-    <item android:title="   See my relations"
+        android:title="👥 My relations"></item>
+    <item android:title="       See my relations"
         android:id="@+id/nav_menu_see_my_relations">
     </item>
-    
-    <item android:title="   See my groups"
+
+    <item android:title="       See my groups"
         android:id="@+id/nav_menu_see_my_groups">
     </item>
+
+
+
+    <item
+        android:id="@+id/nav_menu_my_profile"
+        android:enabled="false"
+        android:title="👤 My profile"></item>
+    <item android:title="      Log out"
+        android:id="@+id/nav_menu_log_out">
+    </item>
+    <item android:title="      Edit Profile"
+        android:id="@+id/nav_menu_edit_profile">
+    </item>
+    <item android:title="       Privacy settings"
+        android:id="@+id/nav_menu_privacy_settings">
+    </item>
+
 
 
 
