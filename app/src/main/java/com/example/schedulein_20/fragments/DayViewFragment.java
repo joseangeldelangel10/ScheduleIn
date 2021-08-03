@@ -37,6 +37,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class DayViewFragment extends Fragment {
+    private final String TAG = "DayViewFragment";
     Context context;
     ParseUser currentUser;
     ArrayList<Events> dayEvents;
@@ -100,10 +101,6 @@ public class DayViewFragment extends Fragment {
         dayEvents = new ArrayList<>();
 
         dayHeaderTitle = view.findViewById(R.id.day_view_column_header_title);
-        /*bluredMargin = view.findViewById(R.id.DayViewFragmentBluredMargin);
-        bluredMargin.setBlurRadius(0.1f);
-        bluredMargin.setOverlayColor(R.color.gray);*/
-
         dayHeaderTitle.setText(DateTime.onlyDate(currentDate));
 
         FindCallback onDayEventsFound = dayEventsCallback(view);
@@ -124,7 +121,7 @@ public class DayViewFragment extends Fragment {
                 }
                 dayEvents.addAll(objects);
                 Toast.makeText(context, getString(R.string.events_loaded_succesfully), Toast.LENGTH_SHORT).show();
-                CalendarViewsGenerator.generateDayView(view, context, dayEvents, (FragmentActivity) context, null );
+                CalendarViewsGenerator.generateDayView(view, context, dayEvents, DayViewFragment.this, null );
             }
         };
     }
@@ -132,8 +129,8 @@ public class DayViewFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
-        Log.e("DayView", String.valueOf(requestCode));
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e(TAG, "request code: " +  String.valueOf(requestCode) + "result code: " + String.valueOf(resultCode));
         if (requestCode == CalendarViewsGenerator.UPDATE_EVENT_REQUEST_CODE){
             if (resultCode == Activity.RESULT_OK){
                 // WE CREATE A NEW FRAGMENT TO SHOW THE USER THE NEW EVENT HE HAS CREATED, DELETED OR UPDATED

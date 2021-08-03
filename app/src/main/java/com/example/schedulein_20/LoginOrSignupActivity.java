@@ -23,7 +23,6 @@ public class LoginOrSignupActivity extends AppCompatActivity {
     private final String TAG = "loginOrSignup";
     public final int LOGIN_REQUEST_CODE = 10;
     public final int SiGNUP_REQUEST_CODE = 20;
-    ImageView ivLoginImages;
     Button buttLogin;
     Button buttSignup;
     TextView tvTip;
@@ -36,14 +35,9 @@ public class LoginOrSignupActivity extends AppCompatActivity {
         /* --------------------------------------------------------------------------------------
                                    WE REFERENCE VIEW ITEMS
          ------------------------------------------------------------------------------------- */
-        ivLoginImages = findViewById(R.id.ivLogImages);
         buttLogin = findViewById(R.id.buttLoginAct);
         buttSignup = findViewById(R.id.buttSignup);
         tvTip = findViewById(R.id.tvTipOfTheDay);
-
-        Glide.with(LoginOrSignupActivity.this)
-                .load(R.drawable.welcome_pic)
-                .into(ivLoginImages);
 
         tvTip.setText("tip of the day: try to debug your apps while running them");
 

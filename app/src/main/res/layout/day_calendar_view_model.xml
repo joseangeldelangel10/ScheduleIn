@@ -22,127 +22,297 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_header_ofset"
-                android:text="Hour"></TextView>
+                android:text="Hour"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="00 hrs"></TextView>
+                android:text="00 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="01 hrs"></TextView>
+                android:text="01 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="02 hrs"></TextView>
+                android:text="02 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="03 hrs"></TextView>
+                android:text="03 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="04 hrs"></TextView>
+                android:text="04 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="05 hrs"></TextView>
+                android:text="05 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="06 hrs"></TextView>
+                android:text="06 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="07 hrs"></TextView>
+                android:text="07 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="08 hrs"></TextView>
+                android:text="08 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="09 hrs"></TextView>
+                android:text="09 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="10 hrs"></TextView>
+                android:text="10 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="11 hrs"></TextView>
+                android:text="11 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="12 hrs"></TextView>
+                android:text="12 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="13 hrs"></TextView>
+                android:text="13 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="14 hrs"></TextView>
+                android:text="14 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="15 hrs"></TextView>
+                android:text="15 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="16 hrs"></TextView>
+                android:text="16 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="17 hrs"></TextView>
+                android:text="17 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="18 hrs"></TextView>
+                android:text="18 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="19 hrs"></TextView>
+                android:text="19 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="20 hrs"></TextView>
+                android:text="20 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="21 hrs"></TextView>
+                android:text="21 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="22 hrs"></TextView>
+                android:text="22 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_view_hour_divider"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/day_view_hour_row_height"
-                android:text="23 hrs"></TextView>
+                android:text="23 hrs"
+                android:gravity="center"
+                android:textColor="@color/bone_white"></TextView>
 
         </LinearLayout>
 
@@ -175,7 +345,8 @@
                         android:text="Sunday"
                         android:layout_alignParentTop="true"
                         android:background="@color/primary"
-                        android:gravity="center"></TextView>
+                        android:gravity="center"
+                        android:textColor="@color/bone_white"></TextView>
 
                 </RelativeLayout>
 

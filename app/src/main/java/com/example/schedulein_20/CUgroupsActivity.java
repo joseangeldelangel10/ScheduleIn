@@ -152,6 +152,8 @@ public class CUgroupsActivity extends AppCompatActivity implements GroupMembersS
             ArrayList<String> groupMembersIds = updatingGroup.getMembers();
             ParseUserExtraAttributes.Ids2ParseUsers(groupMembersIds, queryGroupMembersCallback());
 
+            selectCurrentGroupColor(updatingGroup);
+
             // WE SET BUTTON LISTENERS
             deleteGroup.setOnClickListener(new View.OnClickListener() {
                 @Override

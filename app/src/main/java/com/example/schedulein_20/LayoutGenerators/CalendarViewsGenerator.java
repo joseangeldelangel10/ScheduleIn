@@ -40,18 +40,22 @@ public class CalendarViewsGenerator {
         Float marginTop; // dp height at which the event button is placed based event starting time
         Float minsInDay = new Float(24*60);
         Float RelativeLayoutHeightDP = context.getResources().getDimension(R.dimen.week_view_hour_row_height) * 24; // height of a day column (hour block height times 24 hrs)
+        Float viewDividersOffset = context.getResources().getDimension(R.dimen.week_view_hour_divider);
 
         for(Events event: weekEvents) {
             RelativeLayout layout = view.findViewById(  Events.dayInt2Layout.get(event.getWeekDay())  ); // we evaluate the corresponding day column using a hash map
 
             //we make a ratio to calculate button height
-            heightWDuration = new Float(RelativeLayoutHeightDP*event.getDurationInMins() );
+            Float eventDurationMins = Float.valueOf(event.getDurationInMins());
+            heightWDuration = new Float(RelativeLayoutHeightDP*eventDurationMins );
             heightWDuration = heightWDuration/minsInDay;
+            heightWDuration += (eventDurationMins/60)*viewDividersOffset;
 
             //we make a ratio to calculate margin top
-            marginTop = new Float(event.getStartInMins());
-            marginTop = marginTop*RelativeLayoutHeightDP;
+            Float startInMins = new Float(event.getStartInMins());
+            marginTop = startInMins*RelativeLayoutHeightDP;
             marginTop = marginTop/minsInDay;
+            marginTop += (startInMins/60)*viewDividersOffset;
 
             //we set the properties for the button
             Button btnTag = new Button(context);
@@ -109,7 +113,7 @@ public class CalendarViewsGenerator {
 
 
 
-    public static void generateDayView(@NonNull View view, Context context, ArrayList<Events> dayEvents, Activity activity, RelativeLayout layout) {
+    public static void generateDayView(@NonNull View view, Context context, ArrayList<Events> dayEvents, Fragment activity, RelativeLayout layout) {
         /* --------------------------------------------------------------------------------
         to generate the day view we generate a button for each event in eventsList and
         we place the button in the corresponding day column (colums are Relative Layouts)
@@ -121,6 +125,7 @@ public class CalendarViewsGenerator {
         Float marginTop; // dp height at which the event button is placed based event starting time
         Float minsInDay = new Float(24*60);
         Float RelativeLayoutHeightDP = context.getResources().getDimension(R.dimen.day_view_hour_row_height) * 24; // height of a day column (hour block height times 24 hrs)
+        Float viewDividersOffset = context.getResources().getDimension(R.dimen.day_view_hour_divider);
 
         if (layout == null){
             layout = view.findViewById(  R.id.day_view_users_day  );
@@ -136,13 +141,16 @@ public class CalendarViewsGenerator {
             Float marginLeft = Float.valueOf(0);
 
             //we make a ratio to calculate button height
+            Float eventDurationMins = Float.valueOf(event.getDurationInMins());
             heightWDuration = new Float(RelativeLayoutHeightDP*event.getDurationInMins() );
             heightWDuration = heightWDuration/minsInDay;
+            heightWDuration += (eventDurationMins/60)*viewDividersOffset;
 
             //we make a ratio to calculate margin top
-            marginTop = new Float(event.getStartInMins());
-            marginTop = marginTop*RelativeLayoutHeightDP;
+            Float eventStartMins = Float.valueOf(event.getStartInMins());
+            marginTop = eventStartMins*RelativeLayoutHeightDP;
             marginTop = marginTop/minsInDay;
+            marginTop += (eventStartMins/60)*viewDividersOffset;
 
             //we set the properties for the button
             Button btnTag = new Button(context);
@@ -157,30 +165,35 @@ public class CalendarViewsGenerator {
             if( currentUserId.equals(event.getUser().getObjectId()) ) {
                 btnTag.setText(event.getTitle());
                 // We bind a listener to each button which allows the user to update or delete an event by taping on it
-                btnTag.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String flag = "UpdateDelete";
-                        //Activity activity = (Activity) context;
-                        Intent intent = new Intent(context, CUeventActivity.class);
-                        intent.putExtra("Flag", flag);
-                        intent.putExtra("Event", Parcels.wrap(event));
-                        activity.startActivityForResult(intent, UPDATE_EVENT_REQUEST_CODE);
-                    }
-                });
+
+                if (activity != null) {
+                    btnTag.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String flag = "UpdateDelete";
+                            //Activity activity = (Activity) context;
+                            Intent intent = new Intent(context, CUeventActivity.class);
+                            intent.putExtra("Flag", flag);
+                            intent.putExtra("Event", Parcels.wrap(event));
+                            activity.startActivityForResult(intent, UPDATE_EVENT_REQUEST_CODE);
+                        }
+                    });
+                }
             }else if( event.getInvitees().contains(currentUserId) ){
                 btnTag.setText(event.getTitle());
                 // We bind a listener to each button which allows the user to update or delete an event by taping on it
-                btnTag.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String flag = "InviteeView";
-                        Intent intent = new Intent(context, CUeventActivity.class);
-                        intent.putExtra("Flag", flag);
-                        intent.putExtra("Event", Parcels.wrap(event));
-                        activity.startActivityForResult(intent, UPDATE_EVENT_REQUEST_CODE);
-                    }
-                });
+                if (activity != null) {
+                    btnTag.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String flag = "InviteeView";
+                            Intent intent = new Intent(context, CUeventActivity.class);
+                            intent.putExtra("Flag", flag);
+                            intent.putExtra("Event", Parcels.wrap(event));
+                            activity.startActivityForResult(intent, UPDATE_EVENT_REQUEST_CODE);
+                        }
+                    });
+                }
             }else if (event.hasPublicAccess() ){
                 btnTag.setText( event.getTitle() );
                 btnTag.setClickable(false);

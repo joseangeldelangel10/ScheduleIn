@@ -51,7 +51,6 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
     private FragmentManager fragmentManager;
     private View navHeader;
     private TextView headNavUser;
-    private TextView headNavDate;
     public static MenuItem searchItem;
     public static MenuItem progressItem;
     public static SearchView searchView;
@@ -86,19 +85,10 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
         --------------------------------------------------------------------------------------------- */
         navHeader =  navigationView.getHeaderView(0);
         headNavUser = navHeader.findViewById(R.id.nav_menu_mail);
-        headNavDate = navHeader.findViewById(R.id.nav_menu_date);
         headNavUser.setText("Signed in as:\n" + currentUser.getString("name") + " " + currentUser.getString("surname"));
-        headNavDate.setText(DateTime.getFormalCurrentDate());
 
         /* --------------------------------------------------------------------------------------------- */
 
-        try {
-            GoogleCalendarQuickstart.main();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        }
 
     }
 

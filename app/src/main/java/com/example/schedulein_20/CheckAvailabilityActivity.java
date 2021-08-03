@@ -230,7 +230,7 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
                     return;
                 }
                 dayEvents.addAll(objects);
-                CalendarViewsGenerator.generateDayView(view, context, dayEvents, CheckAvailabilityActivity.this, layout );
+                CalendarViewsGenerator.generateDayView(view, context, dayEvents, null, layout );
                 if(flag.equals("Create") || flag.equals("CreateJoinedEvent")) {
                     CalendarViewsGenerator.generateNewEventPreview(currentView, context, eventPreview, dayEvents, CheckAvailabilityActivity.this, layout);
                 }
@@ -251,7 +251,7 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
                 }
 
                 dayEvents.addAll(objects);
-                CalendarViewsGenerator.generateDayView(view, context, dayEvents, CheckAvailabilityActivity.this, null );
+                CalendarViewsGenerator.generateDayView(view, context, dayEvents, null, null );
                 if(flag.equals("Create") || flag.equals("CreateJoinedEvent")) {
                     CalendarViewsGenerator.generateNewEventPreview(currentView, context, eventPreview, dayEvents, CheckAvailabilityActivity.this, userDay);
                 }
