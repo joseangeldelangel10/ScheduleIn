@@ -52,7 +52,7 @@ A calendar tool where you can also follow your friends, colleges and families al
    * [ ] User is able to link the app with google calendar
    * [x] User can assign to an event a color
    * [x] User can assign to a group a color
-   * [ ] User can update his profile picture
+   * [x] User can update his profile picture
    * [ ] User can set reminders for events
    * [x] App makes timing suggestions for new events based in invitees availability 
    * [ ] App uses ML cluster algorithm and NLP to suggest a time for new event based on user habits  
