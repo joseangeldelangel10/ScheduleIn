@@ -52,6 +52,8 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link UserProfileFragment#newInstance} factory method to
@@ -145,15 +147,22 @@ public class UserProfileFragment extends Fragment {
                                                         BINDING DATA TO THE HEADER
         ------------------------------------------------------------------------------------------------------------------------------------*/
 
+        int radius = getResources().getInteger(R.integer.profile_pic_radius);
+        int margin = getResources().getInteger(R.integer.profile_pic_margin);
+
         ParseFile currentUserProfileImage = (ParseFile) currentUser.getParseFile(ParseUserExtraAttributes.KEY_PROFILE_PIC);
         if (currentUserProfileImage != null) {
             Glide.with(context)
                     .load(currentUserProfileImage.getUrl())
                     .placeholder(R.drawable.profile_picture_placeholder)
+                    .centerCrop() // scale image to fill the entire ImageView
+                    .transform(new RoundedCornersTransformation(radius, margin))
                     .into(ivUserImage);
         } else {
             Glide.with(context)
                     .load(R.drawable.profile_picture_placeholder)
+                    .centerCrop() // scale image to fill the entire ImageView
+                    .transform(new RoundedCornersTransformation(radius, margin))
                     .into(ivUserImage);
         }
 

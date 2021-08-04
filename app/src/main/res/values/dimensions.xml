@@ -15,9 +15,13 @@
     <dimen name="day_view_day_column_width">250dp</dimen>
     <dimen name="day_view_hour_divider">2dp</dimen>
 
-    <!--_______________________       __________________________-->
+    <!--_______________________ CHECK AVAILABILITY SIZE VALUES __________________________-->
     <dimen name="check_availability_column_width_small">100dp</dimen>
     <dimen name="check_availability_column_width_large">200dp</dimen>
+
+    <!--_______________________ PROFILE PIC SIZE VALUES __________________________-->
+    <integer name="profile_pic_radius">30</integer>
+    <integer name="profile_pic_margin">0</integer>
 
 
 </resources>

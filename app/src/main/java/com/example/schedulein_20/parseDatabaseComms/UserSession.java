@@ -47,4 +47,35 @@ public class UserSession {
     public static void loginUser(String username, String password, LogInCallback callback) {
         ParseUser.logInInBackground(username, password, callback);
     }
+
+
+    public static void updateCurrentUser(Context context, String name, String surname, String username, String email, File newPhoto, SaveCallback callback) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            // Other attributes than "email" will remain unchanged!
+            currentUser.put("name", name);
+            currentUser.put("surname", surname);
+            currentUser.put("username", username);
+            currentUser.put("email", email);
+            currentUser.put("profilePic", new ParseFile(newPhoto));
+            // Saves the object.
+
+            if(callback != null){
+                currentUser.saveInBackground(callback);
+            }else {
+                currentUser.saveInBackground(e -> {
+                    if (e == null) {
+                        //Save successfull
+                        Toast.makeText(context, "user updated", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Something went wrong while saving
+                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+        }
+    }
+
+
 }

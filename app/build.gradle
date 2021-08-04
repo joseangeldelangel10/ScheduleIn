@@ -63,4 +63,7 @@ dependencies {
     //Blur effect
     implementation 'com.github.mmin18:realtimeblurview:1.2.1'
 
+    // Glide transformations
+    implementation 'jp.wasabeef:glide-transformations:4.1.0'
+
 }

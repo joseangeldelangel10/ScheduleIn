@@ -14,98 +14,42 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-            <RelativeLayout
-                android:id="@+id/editProfilePicAndMainInfoLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <ImageButton
+                android:id="@+id/editProfileStartEditingButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="20dp">
-
-
-                <ImageView
-                    android:id="@+id/editProfileProfilePicture"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    tools:src="@tools:sample/avatars" />
-
-                <EditText
-                    android:id="@+id/editProfileName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_toEndOf="@+id/editProfileProfilePicture"
-                    android:ems="10"
-                    android:hint="Name"
-                    android:inputType="textPersonName" />
-
-                <EditText
-                    android:id="@+id/editProfileSurname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/editProfileName"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_toEndOf="@+id/editProfileProfilePicture"
-                    android:ems="10"
-                    android:hint="Surname"
-                    android:inputType="textPersonName" />
-
-                <ImageButton
-                    android:id="@+id/editProfileChangePicture"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/editProfileProfilePicture"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/emphasis1"
-                    android:src="@drawable/camera_icon" />
-            </RelativeLayout>
-
-            <EditText
-                android:id="@+id/editProfileUsername"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/editProfilePicAndMainInfoLayout"
-                android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:ems="10"
-                android:hint="username"
-                android:inputType="textPersonName" />
+                android:background="@color/primary"
+                android:src="@drawable/edit_icon" />
 
-            <EditText
-                android:id="@+id/editProfileEmail"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/editProfileProfilePicture"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                tools:src="@tools:sample/avatars" />
+
+
+            <ImageButton
+                android:id="@+id/editProfileChangePicture"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editProfileUsername"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="20dp"
-                android:ems="10"
-                android:hint="email"
-                android:inputType="textWebEmailAddress|textPersonName" />
+                android:layout_below="@+id/editProfileProfilePicture"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@color/emphasis1"
+                android:src="@drawable/camera_icon" />
 
             <RelativeLayout
                 android:id="@+id/editProfileSIWGoogleRelativeLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editProfileEmail"
+                android:layout_below="@+id/editProfileChangePicture"
                 android:layout_marginTop="30dp"
                 android:layout_centerHorizontal="true">
 
@@ -124,33 +68,196 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@+id/editProfileSIWGoogleTv" />
+                    android:layout_toEndOf="@+id/editProfileSIWGoogleTv"
+                    android:enabled="false" />
 
             </RelativeLayout>
 
-            <Button
-                android:id="@+id/editProfileUpdatePassword"
+            <View
+                android:id="@+id/editProfileDivider1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/week_view_hour_divider"
+                android:layout_below="@+id/editProfileSIWGoogleRelativeLayout"
+                android:layout_marginTop="20dp"
+                android:background="?android:attr/listDivider" />
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/editProfileDivider1"
+                        android:layout_marginTop="11dp"
+                        android:text="Name"
+                        android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/editProfileName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editProfileSIWGoogleRelativeLayout"
+                android:layout_below="@+id/textView4"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="20dp"
-                android:text="update password" />
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="30dp"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="textPersonName" />
+
+            <View
+                android:id="@+id/editProfileDivider2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/week_view_hour_divider"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@+id/editProfileName"
+                android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/editProfileDivider2"
+                        android:layout_marginTop="10dp"
+                        android:text="Surname"
+                        android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/editProfileSurname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textView5"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="30dp"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="textPersonName" />
+
+            <View
+                android:id="@+id/editProfileDivider3"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/week_view_hour_divider"
+                android:layout_below="@id/editProfileSurname"
+                android:layout_marginTop="10dp"
+                android:background="?android:attr/listDivider" />
+
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/editProfileDivider3"
+                        android:layout_marginTop="10dp"
+                        android:text="Username"
+                        android:textSize="24sp" />
+
+
+            <EditText
+                android:id="@+id/editProfileUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textView6"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="30dp"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="textPersonName" />
+
+
+            <View
+                android:id="@+id/editProfileDivider4"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/week_view_hour_divider"
+                android:layout_below="@id/editProfileUsername"
+                android:layout_marginTop="10dp"
+                android:background="?android:attr/listDivider" />
+
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/editProfileDivider4"
+                        android:layout_marginTop="10dp"
+                        android:text="Email"
+                        android:textSize="24sp" />
+
+
+            <EditText
+                android:id="@+id/editProfileEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textView7"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="30dp"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="textPersonName" />
+
+
+            <View
+                android:id="@+id/editProfileDivider6"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/week_view_hour_divider"
+                android:layout_below="@id/editProfileEmail"
+                android:layout_marginTop="10dp"
+                android:background="?android:attr/listDivider" />
+
+
+            <RelativeLayout
+                android:id="@+id/editProfileUpdatePasswordRL"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@id/editProfileDivider6">
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignParentBottom="true"
+                    android:text="Update password"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/forward_arrow_dark" />
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/editProfileDivider7"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/week_view_hour_divider"
+                android:layout_below="@id/editProfileUpdatePasswordRL"
+                android:background="?android:attr/listDivider" />
 
             <Button
-                android:id="@+id/editProfileUpdateProfile"
-                android:layout_width="wrap_content"
+                android:id="@+id/editFragmentUpdateProfile"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editProfileUpdatePassword"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="26dp"
-                android:layout_marginEnd="20dp"
-                android:text="update profile" />
+                android:layout_below="@id/editProfileDivider7"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/primary"
+                android:text="Save changes"
+                android:textSize="15dp"></Button>
+
 
 
         </RelativeLayout>
