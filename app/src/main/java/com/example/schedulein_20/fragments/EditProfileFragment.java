@@ -56,7 +56,6 @@ import java.net.URISyntaxException;
  */
 public class EditProfileFragment extends Fragment {
     private final String TAG = "EditProfileFragment";
-    protected static final String AUTHORITY_PROVIDER =  "com.codepath.fileprovider";
     public final static int PICK_PHOTO_CODE = 1046;
     private ImageView userProfilePic;
     private TextView userName;
