@@ -6,9 +6,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.schedulein_20.DrawerLayoutActivity;
+import com.example.schedulein_20.GoogleCalendarClient;
 import com.example.schedulein_20.LoginActivity;
 import com.example.schedulein_20.LoginOrSignupActivity;
 import com.example.schedulein_20.R;
+import com.example.schedulein_20.ScheduleInGCalendarAPIApp;
 import com.example.schedulein_20.models.ParseUserExtraAttributes;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -22,6 +24,9 @@ import java.io.File;
 public class UserSession {
 
     public static void logout(Context context) {
+        if (ScheduleInGCalendarAPIApp.getRestClient(context).checkAccessToken() != null){
+            ScheduleInGCalendarAPIApp.getRestClient(context).clearAccessToken();
+        }
         ParseUser.logOut();
         Toast.makeText(context, context.getResources().getString(R.string.logout_successful), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(context, LoginOrSignupActivity.class);

@@ -3,7 +3,6 @@ package com.example.schedulein_20.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -15,44 +14,46 @@ import androidx.fragment.app.FragmentActivity;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.schedulein_20.CUeventActivity;
-import com.example.schedulein_20.DrawerLayoutActivity;
+import com.example.schedulein_20.GoogleCalendarClient;
 import com.example.schedulein_20.LayoutGenerators.CalendarViewsGenerator;
+import com.example.schedulein_20.ScheduleInGCalendarAPIApp;
 import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.models.Events;
 import com.example.schedulein_20.models.OnPinchListener;
 import com.example.schedulein_20.models.ParseUserExtraAttributes;
 import com.example.schedulein_20.parseDatabaseComms.EventQueries;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.parceler.Parcels;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import okhttp3.Headers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,6 +74,8 @@ public class UserProfileFragment extends Fragment {
     public ArrayList<Events> weekEvents;
     public Context context;
     ScaleGestureDetector mScaleDetector;
+    String primaryGCalendarId;
+    GoogleCalendarClient gCalendarClient;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -124,6 +127,8 @@ public class UserProfileFragment extends Fragment {
         currentUser = ParseUser.getCurrentUser();
         weekEvents = new ArrayList<>();
         context = getContext();
+        primaryGCalendarId = null;
+        gCalendarClient = ScheduleInGCalendarAPIApp.getRestClient(context);
 
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                         VIEW REFERENCING
@@ -217,6 +222,61 @@ public class UserProfileFragment extends Fragment {
             }
         });
 
+        //ScheduleInGCalendarAPIApp.getRestClient(context).clearAccessToken();
+        if (gCalendarClient.checkAccessToken() != null){
+
+            gCalendarClient.getPrimaryCalendar(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Headers headers, JSON json) {
+                    JSONObject jsonResponse = json.jsonObject;
+                    try {
+                        Log.e(TAG, "connected with google calendar successfully");
+                        JSONArray results = jsonResponse.getJSONArray("items");
+                        if (results.length() != 0){
+                            JSONObject primaryCalendar = (JSONObject) results.get(0);
+                            primaryGCalendarId = primaryCalendar.getString("id");
+                            Log.e(TAG, "\nPRIMARY GOOGLE CAL ID: " + primaryGCalendarId + "\n\n\n");
+                            getCurrentWeekGoogleEvents(primaryGCalendarId);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                    Log.e(TAG, "Fetch calendars error, status code: " + statusCode + "response: " + response);
+                }
+            });
+        }else {
+            Log.e(TAG, "no calendar API access yet");
+        }
+
+        /*LocalDateTime today = LocalDateTime.now();
+        System.out.println(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")
+                .format( today ));*/
+
+    }
+
+    private void getCurrentWeekGoogleEvents(String primaryGCalendarId) {
+        gCalendarClient.getCurrentWeekCalendarEvents(primaryGCalendarId, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                try {
+                    Log.e(TAG, "GOOGLE EVENTS: " + json.jsonObject.toString(4));
+                    JSONArray listOfGoogleEvents = json.jsonObject.getJSONArray("items");
+                    ArrayList<Events> googleEvents = Events.fromJsonArray(currentUser, listOfGoogleEvents);
+                    CalendarViewsGenerator.generateWeekView(getView(), context, googleEvents, UserProfileFragment.this);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.e(TAG, "FAILED RETRIEVING USER GOOGLE EVENTS: " + statusCode + "      " + response);
+            }
+        });
     }
 
     @Override

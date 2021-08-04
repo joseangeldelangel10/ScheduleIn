@@ -16,3 +16,5 @@ local.properties
 
 app/src/main/res/values/Secrets.xml
 app/src/main/res/credentials.json
+apikey.properties
+app/build/generated/source/buildConfig/debug/com/example/schedulein_20/BuildConfig.java

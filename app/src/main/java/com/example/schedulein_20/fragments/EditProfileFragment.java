@@ -3,7 +3,6 @@ package com.example.schedulein_20.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -12,12 +11,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import android.os.Environment;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +29,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.schedulein_20.R;
+import com.example.schedulein_20.RESTclientOpetations.APISession;
 import com.example.schedulein_20.parseDatabaseComms.UserSession;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -46,8 +43,6 @@ import java.io.IOException;
 
 import android.media.ThumbnailUtils;
 import java.lang.Math;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,6 +62,7 @@ public class EditProfileFragment extends Fragment {
     private Button updateProfile;
     private ImageButton startEditing;
     private ImageButton updateProfilePic;
+    Button conectWithGoogleCalendar;
     File newPhotoFile;
     ParseUser currentUser;
     Context context;
@@ -142,6 +138,7 @@ public class EditProfileFragment extends Fragment {
         updateProfile = view.findViewById(R.id.editFragmentUpdateProfile);
         startEditing = view.findViewById(R.id.editProfileStartEditingButton);
         updateProfilePic = view.findViewById(R.id.editProfileChangePicture);
+        conectWithGoogleCalendar = view.findViewById(R.id.editProfileConnectWithGoogleCalendar);
 
         updateProfile.setVisibility(View.GONE);
         disablePickPhotoButton();
@@ -189,6 +186,21 @@ public class EditProfileFragment extends Fragment {
                 String newEmail = userEmail.getText().toString();
                 UserSession.updateCurrentUser(context, newName, newSurname, newUsername, newEmail, newPhotoFile, userUpdatedCallback());
 
+            }
+        });
+
+        conectWithGoogleCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ScheduleInGCalendarAPIApp.getRestClient(context).connect();
+
+                APISession apiSession = new APISession();
+                apiSession.loginToRest();
+
+                /*Log.e(TAG, "starting intent to APISession");
+                Intent intent = new Intent(context, APISessionActivity.class);
+                intent.putExtra("Flag", "loginToRest");
+                startActivity(intent);*/
             }
         });
 
@@ -339,6 +351,5 @@ public class EditProfileFragment extends Fragment {
             ivPreview.setImageBitmap(selectedImage);
         }
     }
-
 
 }

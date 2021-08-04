@@ -31,4 +31,10 @@
     <string name="groups_loaded_successfully">groups loaded successfully!</string>
     <string name="problem_loading_groups">There was a problem loading groups</string>
     <string name="no_groups_loaded">This groups list is empty</string>
+
+
+    <!-- __________________ REST TEMPLATE STRINGS ____________________ -->
+    <string name="intent_scheme">https</string>
+    <string name="intent_host">localhost</string>
+
 </resources>

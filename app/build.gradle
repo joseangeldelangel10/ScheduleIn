@@ -2,6 +2,10 @@ plugins {
     id 'com.android.application'
 }
 
+def apikeyPropertiesFile = rootProject.file("apikey.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -14,6 +18,17 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        /* ---------------------------- Room schemas FOR REST TEMPLATE ---------------------------- */
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+        buildConfigField("String", "CONSUMER_KEY", apikeyProperties['CONSUMER_KEY'])
+        buildConfigField("String", "CONSUMER_SECRET", apikeyProperties['CONSUMER_SECRET'])
+
+        /* ------------------------------------------------------------------------------------ */
     }
 
     buildTypes {
@@ -65,5 +80,19 @@ dependencies {
 
     // Glide transformations
     implementation 'jp.wasabeef:glide-transformations:4.1.0'
+
+
+    /* ----------------------- REST CLIENT TEMPLATE LIBRARIES ----------------------- */
+
+    implementation fileTree(dir: 'libs', include: '*.jar')
+    implementation 'com.codepath.libraries:android-oauth-handler:2.4.0'
+    implementation 'commons-codec:commons-codec:1.10'
+    // Room for simple persistence with an ORM
+    def room_version = "2.3.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation 'com.facebook.stetho:stetho:1.5.1'
+
+    /* ----------------------------------------------------------------------- */
 
 }

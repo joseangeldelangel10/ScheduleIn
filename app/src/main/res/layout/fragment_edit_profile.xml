@@ -77,7 +77,7 @@
                 android:id="@+id/editProfileDivider1"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/week_view_hour_divider"
-                android:layout_below="@+id/editProfileSIWGoogleRelativeLayout"
+                android:layout_below="@id/editProfileConnectWithGoogleCalendar"
                 android:layout_marginTop="20dp"
                 android:background="?android:attr/listDivider" />
 
@@ -258,6 +258,17 @@
                 android:text="Save changes"
                 android:textSize="15dp"></Button>
 
+            <Button
+                android:id="@+id/editProfileConnectWithGoogleCalendar"
+                android:layout_width="250dp"
+                android:layout_height="30dp"
+                android:layout_below="@+id/editProfileSIWGoogleRelativeLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@color/primary"
+                android:text="Connect with google calendar 📅"
+                android:textColor="@color/bone_white"
+                android:textSize="10sp" />
 
 
         </RelativeLayout>

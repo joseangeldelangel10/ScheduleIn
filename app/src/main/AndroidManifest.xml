@@ -3,9 +3,7 @@
     package="com.example.schedulein_20">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- storage permisions to change profile pic -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- storage permisions to change profile pic -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -18,7 +16,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ScheduleIn20">
 
-        <activity android:name=".CheckAvailabilityActivity"></activity>
+        <activity android:name=".RESTclientOpetations.APISession">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="@string/intent_host"
+                    android:scheme="@string/intent_scheme" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".CheckAvailabilityActivity" />
         <activity android:name=".CUgroupsActivity" />
         <activity android:name=".CUeventActivity" />
         <activity android:name=".SignUpActivity" />

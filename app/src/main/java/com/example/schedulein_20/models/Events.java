@@ -1,10 +1,17 @@
 package com.example.schedulein_20.models;
 
+import android.util.Log;
+
 import com.example.schedulein_20.R;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,6 +19,7 @@ import java.util.HashMap;
 //@Parcel
 @ParseClassName("Events")
 public class Events extends ParseObject {
+    private static final String TAG = "EventsModel";
     public static final String KEY_TITLE = "title";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_USER = "creator";
@@ -70,6 +78,39 @@ public class Events extends ParseObject {
 
     public int getWeekDay(){
         return getStartDate().getDay();
+    }
+
+    public static Events fromJsonObject(ParseUser user, JSONObject jsonObject){
+        Events event = new Events();
+        try {
+            Date startDate = RFC3339Date.parseRFC3339Date(jsonObject.getJSONObject("start").getString("dateTime"));
+            Date endDate = RFC3339Date.parseRFC3339Date(jsonObject.getJSONObject("end").getString("dateTime"));
+
+            event.setTitle(jsonObject.getString("summary"));
+            event.setUser(user);
+            event.setStartDate(startDate);
+            event.setEndDate(endDate);
+            event.setPublicAccess(false);
+            event.setInvitees(new ArrayList<>());
+        } catch (JSONException | ParseException e) {
+            e.printStackTrace();
+        }
+        return event;
+    }
+
+    public static ArrayList<Events> fromJsonArray(ParseUser user, JSONArray jsonArray){
+        ArrayList<Events> result = new ArrayList<>();
+        for(int i = 0; i< jsonArray.length(); i++){
+            try {
+                result.add(Events.fromJsonObject( user, (JSONObject) jsonArray.get(i)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e(TAG, "failed creating google events list");
+                return null;
+            }
+        }
+        Log.e(TAG, "suucesa creating google events list");
+        return result;
     }
 
     public int getDurationInMins(){
