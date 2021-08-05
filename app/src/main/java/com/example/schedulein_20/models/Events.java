@@ -1,5 +1,6 @@
 package com.example.schedulein_20.models;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.schedulein_20.R;
@@ -28,6 +29,8 @@ public class Events extends ParseObject {
     public static final String KEY_INVITEES = "invitees";
     public static final String KEY_ACCESS = "public";
     public static final String KEY_COLOR = "color";
+    public static final String KEY_GOOGLE_EVENT_ID = "googleEventId";
+    public static final String KEY_GOOGLE_LAST_UPDATE = "googlesLastUpdate";
     public static HashMap<Integer, Integer> dayInt2Layout = new HashMap<>();
 
     public Events(){
@@ -72,25 +75,38 @@ public class Events extends ParseObject {
 
     public void setPublicAccess(boolean access) { put(KEY_ACCESS, access); }
 
-    public int getColor() {return getInt(KEY_COLOR); };
+    public int getColor() {return getInt(KEY_COLOR); }
 
-    public void setColor(int color) { put(KEY_COLOR, color ); };
+    public void setColor(int color) { put(KEY_COLOR, color ); }
+
+    public String getGoogleEventId() {return getString(KEY_GOOGLE_EVENT_ID); }
+
+    public void setGoogleEventId(String id) { put(KEY_GOOGLE_EVENT_ID, id); }
+
+    public Date getGooglesLastUpdate() { return getDate("googlesLastUpdate"); }
+
+    public void setGooglesLastUpdate(Date lastUpdate) { put(KEY_GOOGLE_LAST_UPDATE, lastUpdate); }
 
     public int getWeekDay(){
         return getStartDate().getDay();
     }
 
-    public static Events fromJsonObject(ParseUser user, JSONObject jsonObject){
+    public static Events fromJsonObject(Context context, ParseUser user, JSONObject jsonObject){
         Events event = new Events();
         try {
             Date startDate = RFC3339Date.parseRFC3339Date(jsonObject.getJSONObject("start").getString("dateTime"));
             Date endDate = RFC3339Date.parseRFC3339Date(jsonObject.getJSONObject("end").getString("dateTime"));
+            //Date creationDate = RFC3339Date.parseRFC3339Date(jsonObject.getString("created"));
+            Date lastUpdateDate = RFC3339Date.parseRFC3339Date(jsonObject.getString("updated"));
 
-            event.setTitle(jsonObject.getString("summary"));
+            event.setGoogleEventId(jsonObject.getString("id"));
+            event.setGooglesLastUpdate(lastUpdateDate);
+            event.setTitle("Google ev. " + jsonObject.getString("summary"));
             event.setUser(user);
             event.setStartDate(startDate);
             event.setEndDate(endDate);
             event.setPublicAccess(false);
+            event.setColor(context.getColor(R.color.secondary));
             event.setInvitees(new ArrayList<>());
         } catch (JSONException | ParseException e) {
             e.printStackTrace();
@@ -98,11 +114,11 @@ public class Events extends ParseObject {
         return event;
     }
 
-    public static ArrayList<Events> fromJsonArray(ParseUser user, JSONArray jsonArray){
+    public static ArrayList<Events> fromJsonArray(Context context, ParseUser user, JSONArray jsonArray){
         ArrayList<Events> result = new ArrayList<>();
         for(int i = 0; i< jsonArray.length(); i++){
             try {
-                result.add(Events.fromJsonObject( user, (JSONObject) jsonArray.get(i)));
+                result.add(Events.fromJsonObject( context, user, (JSONObject) jsonArray.get(i)));
             } catch (JSONException e) {
                 e.printStackTrace();
                 Log.e(TAG, "failed creating google events list");

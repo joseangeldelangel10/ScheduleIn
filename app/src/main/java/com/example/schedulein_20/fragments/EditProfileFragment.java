@@ -44,6 +44,8 @@ import java.io.IOException;
 import android.media.ThumbnailUtils;
 import java.lang.Math;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link EditProfileFragment#newInstance} factory method to
@@ -153,7 +155,14 @@ public class EditProfileFragment extends Fragment {
             e.printStackTrace();
         }
 
-        Glide.with(context).load(profilePic).placeholder(R.drawable.profile_picture_placeholder).into(userProfilePic);
+        int radius = getResources().getInteger(R.integer.profile_pic_radius);
+        int margin = getResources().getInteger(R.integer.profile_pic_margin);
+
+        Glide.with(context).load(profilePic)
+                .centerCrop() // scale image to fill the entire ImageView
+                .transform(new RoundedCornersTransformation(radius, margin))
+                .placeholder(R.drawable.profile_picture_placeholder)
+                .into(userProfilePic);
         userSIWGoogle.setChecked(currentUser.getBoolean("googleUser"));
         userName.setText(currentUser.getString("name"));
         userSurname.setText(currentUser.getString("surname"));

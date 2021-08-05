@@ -45,7 +45,7 @@ public class EventQueries {
         }
     }
 
-    public static void updateEventInDB(Context context, Events event2update, String eventTitle, Date startDate, Date endDate, boolean eventIsPublic, int eventColor, ArrayList<String> inviteesIds, SaveCallback callback) {
+    public static void updateEventInDB(Context context, Events event2update, String eventTitle, Date startDate, Date endDate, boolean eventIsPublic, int eventColor, ArrayList<String> inviteesIds, Date googlesLastUpdate, SaveCallback callback) {
         ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
 
         // Retrieve the object by id
@@ -58,6 +58,10 @@ public class EventQueries {
                 object.put(Events.KEY_INVITEES, inviteesIds);
                 object.put(Events.KEY_ACCESS, eventIsPublic);
                 object.put(Events.KEY_COLOR, eventColor);
+
+                if(googlesLastUpdate != null){
+                    object.put(Events.KEY_GOOGLE_LAST_UPDATE, googlesLastUpdate);
+                }
 
                 // All other fields will remain the same
                 if(callback != null){
@@ -149,6 +153,67 @@ public class EventQueries {
         ParseQuery<Events> mainQuery = ParseQuery.or(queries);
         mainQuery.addAscendingOrder(Events.KEY_START_DATE);
         mainQuery.findInBackground(callback);
+
+    }
+
+    public static void queryParseWeekEvents(Context context, ParseUser user, FindCallback callback) {
+
+        ParseQuery<Events> userEventsQuery = ParseQuery.getQuery(Events.class);
+        ParseQuery<Events> eventsInvitedToQuery = ParseQuery.getQuery(Events.class);
+
+        userEventsQuery.whereGreaterThan(Events.KEY_START_DATE, DateTime.weekStart());
+        userEventsQuery.whereLessThan(Events.KEY_END_DATE, DateTime.weekEnding());
+        userEventsQuery.whereEqualTo(Events.KEY_USER, user);
+
+
+        eventsInvitedToQuery.whereGreaterThan(Events.KEY_START_DATE, DateTime.weekStart());
+        eventsInvitedToQuery.whereLessThan(Events.KEY_END_DATE, DateTime.weekEnding());
+        eventsInvitedToQuery.whereEqualTo(Events.KEY_INVITEES, user.getObjectId());
+
+
+        List<ParseQuery<Events>> queries = new ArrayList<ParseQuery<Events>>();
+        queries.add(userEventsQuery);
+        queries.add(eventsInvitedToQuery);
+
+        ParseQuery<Events> mainQuery = ParseQuery.or(queries);
+        mainQuery.addAscendingOrder(Events.KEY_START_DATE);
+        mainQuery.whereEqualTo(Events.KEY_GOOGLE_EVENT_ID, "");
+        mainQuery.findInBackground(callback);
+
+    }
+
+    public static void queryGoogleWeekEvents(Context context, ParseUser user, FindCallback<Events> callback) {
+
+        ParseQuery<Events> userEventsQuery = ParseQuery.getQuery(Events.class);
+        ParseQuery<Events> eventsInvitedToQuery = ParseQuery.getQuery(Events.class);
+
+        userEventsQuery.whereGreaterThan(Events.KEY_START_DATE, DateTime.weekStart());
+        userEventsQuery.whereLessThan(Events.KEY_END_DATE, DateTime.weekEnding());
+        userEventsQuery.whereEqualTo(Events.KEY_USER, user);
+        //query.whereEqualTo(Events.KEY_INVITEES, user.getObjectId());
+
+
+        eventsInvitedToQuery.whereGreaterThan(Events.KEY_START_DATE, DateTime.weekStart());
+        eventsInvitedToQuery.whereLessThan(Events.KEY_END_DATE, DateTime.weekEnding());
+        eventsInvitedToQuery.whereEqualTo(Events.KEY_INVITEES, user.getObjectId());
+
+
+        List<ParseQuery<Events>> queries = new ArrayList<ParseQuery<Events>>();
+        queries.add(userEventsQuery);
+        queries.add(eventsInvitedToQuery);
+
+        ParseQuery<Events> mainQuery = ParseQuery.or(queries);
+        mainQuery.addAscendingOrder(Events.KEY_START_DATE);
+        mainQuery.whereNotEqualTo(Events.KEY_GOOGLE_EVENT_ID, "");
+        mainQuery.findInBackground(callback);
+
+    }
+
+    public static void queryGoogleEvent(Context context, Events googleRetrievedEvent ,FindCallback<Events> callback) {
+        ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
+        query.whereEqualTo(Events.KEY_GOOGLE_EVENT_ID, googleRetrievedEvent.getGoogleEventId() );
+
+        query.findInBackground(callback);
 
     }
 

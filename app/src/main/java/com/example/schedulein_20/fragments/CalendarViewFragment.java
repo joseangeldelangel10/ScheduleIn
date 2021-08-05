@@ -7,21 +7,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.example.schedulein_20.GoogleCalendarClient;
 import com.example.schedulein_20.LayoutGenerators.CalendarViewsGenerator;
 import com.example.schedulein_20.R;
+import com.example.schedulein_20.RESTclientOpetations.MergingDiffCalendarsEvents;
+import com.example.schedulein_20.ScheduleInGCalendarAPIApp;
 import com.example.schedulein_20.models.Events;
 import com.example.schedulein_20.parseDatabaseComms.EventQueries;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Headers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,9 +40,14 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class CalendarViewFragment extends Fragment {
+    private final String TAG = "CalendarViewFragment";
     Context context;
     ParseUser currentUser;
     List<Events> weekEvents;
+    ArrayList<Events> googleWeekEvents;
+    GoogleCalendarClient gCalendarClient;
+    String primaryGCalendarId;
+    View view;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -83,9 +99,13 @@ public class CalendarViewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.view = view;
         context = getContext();
         currentUser = ParseUser.getCurrentUser();
         weekEvents = new ArrayList<>();
+        googleWeekEvents = new ArrayList<>();
+        gCalendarClient = ScheduleInGCalendarAPIApp.getRestClient(context);
+        primaryGCalendarId = null;
 
         FindCallback onWeekEventsFound = weekEventsCallback(view);
         EventQueries.queryWeekEvents(context, currentUser, onWeekEventsFound);

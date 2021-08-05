@@ -3,11 +3,13 @@ package com.example.schedulein_20;
 import android.content.Context;
 import android.util.Log;
 
+import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.RequestHeaders;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.codepath.oauth.OAuthBaseClient;
 import com.example.schedulein_20.models.DateTime;
+import com.example.schedulein_20.models.Events;
 import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.core.builder.api.BaseApi;
 import com.google.api.services.calendar.CalendarScopes;
@@ -68,32 +70,8 @@ public class GoogleCalendarClient extends OAuthBaseClient {
         client.get(apiUrl, params, handler);
     }
 
-    public void createEvent(String calendarId, String title, Date date, JsonHttpResponseHandler handler) {
-        String apiUrl = getApiUrl("calendars/calendarId/events");
-        RequestHeaders headers = new RequestHeaders();
-        RequestParams params = new RequestParams();
-        params.put("calendarId", calendarId);
 
-        JSONObject jsonObject = new JSONObject();
-        JSONObject jsonDate = new JSONObject();
-        try {
-            jsonDate.put("date", formatDate(date));
-
-            jsonObject.put("summary", title);
-            jsonObject.put("end", jsonDate);
-            jsonObject.put("start", jsonDate);
-        } catch (JSONException e) {
-            Log.e(TAG, "Json exception: " + e, e);
-        }
-        RequestBody body = RequestBody.create(JSONObject, jsonObject.toString());
-
-        client.post(apiUrl, headers, params, body, handler);
-    }
 
     // Can't delete or update Google Calendar events using this library
 
-    public String formatDate(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        return formatter.format(date);
-    }
 }

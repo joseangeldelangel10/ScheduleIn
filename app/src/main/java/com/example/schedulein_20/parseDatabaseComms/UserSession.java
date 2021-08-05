@@ -20,6 +20,7 @@ import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class UserSession {
 
@@ -62,7 +63,33 @@ public class UserSession {
             currentUser.put("surname", surname);
             currentUser.put("username", username);
             currentUser.put("email", email);
-            currentUser.put("profilePic", new ParseFile(newPhoto));
+            if (newPhoto != null) {
+                currentUser.put("profilePic", new ParseFile(newPhoto));
+            }
+            // Saves the object.
+
+            if(callback != null){
+                currentUser.saveInBackground(callback);
+            }else {
+                currentUser.saveInBackground(e -> {
+                    if (e == null) {
+                        //Save successfull
+                        Toast.makeText(context, "user updated", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Something went wrong while saving
+                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+        }
+    }
+
+    public static void updateCurrentUserLinkedCalendars(Context context, ArrayList<String> linkedCalendars, SaveCallback callback) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            // Other attributes than "email" will remain unchanged!
+            currentUser.put("calendarsLinked", linkedCalendars);
             // Saves the object.
 
             if(callback != null){

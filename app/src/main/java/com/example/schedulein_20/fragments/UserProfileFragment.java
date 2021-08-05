@@ -29,6 +29,7 @@ import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.schedulein_20.CUeventActivity;
 import com.example.schedulein_20.GoogleCalendarClient;
 import com.example.schedulein_20.LayoutGenerators.CalendarViewsGenerator;
+import com.example.schedulein_20.RESTclientOpetations.MergingDiffCalendarsEvents;
 import com.example.schedulein_20.ScheduleInGCalendarAPIApp;
 import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.R;
@@ -60,7 +61,7 @@ import okhttp3.Headers;
  * Use the {@link UserProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UserProfileFragment extends Fragment {
+public class UserProfileFragment extends Fragment implements MergingDiffCalendarsEvents.OnMergeEvents {
     private final String TAG = "UserProfile";
     public final int CREATE_EVENT_REQUEST_CODE = 10;
     public final int UPDATE_EVENT_REQUEST_CODE = 20;
@@ -72,6 +73,7 @@ public class UserProfileFragment extends Fragment {
     LinearLayout calView;
     private ParseUser currentUser;
     public ArrayList<Events> weekEvents;
+    public ArrayList<Events> googleWeekEvents;
     public Context context;
     ScaleGestureDetector mScaleDetector;
     String primaryGCalendarId;
@@ -126,6 +128,7 @@ public class UserProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         currentUser = ParseUser.getCurrentUser();
         weekEvents = new ArrayList<>();
+        googleWeekEvents = new ArrayList<>();
         context = getContext();
         primaryGCalendarId = null;
         gCalendarClient = ScheduleInGCalendarAPIApp.getRestClient(context);
@@ -138,7 +141,6 @@ public class UserProfileFragment extends Fragment {
         userInfo = view.findViewById(R.id.ProfileFragmentExtraInfo);
         cancelNextEvent = view.findViewById(R.id.ProfileFragmentRelateButt);
         newEvent = view.findViewById(R.id.create_new_event);
-        //calView = view.findViewById(R.id.week_view_HorizontalScrollView);
         calView = view.findViewById(R.id.week_view_days_container);
 
         /* ------------------------------------------------------------------------------------------------------------------------------------
@@ -181,7 +183,7 @@ public class UserProfileFragment extends Fragment {
 
         FindCallback onWeekEventsFound = weekEventsCallback(context, view);
         // TODO: progress bar crash
-        EventQueries.queryWeekEvents(context, currentUser, onWeekEventsFound);
+        EventQueries.queryParseWeekEvents(context, currentUser, onWeekEventsFound);
 
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                         ADD CREATE EVENT FUNCTIONALITY
@@ -222,6 +224,11 @@ public class UserProfileFragment extends Fragment {
             }
         });
 
+        /* ------------------------------------------------------------------------------------------------------------------------------------
+                                                        ADD GOOGLE CALENDAR EVENTS
+        ------------------------------------------------------------------------------------------------------------------------------------*/
+
+
         //ScheduleInGCalendarAPIApp.getRestClient(context).clearAccessToken();
         if (gCalendarClient.checkAccessToken() != null){
 
@@ -246,15 +253,15 @@ public class UserProfileFragment extends Fragment {
                 @Override
                 public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                     Log.e(TAG, "Fetch calendars error, status code: " + statusCode + "response: " + response);
+                    OnMergeEventsCompleted();
                 }
             });
         }else {
             Log.e(TAG, "no calendar API access yet");
+            OnMergeEventsCompleted();
         }
 
-        /*LocalDateTime today = LocalDateTime.now();
-        System.out.println(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")
-                .format( today ));*/
+
 
     }
 
@@ -265,8 +272,10 @@ public class UserProfileFragment extends Fragment {
                 try {
                     Log.e(TAG, "GOOGLE EVENTS: " + json.jsonObject.toString(4));
                     JSONArray listOfGoogleEvents = json.jsonObject.getJSONArray("items");
-                    ArrayList<Events> googleEvents = Events.fromJsonArray(currentUser, listOfGoogleEvents);
-                    CalendarViewsGenerator.generateWeekView(getView(), context, googleEvents, UserProfileFragment.this);
+                    ArrayList<Events> googleRetrievedEvents = Events.fromJsonArray(context, currentUser, listOfGoogleEvents);
+
+                    MergingDiffCalendarsEvents.checkGoogleEvents(context, googleRetrievedEvents, UserProfileFragment.this);
+                    //CalendarViewsGenerator.generateWeekView(getView(), context, googleRetrievedEvents, UserProfileFragment.this);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -317,4 +326,14 @@ public class UserProfileFragment extends Fragment {
     }
 
 
+    @Override
+    public void OnMergeEventsCompleted() {
+        EventQueries.queryGoogleWeekEvents(context, currentUser, new FindCallback<Events>() {
+            @Override
+            public void done(List<Events> objects, ParseException e) {
+                googleWeekEvents.addAll(objects);
+                CalendarViewsGenerator.generateWeekView(calView, context, googleWeekEvents, UserProfileFragment.this);
+            }
+        });
+    }
 }

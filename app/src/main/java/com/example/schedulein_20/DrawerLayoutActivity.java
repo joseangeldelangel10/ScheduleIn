@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.schedulein_20.RESTclientOpetations.APISession;
 import com.example.schedulein_20.fragments.CalendarViewFragment;
 import com.example.schedulein_20.fragments.DayViewFragment;
 import com.example.schedulein_20.fragments.EditProfileFragment;
@@ -40,6 +41,7 @@ import com.parse.ParseUser;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 
 public class DrawerLayoutActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG = "ActivityDrawerLayout";
@@ -67,6 +69,15 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
         toolbar = findViewById(R.id.my_awesome_toolbar);
 
         setSupportActionBar(toolbar);
+
+        /* ---------------------------------------------------------------------------------------------
+                         REQUESTING USER ACCESS TO GOOGLE CALENDAR IF CONNECTED WITH G CALENDAR
+        --------------------------------------------------------------------------------------------- */
+        ArrayList<String> linkedCalendars = (ArrayList<String>) currentUser.get("calendarsLinked");
+        if(linkedCalendars.contains("google") && ScheduleInGCalendarAPIApp.getRestClient(context).checkAccessToken() == null){
+            APISession apiSession = new APISession();
+            apiSession.loginToRest();
+        }
 
         /* ---------------------------------------------------------------------------------------------
                                                 DRAWER CONFIGURATION

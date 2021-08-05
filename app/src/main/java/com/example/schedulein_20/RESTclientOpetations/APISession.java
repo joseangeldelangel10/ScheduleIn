@@ -15,6 +15,13 @@ import com.example.schedulein_20.DrawerLayoutActivity;
 import com.example.schedulein_20.GoogleCalendarClient;
 import com.example.schedulein_20.R;
 import com.example.schedulein_20.ScheduleInGCalendarAPIApp;
+import com.example.schedulein_20.parseDatabaseComms.UserSession;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.io.File;
+import java.util.ArrayList;
 
 public class APISession extends OAuthLoginActionBarActivity<GoogleCalendarClient> {
 
@@ -36,10 +43,30 @@ public class APISession extends OAuthLoginActionBarActivity<GoogleCalendarClient
         //Toast.makeText(context, "connected succesfully with google calendar", Toast.LENGTH_SHORT).show();
         Log.e(TAG, "connected succesfully with google calendar");
 
+        ParseUser currentUser  = ParseUser.getCurrentUser();
+        ArrayList<String> calendarsLinked = (ArrayList<String>) currentUser.get("calendarsLinked");
+        if (!calendarsLinked.contains("google")){
+            calendarsLinked.add("google");
+            UserSession.updateCurrentUserLinkedCalendars(context, calendarsLinked, registerGoogleCalendarLinkCallback());
+        }
+
         Log.i("OAuth", "logged in successfully");
         Intent i = new Intent(context, DrawerLayoutActivity.class);
         startActivity(i);
 
+    }
+
+    private SaveCallback registerGoogleCalendarLinkCallback(){
+        return new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null){
+                    Log.e(TAG, "google calendar registered in current user");
+                }else {
+                    Log.e(TAG, "problem registering in current user");
+                }
+            }
+        };
     }
 
     @Override

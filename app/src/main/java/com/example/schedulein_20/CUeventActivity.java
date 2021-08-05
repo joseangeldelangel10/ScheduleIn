@@ -3,6 +3,7 @@ package com.example.schedulein_20;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -237,6 +238,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
                         eventIsPublic,
                         eventColor,
                         ParseUserExtraAttributes.parseUsers2Ids((ArrayList<ParseUser>) selectedInvitees),
+                        null,
                         updateEventCallback());
             }
         });
@@ -272,6 +274,16 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             selectCurrentEventColor(event2update);
             updateDatesText();
             ParseUserExtraAttributes.Ids2ParseUsers(event2update.getInvitees(), ids2ParseUsersCallback());
+            if(!event2update.getGoogleEventId().equals("")){
+                UDeventBt.setVisibility(View.INVISIBLE);
+                UDeventBt.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
+                etTitle.setEnabled(false);
+                checkAvailability.setEnabled(false);
+                inviteesSearchV.setEnabled(false);
+                publicSwitch.setEnabled(false);
+                disableTimeTvs();
+                creatorTv.setText("your google calendar");
+            }
             btCreateEv.setVisibility(View.INVISIBLE);
             btCreateEv.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
             evaluateRvSize();
@@ -305,6 +317,13 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             UDeventBt.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
             evaluateRvSize();
         }
+    }
+
+    private void disableTimeTvs() {
+        tvStartTime.setEnabled(false);
+        tvEndTime.setEnabled(false);
+        tvEndDate.setEnabled(false);
+        tvStartDate.setEnabled(false);
     }
 
     private void selectCurrentEventColor(Events event){
