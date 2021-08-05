@@ -6,16 +6,62 @@
     tools:context=".fragments.CalendarViewFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+            <LinearLayout
+                android:id="@+id/date_control_menu_linear_lay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true">
 
-    <include
-        layout="@layout/week_calendar_view_model"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="20dp">
+                <ImageButton
+                    android:id="@+id/weekViewFragmentLastWeekBt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/back_arrow_dark"></ImageButton>
 
-    </include>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@null"></ImageView>
+
+                <TextView
+                    android:id="@+id/weekViewFragmentWeekRangeTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/josefin_sans"
+                    android:textSize="18sp"
+                    tools:text="Sun aug 21 - Sat aug 28"></TextView>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@null"></ImageView>
+
+                <ImageButton
+                    android:id="@+id/weekViewFragmentNextWeekBt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/forward_arrow_dark"></ImageButton>
+            </LinearLayout>
+
+        <include
+            layout="@layout/week_calendar_view_model"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/date_control_menu_linear_lay"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="20dp">
+        </include>
+
+    </RelativeLayout>
 
 </FrameLayout>

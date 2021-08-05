@@ -359,6 +359,10 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         colorButtons.add(findViewById(R.id.CUEventColorSecondary));
         colorButtons.add(findViewById(R.id.CUEventColorEmphasis2));
         colorButtons.add(findViewById(R.id.CUEventColorGray));
+        colorButtons.add(findViewById(R.id.CUEventColorPurple));
+        colorButtons.add(findViewById(R.id.CUEventColorOrange));
+        colorButtons.add(findViewById(R.id.CUEventColorYellow));
+        colorButtons.add(findViewById(R.id.CUEventColorPink));
     }
 
     private void unselectColors(){

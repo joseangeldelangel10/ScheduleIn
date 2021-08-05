@@ -210,6 +210,11 @@ public class CUgroupsActivity extends AppCompatActivity implements GroupMembersS
         colorButtons.add(findViewById(R.id.CUGroupColorSecondary));
         colorButtons.add(findViewById(R.id.CUGroupColorEmphasis2));
         colorButtons.add(findViewById(R.id.CUGroupColorGray));
+
+        colorButtons.add(findViewById(R.id.CUGroupColorPurple));
+        colorButtons.add(findViewById(R.id.CUGroupColorOrange));
+        colorButtons.add(findViewById(R.id.CUGroupColorYellow));
+        colorButtons.add(findViewById(R.id.CUGroupColorPink));
     }
 
     private void unselectColors(){

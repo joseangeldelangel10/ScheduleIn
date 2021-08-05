@@ -15,8 +15,17 @@
     <color name="secondary">#BADFE7</color>
     <color name="emphasis1">#6FB3B8</color>
     <color name="emphasis2">#C2EDCE</color>
+
+
     <color name="gray">#C2C2C2</color>
     <color name="bone_white">#CDF6F6F2</color>
     <color name="emphasis1_transparent">#3782D4E6</color>
     <color name="red_transparent">#7CFF0000</color>
+    <color name="pink">#F6858C</color>
+    <color name="orange">#FAAA6B</color>
+    <color name="yellow">#FDD782</color>
+    <color name="green">#A1B77B</color>
+    <color name="sky_blue">#9BD2C8</color>
+    <color name="purple">#A19CB3</color>
+
 </resources>

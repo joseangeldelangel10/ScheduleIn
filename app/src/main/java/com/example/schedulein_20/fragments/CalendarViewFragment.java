@@ -6,33 +6,28 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-import com.example.schedulein_20.GoogleCalendarClient;
 import com.example.schedulein_20.LayoutGenerators.CalendarViewsGenerator;
 import com.example.schedulein_20.R;
-import com.example.schedulein_20.RESTclientOpetations.MergingDiffCalendarsEvents;
-import com.example.schedulein_20.ScheduleInGCalendarAPIApp;
+import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.models.Events;
 import com.example.schedulein_20.parseDatabaseComms.EventQueries;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-
-import okhttp3.Headers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,10 +39,12 @@ public class CalendarViewFragment extends Fragment {
     Context context;
     ParseUser currentUser;
     List<Events> weekEvents;
-    ArrayList<Events> googleWeekEvents;
-    GoogleCalendarClient gCalendarClient;
-    String primaryGCalendarId;
     View view;
+    ImageButton backArrow;
+    TextView weekRangeTv;
+    ImageButton forwardArrow;
+    public Date displayedStartDate;
+    public Date displayedEndDate;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,11 +68,13 @@ public class CalendarViewFragment extends Fragment {
      * @return A new instance of fragment CalendarView.
      */
     // TODO: Rename and change types and number of parameters
-    public static CalendarViewFragment newInstance(String param1, String param2) {
+    public static CalendarViewFragment newInstance(Date weekStart, Date weekEnding) {
         CalendarViewFragment fragment = new CalendarViewFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        //args.putString(ARG_PARAM1, param1);
+        //args.putString(ARG_PARAM2, param2);
+        fragment.displayedStartDate = weekStart;
+        fragment.displayedEndDate = weekEnding;
         fragment.setArguments(args);
         return fragment;
     }
@@ -103,12 +102,78 @@ public class CalendarViewFragment extends Fragment {
         context = getContext();
         currentUser = ParseUser.getCurrentUser();
         weekEvents = new ArrayList<>();
-        googleWeekEvents = new ArrayList<>();
-        gCalendarClient = ScheduleInGCalendarAPIApp.getRestClient(context);
-        primaryGCalendarId = null;
+        //displayedStartDate = DateTime.weekStart();
+        //displayedEndDate = DateTime.weekEnding();
+
+        backArrow = view.findViewById(R.id.weekViewFragmentLastWeekBt);
+        weekRangeTv = view.findViewById(R.id.weekViewFragmentWeekRangeTv);
+        forwardArrow = view.findViewById(R.id.weekViewFragmentNextWeekBt);
 
         FindCallback onWeekEventsFound = weekEventsCallback(view);
-        EventQueries.queryWeekEvents(context, currentUser, onWeekEventsFound);
+        EventQueries.queryWeekEvents(context, currentUser, displayedStartDate, displayedEndDate, onWeekEventsFound);
+        writeWeekRange(displayedStartDate, displayedEndDate);
+
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Date> newRange = computeLastWeekRange();
+                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.host_frame, CalendarViewFragment.newInstance(newRange.get(0), newRange.get(1)))
+                        .commit();
+            }
+        });
+
+        forwardArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Date> newRange = computeNextWeekRange();
+                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.host_frame, CalendarViewFragment.newInstance(newRange.get(0), newRange.get(1)))
+                        .commit();
+            }
+        });
+
+    }
+
+    private ArrayList<Date> computeLastWeekRange(){
+        ArrayList<Date> result = new ArrayList<>();
+        Calendar cStart = Calendar.getInstance();
+        Calendar cEnd = Calendar.getInstance();
+
+        cStart.setTime(displayedStartDate);
+        cStart.add(Calendar.DATE, -7);
+        result.add(cStart.getTime());
+
+        cEnd.setTime(displayedEndDate);
+        cEnd.add(Calendar.DATE, -7);
+        result.add(cEnd.getTime());
+
+        return result;
+    }
+
+    private ArrayList<Date> computeNextWeekRange(){
+        ArrayList<Date> result = new ArrayList<>();
+        Calendar cStart = Calendar.getInstance();
+        Calendar cEnd = Calendar.getInstance();
+
+        cStart.setTime(displayedStartDate);
+        cStart.add(Calendar.DATE, 7);
+        result.add(cStart.getTime());
+
+
+        cEnd.setTime(displayedEndDate);
+        cEnd.add(Calendar.DATE, 7);
+        result.add(cEnd.getTime());
+        return result;
+    }
+
+    private void writeWeekRange(Date weekStart, Date weekEnding) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(weekEnding);
+        c.add(Calendar.DATE, -1);
+        Date userWeekEnding = c.getTime();
+
+        weekRangeTv.setText(DateTime.onlyDate(weekStart) + " - " + DateTime.onlyDate(userWeekEnding));
     }
 
     private FindCallback<Events> weekEventsCallback(View view){
@@ -123,6 +188,7 @@ public class CalendarViewFragment extends Fragment {
                     Toast.makeText(context, getString(R.string.no_events_loaded_this_week), Toast.LENGTH_SHORT).show();
                     return;
                 }
+                weekEvents.clear();
                 weekEvents.addAll(objects);
                 Toast.makeText(context, getString(R.string.events_loaded_succesfully), Toast.LENGTH_SHORT).show();
                 CalendarViewsGenerator.generateWeekView(view, context, (ArrayList<Events>) weekEvents, CalendarViewFragment.this);

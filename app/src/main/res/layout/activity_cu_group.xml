@@ -119,6 +119,51 @@
                     android:layout_height="35dp"
                     android:background="@color/gray"></ImageButton>
 
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@null"></ImageView>
+
+                <ImageButton
+                    android:id="@+id/CUGroupColorPurple"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@color/purple"></ImageButton>
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@null"></ImageView>
+
+                <ImageButton
+                    android:id="@+id/CUGroupColorOrange"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@color/orange"></ImageButton>
+
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@null"></ImageView>
+
+                <ImageButton
+                    android:id="@+id/CUGroupColorYellow"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@color/yellow"></ImageButton>
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@null"></ImageView>
+
+                <ImageButton
+                    android:id="@+id/CUGroupColorPink"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@color/pink"></ImageButton>
+
             </LinearLayout>
 
         </HorizontalScrollView>

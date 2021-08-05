@@ -207,7 +207,7 @@ public class ProfileFragment extends Fragment {
                 banner.setVisibility(View.GONE);
                 calView.setVisibility(View.VISIBLE);
                 weekEvents = new ArrayList<>();
-                EventQueries.queryWeekEvents(context, user, queryWeekEventsCallback(view));
+                EventQueries.queryWeekEvents(context, user, DateTime.weekStart(), DateTime.weekEnding(), queryWeekEventsCallback(view));
 
                 relate.setText("Related");
                 relate.setBackground(  new ColorDrawable(getResources().getColor(R.color.emphasis2))  );

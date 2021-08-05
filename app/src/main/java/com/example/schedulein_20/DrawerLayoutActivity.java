@@ -67,7 +67,6 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
                                       REPLACING ACTION BAR FOR TOOLBAR TO USE NAV DRAWER
         --------------------------------------------------------------------------------------------- */
         toolbar = findViewById(R.id.my_awesome_toolbar);
-
         setSupportActionBar(toolbar);
 
         /* ---------------------------------------------------------------------------------------------
@@ -113,7 +112,7 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
             fragment = new UserProfileFragment();
         }
         else if (id == R.id.nav_menu_my_week || id == R.id.nav_menu_my_month ) {
-            fragment = new CalendarViewFragment();
+            fragment = CalendarViewFragment.newInstance(DateTime.weekStart(), DateTime.weekEnding());
         }
         else if (id == R.id.nav_menu_my_day) {
             fragment = new DayViewFragment();

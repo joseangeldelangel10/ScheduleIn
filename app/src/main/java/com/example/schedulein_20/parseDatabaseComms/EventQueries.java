@@ -94,19 +94,19 @@ public class EventQueries {
         });
     }
 
-    public static void queryWeekEvents(Context context, ParseUser user, FindCallback callback) {
+    public static void queryWeekEvents(Context context, ParseUser user, Date startDate, Date endDate, FindCallback callback) {
 
         ParseQuery<Events> userEventsQuery = ParseQuery.getQuery(Events.class);
         ParseQuery<Events> eventsInvitedToQuery = ParseQuery.getQuery(Events.class);
 
-        userEventsQuery.whereGreaterThan(Events.KEY_START_DATE, DateTime.weekStart());
-        userEventsQuery.whereLessThan(Events.KEY_END_DATE, DateTime.weekEnding());
+        userEventsQuery.whereGreaterThan(Events.KEY_START_DATE, startDate);
+        userEventsQuery.whereLessThan(Events.KEY_END_DATE, endDate);
         userEventsQuery.whereEqualTo(Events.KEY_USER, user);
         //query.whereEqualTo(Events.KEY_INVITEES, user.getObjectId());
 
 
-        eventsInvitedToQuery.whereGreaterThan(Events.KEY_START_DATE, DateTime.weekStart());
-        eventsInvitedToQuery.whereLessThan(Events.KEY_END_DATE, DateTime.weekEnding());
+        eventsInvitedToQuery.whereGreaterThan(Events.KEY_START_DATE, startDate);
+        eventsInvitedToQuery.whereLessThan(Events.KEY_END_DATE, endDate);
         eventsInvitedToQuery.whereEqualTo(Events.KEY_INVITEES, user.getObjectId());
 
 
