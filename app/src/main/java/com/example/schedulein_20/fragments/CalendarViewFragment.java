@@ -59,7 +59,7 @@ public class CalendarViewFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
+    /*
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
@@ -109,8 +109,15 @@ public class CalendarViewFragment extends Fragment {
         weekRangeTv = view.findViewById(R.id.weekViewFragmentWeekRangeTv);
         forwardArrow = view.findViewById(R.id.weekViewFragmentNextWeekBt);
 
-        FindCallback onWeekEventsFound = weekEventsCallback(view);
-        EventQueries.queryWeekEvents(context, currentUser, displayedStartDate, displayedEndDate, onWeekEventsFound);
+        /*FindCallback onWeekEventsFound = weekEventsCallback(view);
+        EventQueries.queryWeekEvents(context, currentUser, displayedStartDate, displayedEndDate, onWeekEventsFound);*/
+        //writeWeekRange(displayedStartDate, displayedEndDate);
+
+        for(int i = 0; i<7; i++){
+            Date dayOfWeek = getDayOfWeek(i);
+            FindCallback onDayEventsFound = dayEventsCallback(view, i);
+            EventQueries.queryDayEvents(context, currentUser, dayOfWeek, onDayEventsFound);
+        }
         writeWeekRange(displayedStartDate, displayedEndDate);
 
         backArrow.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +140,35 @@ public class CalendarViewFragment extends Fragment {
             }
         });
 
+    }
+
+    private FindCallback dayEventsCallback(View view, int i) {
+        ArrayList<Events> dayEvents = new ArrayList<>();
+        return new FindCallback<Events>() {
+            @Override
+            public void done(List<Events> objects, ParseException e) {
+                if(i == 6){
+                    Toast.makeText(context, R.string.events_loaded_succesfully, Toast.LENGTH_SHORT).show();
+                }
+                if(e!=null){
+                    Toast.makeText(context, R.string.loading_events_problem, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(objects.size() == 0){
+                    return;
+                }
+                dayEvents.addAll(objects);
+                CalendarViewsGenerator.generateDayView(view, context, dayEvents,CalendarViewFragment.this, view.findViewById(Events.dayInt2Layout.get(i)) );
+            }
+        };
+    }
+
+    private Date getDayOfWeek(int i) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(displayedStartDate);
+        c.add(Calendar.DATE, i);
+        Date result = c.getTime();
+        return result;
     }
 
     private ArrayList<Date> computeLastWeekRange(){
@@ -174,26 +210,6 @@ public class CalendarViewFragment extends Fragment {
         Date userWeekEnding = c.getTime();
 
         weekRangeTv.setText(DateTime.onlyDate(weekStart) + " - " + DateTime.onlyDate(userWeekEnding));
-    }
-
-    private FindCallback<Events> weekEventsCallback(View view){
-        return new FindCallback<Events>() {
-            @Override
-            public void done(List<Events> objects, ParseException e) {
-                if(e!=null){
-                    Toast.makeText(context, R.string.loading_events_problem, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(objects.size() == 0){
-                    Toast.makeText(context, getString(R.string.no_events_loaded_this_week), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                weekEvents.clear();
-                weekEvents.addAll(objects);
-                Toast.makeText(context, getString(R.string.events_loaded_succesfully), Toast.LENGTH_SHORT).show();
-                CalendarViewsGenerator.generateWeekView(view, context, (ArrayList<Events>) weekEvents, CalendarViewFragment.this);
-            }
-        };
     }
 
 

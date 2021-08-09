@@ -142,7 +142,7 @@ public class CalendarViewsGenerator {
 
             //we make a ratio to calculate button height
             Float eventDurationMins = Float.valueOf(event.getDurationInMins());
-            heightWDuration = new Float(RelativeLayoutHeightDP*event.getDurationInMins() );
+            heightWDuration = RelativeLayoutHeightDP*eventDurationMins ;
             heightWDuration = heightWDuration/minsInDay;
             heightWDuration += (eventDurationMins/60)*viewDividersOffset;
 
@@ -198,6 +198,7 @@ public class CalendarViewsGenerator {
                 btnTag.setText( event.getTitle() );
                 btnTag.setClickable(false);
             } else {
+                btnTag.setBackgroundColor(context.getColor(R.color.gray));
                 btnTag.setText( context.getResources().getString(R.string.Event) );
                 btnTag.setClickable(false);
             }
@@ -250,16 +251,20 @@ public class CalendarViewsGenerator {
             Float marginTop; // dp height at which the event button is placed based event starting time
             Float minsInDay = new Float(24 * 60);
             Float RelativeLayoutHeightDP = context.getResources().getDimension(R.dimen.day_view_hour_row_height) * 24; // height of a day column (hour block height times 24 hrs)
+            Float viewDividersOffset = context.getResources().getDimension(R.dimen.day_view_hour_divider);
 
 
             //we make a ratio to calculate button height
-            heightWDuration = new Float(RelativeLayoutHeightDP * event.getDurationInMins());
+            Float eventDurationMins = Float.valueOf(event.getDurationInMins());
+            heightWDuration = RelativeLayoutHeightDP * eventDurationMins;
             heightWDuration = heightWDuration / minsInDay;
+            heightWDuration += (eventDurationMins/60)*viewDividersOffset;
 
             //we make a ratio to calculate margin top
-            marginTop = new Float(event.getStartInMins());
-            marginTop = marginTop * RelativeLayoutHeightDP;
+            Float eventStartInMins = Float.valueOf(event.getStartInMins());
+            marginTop = eventStartInMins * RelativeLayoutHeightDP;
             marginTop = marginTop / minsInDay;
+            marginTop += (eventStartInMins/60)*viewDividersOffset;
 
             //we set the properties for the button
             Button btnTag = new Button(context);

@@ -184,13 +184,56 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/CUeventsRepeatLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/CUeventToggleLinearLayout"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Repeat: "
+                    android:textSize="20sp">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/CUeventsRepeatTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="None"
+                    android:textSize="20sp"
+                    android:textColor="@color/emphasis1">
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" "
+                    android:textSize="20sp">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/CUeventsRepeatUntilTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="until tue jan, 26"
+                    android:text=""
+                    android:textSize="20sp"
+                    android:textColor="@color/emphasis1">
+                </TextView>
+
+            </LinearLayout>
+
             <!--  ______________________________________________ -->
 
             <RelativeLayout
                 android:id="@+id/CUeventSearchRelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/CUeventToggleLinearLayout"
+                android:layout_below="@+id/CUeventsRepeatLinearLayout"
                 android:layout_marginTop="20dp"
                 android:gravity="center_vertical">
                 <TextView

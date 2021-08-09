@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -26,6 +27,11 @@ public class Events extends ParseObject {
     public static final String KEY_USER = "creator";
     public static final String KEY_START_DATE = "startDate";
     public static final String KEY_END_DATE = "endDate";
+    public static final String KEY_REPEAT = "repeat";
+    public static final String KEY_REPEAT_UNTIL = "repeatUntil";
+    public static final String KEY_DAY_OF_WEEK = "dayOfWeek";
+    public static final String KEY_DAY_OF_MONTH = "dayOfMonth";
+    public static final String KEY_DAY_OF_YEAR = "dayOfYear";
     public static final String KEY_INVITEES = "invitees";
     public static final String KEY_ACCESS = "public";
     public static final String KEY_COLOR = "color";
@@ -61,11 +67,33 @@ public class Events extends ParseObject {
 
     public Date getStartDate() {return getDate(KEY_START_DATE);}
 
-    public void setStartDate(Date date) {put(KEY_START_DATE, date);}
+    public void setStartDate(Date date) {
+        put(KEY_START_DATE, date);
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        put(KEY_DAY_OF_WEEK, c.get(Calendar.DAY_OF_WEEK));
+        put(KEY_DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH));
+        put(KEY_DAY_OF_YEAR, c.get(Calendar.DAY_OF_YEAR));
+    }
 
     public Date getEndDate() {return getDate(KEY_END_DATE);}
 
     public void setEndDate(Date date) {put(KEY_END_DATE, date);}
+
+    public String getRepeat() {return getString(KEY_REPEAT);}
+
+    public void setRepeat(String repeat) {put(KEY_REPEAT, repeat);}
+
+    public Date getRepeatUntil() {return  getDate(KEY_REPEAT_UNTIL);}
+
+    public void setRepeatUntil(Date repeatUntil) { put(KEY_REPEAT_UNTIL, repeatUntil);}
+
+    public int getDayOfWeek() {return getInt(KEY_DAY_OF_WEEK);}
+
+    public int getDayOfMonth() {return getInt(KEY_DAY_OF_MONTH);}
+
+    public int getDayOfYear() {return getInt(KEY_DAY_OF_YEAR);}
 
     public ArrayList<String> getInvitees() {return (ArrayList<String>) get(KEY_INVITEES);}
 
@@ -89,6 +117,15 @@ public class Events extends ParseObject {
 
     public int getWeekDay(){
         return getStartDate().getDay();
+    }
+
+    public String toString(){
+        String result = "";
+        result += "------------------------------------------------------------------------\n";
+        result += "    Title: " + getTitle() + " \n" + "    starts: " + getStartDate().toString() + "\n" + "    ends: " + getEndDate().toString() + "\n";
+        result += "    googleEventId : " + getGoogleEventId() + "\n";
+        result += "------------------------------------------------------------------------\n";
+        return result;
     }
 
     public static Events fromJsonObject(Context context, ParseUser user, JSONObject jsonObject){

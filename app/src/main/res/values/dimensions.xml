@@ -10,7 +10,7 @@
 
     <!--____________________ DAY VIEW SIZE VALUES ______________________-->
     <dimen name="day_view_hour_column_width">80dp</dimen>
-    <dimen name="day_view_header_ofset">40dp</dimen>
+    <dimen name="day_view_header_ofset">30dp</dimen>
     <dimen name="day_view_hour_row_height">50dp</dimen>
     <dimen name="day_view_day_column_width">250dp</dimen>
     <dimen name="day_view_hour_divider">2dp</dimen>

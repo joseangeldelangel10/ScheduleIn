@@ -21,16 +21,60 @@
             android:layout_alignLeft="@+id/day_view_mainLinearLayout"
             android:layout_alignEnd="@+id/day_view_mainLinearLayout"
             android:layout_alignRight="@+id/day_view_mainLinearLayout"/>-->
+        <LinearLayout
+            android:id="@+id/day_view_rangeLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/day_view_rangeBackArrow"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@null"
+                android:src="@drawable/back_arrow_dark"></ImageButton>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@null">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/day_view_rangeTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/josefin_sans"
+                android:textSize="18sp"
+                tools:text="Sun Jul 25 - Sat Jul 31"></TextView>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@null">
+            </ImageView>
+
+            <ImageButton
+                android:id="@+id/day_view_rangeForwardArrow"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@null"
+                android:src="@drawable/forward_arrow_dark"></ImageButton>
+
+        </LinearLayout>
 
         <include
-            layout="@layout/day_calendar_view_model"
             android:id="@+id/fragmentDayViewCalendarInclude"
-            android:layout_height="wrap_content"
+            layout="@layout/day_calendar_view_model"
             android:layout_width="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp">
-        </include>
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/day_view_rangeLinearLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"></include>
 
     </RelativeLayout>
 

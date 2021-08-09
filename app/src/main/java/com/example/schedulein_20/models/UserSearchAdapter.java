@@ -70,8 +70,8 @@ public class UserSearchAdapter extends Adapter<UserSearchAdapter.ViewHolder> {
              *                          BIND USER INFO TO RESULTS RV ITEM
              * ---------------------------------------------------------------------------------------- */
             String extraInfo = "" +
-                "username: " + user.getString("username") + "\n" +
-                "email: " + user.getString("email") + "\n";
+                "username: " + user.getString("username") + "\n";
+            //+ "email: " + user.getEmail() + "\n"
             Glide.with(context)
                     .load(user.getParseFile("profilePic").getUrl())
                     .placeholder(R.drawable.profile_picture_placeholder)

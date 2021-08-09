@@ -189,17 +189,19 @@ public class CheckAvailabilityActivity extends AppCompatActivity {
             Float marginTop; // dp height at which the event button is placed based event starting time
             Float minsInDay = new Float(24 * 60);
             Float RelativeLayoutHeightDP = context.getResources().getDimension(R.dimen.day_view_hour_row_height) * 24; // height of a day column (hour block height times 24 hrs)
-
+            Float viewDividersOffset = context.getResources().getDimension(R.dimen.day_view_hour_divider);
 
             //we make a ratio to calculate button height
             Float suggestedTimeDuration = Float.valueOf(suggestedTime.get(1) - suggestedTime.get(0));
             heightWDuration = new Float(RelativeLayoutHeightDP * suggestedTimeDuration);
             heightWDuration = heightWDuration / minsInDay;
+            heightWDuration += (suggestedTimeDuration/60)*viewDividersOffset;
 
             //we make a ratio to calculate margin top
-            marginTop = new Float(suggestedTime.get(0));
-            marginTop = marginTop * RelativeLayoutHeightDP;
+            Float suggestedTimeStart = Float.valueOf(suggestedTime.get(0));
+            marginTop = suggestedTimeStart * RelativeLayoutHeightDP;
             marginTop = marginTop / minsInDay;
+            marginTop += (suggestedTimeStart/60)*viewDividersOffset;
 
             //we set the properties for the button
             Button btnTag = new Button(context);

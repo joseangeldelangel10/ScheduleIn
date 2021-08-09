@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -41,8 +43,11 @@ public class DayViewFragment extends Fragment {
     Context context;
     ParseUser currentUser;
     ArrayList<Events> dayEvents;
+    ImageButton backArrow;
+    TextView tvDay;
+    ImageButton forwardArrow;
     TextView dayHeaderTitle;
-    Date currentDate;
+    public Date displayedDate;
     //RealtimeBlurView bluredMargin;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -62,16 +67,16 @@ public class DayViewFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param param1 Parameter 1
      * @return A new instance of fragment DayViewFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DayViewFragment newInstance(String param1, String param2) {
+    public static DayViewFragment newInstance(Date param1) {
         DayViewFragment fragment = new DayViewFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        fragment.displayedDate = param1;
+        //args.putString(ARG_PARAM1, param1);
+        //args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -97,14 +102,58 @@ public class DayViewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         context = getContext();
         currentUser = ParseUser.getCurrentUser();
-        currentDate = DateTime.currentDate();
+        //displayedDate = DateTime.currentDate();
         dayEvents = new ArrayList<>();
 
+        backArrow = view.findViewById(R.id.day_view_rangeBackArrow);
+        tvDay = view.findViewById(R.id.day_view_rangeTv);
+        forwardArrow = view.findViewById(R.id.day_view_rangeForwardArrow);
         dayHeaderTitle = view.findViewById(R.id.day_view_column_header_title);
-        dayHeaderTitle.setText(DateTime.onlyDate(currentDate));
+        tvDay.setText(DateTime.onlyDate(displayedDate));
+        dayHeaderTitle.setText(DateTime.onlyDate(displayedDate));
 
         FindCallback onDayEventsFound = dayEventsCallback(view);
-        EventQueries.queryDayEvents(context, currentUser, currentDate, onDayEventsFound);
+        EventQueries.queryDayEvents(context, currentUser, displayedDate, onDayEventsFound);
+
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date newRange = computeLastDayRange();
+                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.host_frame, DayViewFragment.newInstance(newRange))
+                        .commit();
+            }
+        });
+
+        forwardArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date newRange = computeNextDayRange();
+                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.host_frame, DayViewFragment.newInstance(newRange))
+                        .commit();
+            }
+        });
+
+    }
+
+
+    private Date computeLastDayRange(){
+        Calendar c = Calendar.getInstance();
+        c.setTime(displayedDate);
+        c.add(Calendar.DATE, -1);
+        Date result = c.getTime();
+
+        return result;
+    }
+
+    private Date computeNextDayRange(){
+        Calendar c = Calendar.getInstance();
+        c.setTime(displayedDate);
+        c.add(Calendar.DATE, 1);
+        Date result = c.getTime();
+
+        return result;
     }
 
     private FindCallback<Events> dayEventsCallback(View view){
@@ -119,6 +168,7 @@ public class DayViewFragment extends Fragment {
                     Toast.makeText(context, getString(R.string.no_events_loaded_this_week), Toast.LENGTH_SHORT).show();
                     return;
                 }
+                dayEvents.clear();
                 dayEvents.addAll(objects);
                 Toast.makeText(context, getString(R.string.events_loaded_succesfully), Toast.LENGTH_SHORT).show();
                 CalendarViewsGenerator.generateDayView(view, context, dayEvents, DayViewFragment.this, null );

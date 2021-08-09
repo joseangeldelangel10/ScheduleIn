@@ -27,6 +27,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.schedulein_20.fragments.CalendarDialogFragment;
 import com.example.schedulein_20.fragments.HourDialogFragment;
+import com.example.schedulein_20.fragments.RepeatEventDialogFragment;
+import com.example.schedulein_20.fragments.RepeatEventUntilDialogFragment;
 import com.example.schedulein_20.models.DateTime;
 import com.example.schedulein_20.models.Events;
 import com.example.schedulein_20.models.Group;
@@ -47,7 +49,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class CUeventActivity extends AppCompatActivity implements CalendarDialogFragment.EditCalendarDateListener, HourDialogFragment.EditTimeListener, GroupMembersSearchAdapter.onUserSelectedListener {
+public class CUeventActivity extends AppCompatActivity implements CalendarDialogFragment.EditCalendarDateListener, HourDialogFragment.EditTimeListener, GroupMembersSearchAdapter.onUserSelectedListener, RepeatEventUntilDialogFragment.EditRepeatListener {
     private final String TAG = "CreateEventAct";
     public static final String FLAG_EDIT_START_DATE = "ChangeStartDate";
     public static final String FLAG_EDIT_END_DATE = "ChangeEndDate";
@@ -59,6 +61,8 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
     TextView tvStartTime;
     TextView tvEndDate;
     TextView tvEndTime;
+    TextView tvRepeat;
+    TextView tvRepeatUntil;
     LinearLayout UDeventBt;
     Button btCreateEv;
     Button btUpdateEv;
@@ -81,6 +85,8 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
     GroupMembersSearchAdapter adapter;
     Context context;
     String flag;
+    String repeatFlag;
+    Date repeatUntil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +94,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         setContentView(R.layout.activity_cu_event);
         context = this;
         currentUser = ParseUser.getCurrentUser();
+        repeatUntil = new Date();
         possibleInvitees = new ArrayList<>();
         selectedInvitees = new ArrayList<>();
         colorButtons = new ArrayList<>();
@@ -112,6 +119,8 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         tvEndDate = findViewById(R.id.CUeventEndDateTv);
         tvEndTime = findViewById(R.id.CUeventEndTimeTv);
         publicSwitch = findViewById(R.id.CUeventPublicSwitch);
+        tvRepeat = findViewById(R.id.CUeventsRepeatTv);
+        tvRepeatUntil = findViewById(R.id.CUeventsRepeatUntilTv);
         rvInvitees = findViewById(R.id.CUeventInviteesRv);
         btCreateEv = findViewById(R.id.CUeventsCUFinalButt);
         btDeleteEv = findViewById(R.id.CUeventsDeleteEventBt);
@@ -169,6 +178,25 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             }
         });
 
+
+        /* ----------------------------------------------------------------------------------------
+                            SETTING TV ONCLICK LISTENERS FOR REPEAT EDIT
+      ---------------------------------------------------------------------------------------- */
+
+        tvRepeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showRepeatDialogOne();
+            }
+        });
+
+        tvRepeatUntil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showRepeatDialogOne();
+            }
+        });
+
         /* ----------------------------------------------------------------------------------------
                             SETTING INVITEE SEARCH LOGIC
       ---------------------------------------------------------------------------------------- */
@@ -219,6 +247,8 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
                         startDate,
                         endDate,
                         eventIsPublic,
+                        repeatFlag,
+                        repeatUntil,
                         eventColor,
                         ParseUserExtraAttributes.parseUsers2Ids((ArrayList<ParseUser>) selectedInvitees),
                         createEventCallback());
@@ -236,6 +266,8 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
                         startDate,
                         endDate,
                         eventIsPublic,
+                        repeatFlag,
+                        repeatUntil,
                         eventColor,
                         ParseUserExtraAttributes.parseUsers2Ids((ArrayList<ParseUser>) selectedInvitees),
                         null,
@@ -265,6 +297,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         if(flag.equals("Create")){
             UDeventBt.setVisibility(View.INVISIBLE);
             UDeventBt.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
+            repeatFlag = "none";
         }else if (flag.equals("UpdateDelete")){
             event2update = Parcels.unwrap(getIntent().getParcelableExtra("Event"));
             etTitle.setText(event2update.getTitle());
@@ -274,7 +307,9 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             selectCurrentEventColor(event2update);
             updateDatesText();
             ParseUserExtraAttributes.Ids2ParseUsers(event2update.getInvitees(), ids2ParseUsersCallback());
-            if(!event2update.getGoogleEventId().equals("")){
+            repeatFlag = event2update.getRepeat();
+            repeatUntil = event2update.getRepeatUntil();
+            if(!(event2update.getGoogleEventId().equals("0"))){
                 UDeventBt.setVisibility(View.INVISIBLE);
                 UDeventBt.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
                 etTitle.setEnabled(false);
@@ -296,6 +331,8 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             selectCurrentEventColor(event2update);
             updateDatesText();
             ParseUserExtraAttributes.Ids2ParseUsers(event2update.getInvitees(), ids2ParseUsersCallback());
+            repeatFlag = event2update.getRepeat();
+            repeatUntil = event2update.getRepeatUntil();
             btCreateEv.setVisibility(View.INVISIBLE);
             btCreateEv.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
             UDeventBt.setVisibility(View.INVISIBLE);
@@ -315,8 +352,12 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
             ParseUserExtraAttributes.Ids2ParseUsers(joinedEventGroup.getMembers(), ids2ParseUsersCallback());
             UDeventBt.setVisibility(View.INVISIBLE);
             UDeventBt.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
+            repeatFlag = "none";
             evaluateRvSize();
         }
+
+
+        updateRepeatTv();
     }
 
     private void disableTimeTvs() {
@@ -525,6 +566,13 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         }
     }
 
+    private void showRepeatDialogOne(){
+        FragmentManager fm = getSupportFragmentManager();
+
+        RepeatEventDialogFragment repeatEventDialogFragment = RepeatEventDialogFragment.newInstance(repeatFlag);
+        repeatEventDialogFragment.show(fm, "fragment_edit_repeat");
+    }
+
     /* ---------------------------------------------------------------
      GET NEW DAY-MONTH-YEAR BIND IT TO START DATE AND UPDATE TEXT
     ------------------------------------------------------------------*/
@@ -580,5 +628,28 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         selectedInvitees.remove(user);
         possibleInvitees.remove(user);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFinishRepeatEdit(String repeatResult, Calendar calendar) {
+        this.repeatFlag = repeatResult;
+        if(!repeatFlag.equals("none")) {
+            repeatUntil.setYear(calendar.get(Calendar.YEAR) - 1900);
+            repeatUntil.setMonth(calendar.get(Calendar.MONTH));
+            repeatUntil.setDate(calendar.get(Calendar.DAY_OF_MONTH));
+            repeatUntil.setHours(23);
+            repeatUntil.setMinutes(59);
+        }
+
+        updateRepeatTv();
+    }
+
+    private void updateRepeatTv() {
+        tvRepeat.setText(repeatFlag);
+        if(!repeatFlag.equals("none")){
+            tvRepeatUntil.setText("until " + DateTime.onlyDate(repeatUntil).toLowerCase());
+        }else {
+            tvRepeatUntil.setText("");
+        }
     }
 }

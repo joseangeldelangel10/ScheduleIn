@@ -115,7 +115,7 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
             fragment = CalendarViewFragment.newInstance(DateTime.weekStart(), DateTime.weekEnding());
         }
         else if (id == R.id.nav_menu_my_day) {
-            fragment = new DayViewFragment();
+            fragment = DayViewFragment.newInstance(DateTime.currentDate());
         }
         else if (id == R.id.nav_menu_log_out){
             if ((boolean) currentUser.get("googleUser")){

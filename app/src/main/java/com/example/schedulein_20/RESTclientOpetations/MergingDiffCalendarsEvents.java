@@ -41,7 +41,11 @@ public class MergingDiffCalendarsEvents {
     public static void checkGoogleEvents(Context context, ArrayList<Events> googleRetrievedEvents, Fragment fragment) {
         mergesCompleted = 0;
 
-
+        /* ------------------------------------------------------------------------------------------------
+                                    WE CREATE A BACKGROUND TASK WHICH WAITS UNTIL
+                                   ALL GOOGLE EVENTS HAVE BEEN UPDATED IN PARSE DB
+                                         (MERGES COMPLETED == GOOGLE EVS SIZE)
+         ------------------------------------------------------------------------------------------------ */
         Handler handler = new Handler(Looper.getMainLooper());
 
         Runnable runnable = new Runnable() {
@@ -60,6 +64,12 @@ public class MergingDiffCalendarsEvents {
         };
         handler.postDelayed(runnable, 300);
 
+        /* ------------------------------------------------------------------------------------------------
+                                    WE MAKE A QUERY TO FIND THE GOOGLE EV IN PARSE,
+                                    IF THE EVENT ALREADY EXIST (objects.size != 0),
+                                    WE UPDATE THE EXISTING EVENT, ELSE WE CREATE A NEW
+                                    EVENT IN DB
+         ------------------------------------------------------------------------------------------------ */
 
         for(int i = 0; i<googleRetrievedEvents.size(); i++){
             int finalI = i;
@@ -84,7 +94,7 @@ public class MergingDiffCalendarsEvents {
 
     private static void compareGoogleAndParseEvents(Context context, Events ParseGevent, Events GoogleGEvent) {
         if (ParseGevent.getGooglesLastUpdate().compareTo(GoogleGEvent.getGooglesLastUpdate()) == -1) {
-            EventQueries.updateEventInDB(context, ParseGevent, GoogleGEvent.getTitle(), GoogleGEvent.getStartDate(), GoogleGEvent.getEndDate(), ParseGevent.hasPublicAccess(), ParseGevent.getColor(), ParseGevent.getInvitees(), GoogleGEvent.getGooglesLastUpdate(),
+            EventQueries.updateEventInDB(context, ParseGevent, GoogleGEvent.getTitle(), GoogleGEvent.getStartDate(), GoogleGEvent.getEndDate(), ParseGevent.hasPublicAccess(), ParseGevent.getRepeat(), ParseGevent.getRepeatUntil(), ParseGevent.getColor(), ParseGevent.getInvitees(), GoogleGEvent.getGooglesLastUpdate(),
                     new SaveCallback() {
                         @Override
                         public void done(ParseException e) {

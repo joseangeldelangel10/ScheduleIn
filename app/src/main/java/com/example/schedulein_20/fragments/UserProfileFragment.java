@@ -38,6 +38,7 @@ import com.example.schedulein_20.models.OnPinchListener;
 import com.example.schedulein_20.models.ParseUserExtraAttributes;
 import com.example.schedulein_20.parseDatabaseComms.EventQueries;
 import com.parse.FindCallback;
+import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -50,6 +51,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -127,7 +129,7 @@ public class UserProfileFragment extends Fragment implements MergingDiffCalendar
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         currentUser = ParseUser.getCurrentUser();
-        weekEvents = new ArrayList<>();
+        //weekEvents = new ArrayList<>();
         googleWeekEvents = new ArrayList<>();
         context = getContext();
         primaryGCalendarId = null;
@@ -181,9 +183,12 @@ public class UserProfileFragment extends Fragment implements MergingDiffCalendar
                                                        WE GENERATE USER'S WEEK PREVIEW
         ------------------------------------------------------------------------------------------------------------------------------------*/
 
-        FindCallback onWeekEventsFound = weekEventsCallback(context, view);
         // TODO: progress bar crash
-        EventQueries.queryParseWeekEvents(context, currentUser, onWeekEventsFound);
+        for(int i = 0; i<7; i++){
+            Date dayOfWeek = getDayOfWeek(i);
+            FindCallback onDayEventsFound = dayEventsCallback(view, i);
+            EventQueries.queryParseDayEvents(context, currentUser, dayOfWeek, onDayEventsFound);
+        }
 
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                         ADD CREATE EVENT FUNCTIONALITY
@@ -207,7 +212,7 @@ public class UserProfileFragment extends Fragment implements MergingDiffCalendar
 
             @Override
             public void onPinchZoom() {
-                Fragment fragment = new CalendarViewFragment();
+                Fragment fragment = CalendarViewFragment.newInstance(DateTime.weekStart(), DateTime.weekEnding());
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     Transition explodeTransform = TransitionInflater.from(context).
@@ -273,7 +278,6 @@ public class UserProfileFragment extends Fragment implements MergingDiffCalendar
                     Log.e(TAG, "GOOGLE EVENTS: " + json.jsonObject.toString(4));
                     JSONArray listOfGoogleEvents = json.jsonObject.getJSONArray("items");
                     ArrayList<Events> googleRetrievedEvents = Events.fromJsonArray(context, currentUser, listOfGoogleEvents);
-
                     MergingDiffCalendarsEvents.checkGoogleEvents(context, googleRetrievedEvents, UserProfileFragment.this);
                     //CalendarViewsGenerator.generateWeekView(getView(), context, googleRetrievedEvents, UserProfileFragment.this);
                 } catch (JSONException e) {
@@ -305,22 +309,37 @@ public class UserProfileFragment extends Fragment implements MergingDiffCalendar
         }
     }
 
-    private FindCallback<Events> weekEventsCallback(Context context, View view){
+    private Date getDayOfWeek(int i) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(DateTime.weekStart());
+        c.add(Calendar.DATE, i);
+        Date result = c.getTime();
+        return result;
+    }
+
+    private FindCallback dayEventsCallback(View view, int i) {
+        ArrayList<Events> dayEvents = new ArrayList<>();
         return new FindCallback<Events>() {
             @Override
-            public void done(List<Events> events, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Issue with getting events", e);
-                    Toast.makeText(context, getString(R.string.loading_events_problem), Toast.LENGTH_LONG).show();
+            public void done(List<Events> objects, ParseException e) {
+                if(i == 6){
+                    Toast.makeText(context, R.string.events_loaded_succesfully, Toast.LENGTH_SHORT).show();
+                }
+                if(e!=null){
+                    Toast.makeText(context, R.string.loading_events_problem, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (events.size() == 0){
-                    Toast.makeText(context, currentUser.getString(ParseUserExtraAttributes.KEY_NAME) + " " + getString(R.string.no_events_loaded_this_week), Toast.LENGTH_SHORT).show();
-                }else {
-                    weekEvents.addAll(events);
-                    Toast.makeText(context, currentUser.getString(ParseUserExtraAttributes.KEY_NAME) + " " +  getString(R.string.events_loaded_succesfully), Toast.LENGTH_SHORT).show();
-                    CalendarViewsGenerator.generateWeekView(view, context, weekEvents, UserProfileFragment.this);
+                if(objects.size() == 0){
+                    Log.e(TAG, "DAY NUMBER " + String.valueOf(i));
+                    Log.e(TAG,"     no events this day");
+                    return;
                 }
+                Log.e(TAG, "DAY NUMBER " + String.valueOf(i));
+                dayEvents.addAll(objects);
+                for(Events event:objects){
+                    Log.e(TAG, event.toString());
+                }
+                CalendarViewsGenerator.generateDayView(view, context, dayEvents,UserProfileFragment.this, view.findViewById(Events.dayInt2Layout.get(i)) );
             }
         };
     }

@@ -35,6 +35,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -206,8 +208,14 @@ public class ProfileFragment extends Fragment {
             }else if (RelationRelatedQueries.getUsersRelation(currentUser, user) == 3){
                 banner.setVisibility(View.GONE);
                 calView.setVisibility(View.VISIBLE);
-                weekEvents = new ArrayList<>();
-                EventQueries.queryWeekEvents(context, user, DateTime.weekStart(), DateTime.weekEnding(), queryWeekEventsCallback(view));
+                //weekEvents = new ArrayList<>();
+                //EventQueries.queryWeekEvents(context, user, DateTime.weekStart(), DateTime.weekEnding(), queryWeekEventsCallback(view));
+
+                for(int i = 0; i<7; i++){
+                    Date dayOfWeek = getDayOfWeek(i);
+                    FindCallback onDayEventsFound = dayEventsCallback(view, i);
+                    EventQueries.queryDayEvents(context, user, dayOfWeek, onDayEventsFound);
+                }
 
                 relate.setText("Related");
                 relate.setBackground(  new ColorDrawable(getResources().getColor(R.color.emphasis2))  );
@@ -218,6 +226,36 @@ public class ProfileFragment extends Fragment {
             Toast.makeText(context, "sorry we couldn't retrieve this user's data", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+
+    private Date getDayOfWeek(int i) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(DateTime.weekStart());
+        c.add(Calendar.DATE, i);
+        Date result = c.getTime();
+        return result;
+    }
+
+    private FindCallback dayEventsCallback(View view, int i) {
+        ArrayList<Events> dayEvents = new ArrayList<>();
+        return new FindCallback<Events>() {
+            @Override
+            public void done(List<Events> objects, ParseException e) {
+                if(i == 6){
+                    Toast.makeText(context, R.string.events_loaded_succesfully, Toast.LENGTH_SHORT).show();
+                }
+                if(e!=null){
+                    Toast.makeText(context, R.string.loading_events_problem, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(objects.size() == 0){
+                    return;
+                }
+                dayEvents.addAll(objects);
+                CalendarViewsGenerator.generateDayView(view, context, dayEvents,ProfileFragment.this, view.findViewById(Events.dayInt2Layout.get(i)) );
+            }
+        };
     }
 
     private FindCallback<Events> queryWeekEventsCallback(View view){
