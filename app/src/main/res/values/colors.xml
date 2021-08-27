@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="primary_green">#49d747</color>
-    <color name="secondary_green">#5fc05d</color>
     <!--<color name="red">#FF0000</color>-->
     <color name="red">#7CFF0000</color>
     <color name="primary">#388087</color>
@@ -24,8 +22,6 @@
     <color name="pink">#F6858C</color>
     <color name="orange">#FAAA6B</color>
     <color name="yellow">#FDD782</color>
-    <color name="green">#A1B77B</color>
-    <color name="sky_blue">#9BD2C8</color>
     <color name="purple">#A19CB3</color>
 
 </resources>

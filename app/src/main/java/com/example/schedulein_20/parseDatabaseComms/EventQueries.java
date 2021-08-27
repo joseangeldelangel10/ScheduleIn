@@ -136,28 +136,31 @@ public class EventQueries {
         /* ------------------------------------------------------------------------------
                                     RECURRING EVENTS QUERIES
         ------------------------------------------------------------------------------ */
-        Calendar c = Calendar.getInstance();
-        c.setTime(startOfDay);
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(startOfDay);
 
         ParseQuery<Events> dailyEventsQuery = ParseQuery.getQuery(Events.class);
 
         dailyEventsQuery.whereEqualTo(Events.KEY_REPEAT, "daily");
         dailyEventsQuery.whereGreaterThanOrEqualTo(Events.KEY_REPEAT_UNTIL, startOfDay);
         dailyEventsQuery.whereLessThan(Events.KEY_END_DATE, startOfDay);
+        dailyEventsQuery.whereEqualTo(Events.KEY_USER, user);
 
         ParseQuery<Events> weeklyEventsQuery = ParseQuery.getQuery(Events.class);
 
         weeklyEventsQuery.whereEqualTo(Events.KEY_REPEAT, "weekly");
-        weeklyEventsQuery.whereEqualTo(Events.KEY_DAY_OF_WEEK, c.get(Calendar.DAY_OF_WEEK));
+        weeklyEventsQuery.whereEqualTo(Events.KEY_DAY_OF_WEEK, c1.get(Calendar.DAY_OF_WEEK));
         weeklyEventsQuery.whereGreaterThanOrEqualTo(Events.KEY_REPEAT_UNTIL, startOfDay);
         weeklyEventsQuery.whereLessThan(Events.KEY_END_DATE, startOfDay);
+        weeklyEventsQuery.whereEqualTo(Events.KEY_USER, user);
 
         ParseQuery<Events> monthlyEventsQuery = ParseQuery.getQuery(Events.class);
 
         monthlyEventsQuery.whereEqualTo(Events.KEY_REPEAT, "monthly");
-        monthlyEventsQuery.whereEqualTo(Events.KEY_DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH));
+        monthlyEventsQuery.whereEqualTo(Events.KEY_DAY_OF_MONTH, c1.get(Calendar.DAY_OF_MONTH));
         monthlyEventsQuery.whereGreaterThanOrEqualTo(Events.KEY_REPEAT_UNTIL, startOfDay);
         monthlyEventsQuery.whereLessThan(Events.KEY_END_DATE, startOfDay);
+        monthlyEventsQuery.whereEqualTo(Events.KEY_USER, user);
 
         List<ParseQuery<Events>> recurringEventsQueries = new ArrayList<ParseQuery<Events>>();
         recurringEventsQueries.add(dailyEventsQuery);
@@ -166,6 +169,42 @@ public class EventQueries {
 
         ParseQuery<Events> userRecurringEventsQuery = ParseQuery.or(recurringEventsQueries);
 
+        /* ------------------------------------------------------------------------------
+                                    RECURRING EVENTS INVITED TO QUERIES
+        ------------------------------------------------------------------------------ */
+        Calendar c2 = Calendar.getInstance();
+        c2.setTime(startOfDay);
+
+        ParseQuery<Events> dailyEventsInvitedToQuery = ParseQuery.getQuery(Events.class);
+
+        dailyEventsInvitedToQuery.whereEqualTo(Events.KEY_REPEAT, "daily");
+        dailyEventsInvitedToQuery.whereGreaterThanOrEqualTo(Events.KEY_REPEAT_UNTIL, startOfDay);
+        dailyEventsInvitedToQuery.whereLessThan(Events.KEY_END_DATE, startOfDay);
+        dailyEventsInvitedToQuery.whereEqualTo(Events.KEY_INVITEES, user);
+
+        ParseQuery<Events> weeklyEventsInvitedToQuery = ParseQuery.getQuery(Events.class);
+
+        weeklyEventsInvitedToQuery.whereEqualTo(Events.KEY_REPEAT, "weekly");
+        weeklyEventsInvitedToQuery.whereEqualTo(Events.KEY_DAY_OF_WEEK, c2.get(Calendar.DAY_OF_WEEK));
+        weeklyEventsInvitedToQuery.whereGreaterThanOrEqualTo(Events.KEY_REPEAT_UNTIL, startOfDay);
+        weeklyEventsInvitedToQuery.whereLessThan(Events.KEY_END_DATE, startOfDay);
+        weeklyEventsInvitedToQuery.whereEqualTo(Events.KEY_INVITEES, user);
+
+        ParseQuery<Events> monthlyEventsInvitedToQuery = ParseQuery.getQuery(Events.class);
+
+        monthlyEventsInvitedToQuery.whereEqualTo(Events.KEY_REPEAT, "monthly");
+        monthlyEventsInvitedToQuery.whereEqualTo(Events.KEY_DAY_OF_MONTH, c2.get(Calendar.DAY_OF_MONTH));
+        monthlyEventsInvitedToQuery.whereGreaterThanOrEqualTo(Events.KEY_REPEAT_UNTIL, startOfDay);
+        monthlyEventsInvitedToQuery.whereLessThan(Events.KEY_END_DATE, startOfDay);
+        monthlyEventsInvitedToQuery.whereEqualTo(Events.KEY_INVITEES, user);
+
+        List<ParseQuery<Events>> recurringEventsInvitedToQueries = new ArrayList<ParseQuery<Events>>();
+        recurringEventsInvitedToQueries.add(dailyEventsInvitedToQuery);
+        recurringEventsInvitedToQueries.add(weeklyEventsInvitedToQuery);
+        recurringEventsInvitedToQueries.add(monthlyEventsInvitedToQuery);
+
+        ParseQuery<Events> userRecurringEventsInvitedToQuery = ParseQuery.or(recurringEventsInvitedToQueries);
+
         /* ------------------------------------------------------------------------------ */
 
 
@@ -173,6 +212,7 @@ public class EventQueries {
         queries.add(userEventsQuery);
         queries.add(eventsInvitedToQuery);
         queries.add(userRecurringEventsQuery);
+        queries.add(userRecurringEventsInvitedToQuery);
 
         ParseQuery<Events> mainQuery = ParseQuery.or(queries);
         mainQuery.addAscendingOrder(Events.KEY_START_DATE);
@@ -207,28 +247,31 @@ public class EventQueries {
         /* ------------------------------------------------------------------------------
                                     RECURRING EVENTS QUERIES
         ------------------------------------------------------------------------------ */
-        Calendar c = Calendar.getInstance();
-        c.setTime(startOfDay);
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(startOfDay);
 
         ParseQuery<Events> dailyEventsQuery = ParseQuery.getQuery(Events.class);
 
         dailyEventsQuery.whereEqualTo(Events.KEY_REPEAT, "daily");
         dailyEventsQuery.whereGreaterThanOrEqualTo(Events.KEY_REPEAT_UNTIL, startOfDay);
         dailyEventsQuery.whereLessThan(Events.KEY_END_DATE, startOfDay);
+        dailyEventsQuery.whereEqualTo(Events.KEY_USER, user);
 
         ParseQuery<Events> weeklyEventsQuery = ParseQuery.getQuery(Events.class);
 
         weeklyEventsQuery.whereEqualTo(Events.KEY_REPEAT, "weekly");
-        weeklyEventsQuery.whereEqualTo(Events.KEY_DAY_OF_WEEK, c.get(Calendar.DAY_OF_WEEK));
+        weeklyEventsQuery.whereEqualTo(Events.KEY_DAY_OF_WEEK, c1.get(Calendar.DAY_OF_WEEK));
         weeklyEventsQuery.whereGreaterThanOrEqualTo(Events.KEY_REPEAT_UNTIL, startOfDay);
         weeklyEventsQuery.whereLessThan(Events.KEY_END_DATE, startOfDay);
+        weeklyEventsQuery.whereEqualTo(Events.KEY_USER, user);
 
         ParseQuery<Events> monthlyEventsQuery = ParseQuery.getQuery(Events.class);
 
         monthlyEventsQuery.whereEqualTo(Events.KEY_REPEAT, "monthly");
-        monthlyEventsQuery.whereEqualTo(Events.KEY_DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH));
+        monthlyEventsQuery.whereEqualTo(Events.KEY_DAY_OF_MONTH, c1.get(Calendar.DAY_OF_MONTH));
         monthlyEventsQuery.whereGreaterThanOrEqualTo(Events.KEY_REPEAT_UNTIL, startOfDay);
         monthlyEventsQuery.whereLessThan(Events.KEY_END_DATE, startOfDay);
+        monthlyEventsQuery.whereEqualTo(Events.KEY_USER, user);
 
         List<ParseQuery<Events>> recurringEventsQueries = new ArrayList<ParseQuery<Events>>();
         recurringEventsQueries.add(dailyEventsQuery);
@@ -237,6 +280,42 @@ public class EventQueries {
 
         ParseQuery<Events> userRecurringEventsQuery = ParseQuery.or(recurringEventsQueries);
 
+        /* ------------------------------------------------------------------------------
+                                    RECURRING EVENTS INVITED TO QUERIES
+        ------------------------------------------------------------------------------ */
+        Calendar c2 = Calendar.getInstance();
+        c2.setTime(startOfDay);
+
+        ParseQuery<Events> dailyEventsInvitedToQuery = ParseQuery.getQuery(Events.class);
+
+        dailyEventsInvitedToQuery.whereEqualTo(Events.KEY_REPEAT, "daily");
+        dailyEventsInvitedToQuery.whereGreaterThanOrEqualTo(Events.KEY_REPEAT_UNTIL, startOfDay);
+        dailyEventsInvitedToQuery.whereLessThan(Events.KEY_END_DATE, startOfDay);
+        dailyEventsInvitedToQuery.whereEqualTo(Events.KEY_INVITEES, user);
+
+        ParseQuery<Events> weeklyEventsInvitedToQuery = ParseQuery.getQuery(Events.class);
+
+        weeklyEventsInvitedToQuery.whereEqualTo(Events.KEY_REPEAT, "weekly");
+        weeklyEventsInvitedToQuery.whereEqualTo(Events.KEY_DAY_OF_WEEK, c2.get(Calendar.DAY_OF_WEEK));
+        weeklyEventsInvitedToQuery.whereGreaterThanOrEqualTo(Events.KEY_REPEAT_UNTIL, startOfDay);
+        weeklyEventsInvitedToQuery.whereLessThan(Events.KEY_END_DATE, startOfDay);
+        weeklyEventsInvitedToQuery.whereEqualTo(Events.KEY_INVITEES, user);
+
+        ParseQuery<Events> monthlyEventsInvitedToQuery = ParseQuery.getQuery(Events.class);
+
+        monthlyEventsInvitedToQuery.whereEqualTo(Events.KEY_REPEAT, "monthly");
+        monthlyEventsInvitedToQuery.whereEqualTo(Events.KEY_DAY_OF_MONTH, c2.get(Calendar.DAY_OF_MONTH));
+        monthlyEventsInvitedToQuery.whereGreaterThanOrEqualTo(Events.KEY_REPEAT_UNTIL, startOfDay);
+        monthlyEventsInvitedToQuery.whereLessThan(Events.KEY_END_DATE, startOfDay);
+        monthlyEventsInvitedToQuery.whereEqualTo(Events.KEY_INVITEES, user);
+
+        List<ParseQuery<Events>> recurringEventsInvitedToQueries = new ArrayList<ParseQuery<Events>>();
+        recurringEventsInvitedToQueries.add(dailyEventsInvitedToQuery);
+        recurringEventsInvitedToQueries.add(weeklyEventsInvitedToQuery);
+        recurringEventsInvitedToQueries.add(monthlyEventsInvitedToQuery);
+
+        ParseQuery<Events> userRecurringEventsInvitedToQuery = ParseQuery.or(recurringEventsInvitedToQueries);
+
         /* ------------------------------------------------------------------------------ */
 
 
@@ -244,6 +323,7 @@ public class EventQueries {
         queries.add(userEventsQuery);
         queries.add(eventsInvitedToQuery);
         queries.add(userRecurringEventsQuery);
+        queries.add(userRecurringEventsInvitedToQuery);
 
         ParseQuery<Events> mainQuery = ParseQuery.or(queries);
         mainQuery.addAscendingOrder(Events.KEY_START_DATE);

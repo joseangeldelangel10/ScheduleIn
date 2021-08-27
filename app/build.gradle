@@ -7,13 +7,13 @@ def apikeyProperties = new Properties()
 apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.example.schedulein_20"
-        minSdkVersion 27
-        targetSdkVersion 30
+        minSdkVersion 22
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -80,7 +80,6 @@ dependencies {
 
     // Glide transformations
     implementation 'jp.wasabeef:glide-transformations:4.1.0'
-
 
     /* ----------------------- REST CLIENT TEMPLATE LIBRARIES ----------------------- */
 

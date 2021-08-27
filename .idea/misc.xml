@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/drawable/custom_border.xml" value="0.2703125" />
+        <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/drawable/custom_border_filled.xml" value="0.125" />
+        <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/layout/activity_login_or_signup.xml" value="0.13125" />
+        <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/layout/activity_sign_up.xml" value="0.13125" />
+        <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/layout/fragment_groups.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/layout/fragment_relations.xml" value="0.13125" />
+        <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/layout/fragment_text_dialog.xml" value="0.536" />
+        <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/layout/fragment_todos.xml" value="0.264" />
+        <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/layout/todos_item.xml" value="0.4" />
+        <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/menu/activity_main_drawer.xml" value="0.25416666666666665" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

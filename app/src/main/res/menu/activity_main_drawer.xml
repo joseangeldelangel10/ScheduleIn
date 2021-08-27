@@ -7,16 +7,23 @@
         android:id="@+id/nav_menu_my_time_title"
         android:enabled="false"
         android:title="🕚 My Time"></item>
-    <item android:title="       My day"
-        android:id="@+id/nav_menu_my_day">
-    </item>
-    <item android:title="       My week"
-        android:id="@+id/nav_menu_my_week">
-    </item>
-    <item android:title="       My month"
-        android:id="@+id/nav_menu_my_month">
-    </item>
+        <item android:title="       My day"
+            android:id="@+id/nav_menu_my_day">
+        </item>
+        <item android:title="       My week"
+            android:id="@+id/nav_menu_my_week">
+        </item>
+        <item android:title="       My month"
+            android:id="@+id/nav_menu_my_month">
+        </item>
 
+    <item
+        android:id="@+id/nav_menu_todos_title"
+        android:enabled="false"
+        android:title="🕚 To-do's"></item>
+    <item android:title="       To do list"
+        android:id="@+id/nav_menu_todo_list">
+    </item>
 
     <item
         android:id="@+id/nav_menu_my_relations"

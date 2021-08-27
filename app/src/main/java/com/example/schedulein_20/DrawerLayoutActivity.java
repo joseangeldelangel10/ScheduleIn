@@ -29,6 +29,7 @@ import com.example.schedulein_20.fragments.EditProfileFragment;
 import com.example.schedulein_20.fragments.GroupsFragment;
 import com.example.schedulein_20.fragments.RelationsFragment;
 import com.example.schedulein_20.fragments.SettingsFragment;
+import com.example.schedulein_20.fragments.TodosFragment;
 import com.example.schedulein_20.fragments.UserProfileFragment;
 import com.example.schedulein_20.fragments.UserSearchFragment;
 import com.example.schedulein_20.models.DateTime;
@@ -116,6 +117,9 @@ public class DrawerLayoutActivity extends AppCompatActivity implements Navigatio
         }
         else if (id == R.id.nav_menu_my_day) {
             fragment = DayViewFragment.newInstance(DateTime.currentDate());
+        }
+        else if (id == R.id.nav_menu_todo_list) {
+            fragment = new TodosFragment();
         }
         else if (id == R.id.nav_menu_log_out){
             if ((boolean) currentUser.get("googleUser")){
