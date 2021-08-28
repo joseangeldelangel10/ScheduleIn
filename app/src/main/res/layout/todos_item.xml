@@ -4,24 +4,52 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageButton
+    <!--<ImageButton
         android:id="@+id/TodosItem_checkBox"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="0dp"
-        android:background="@drawable/custom_border"></ImageButton>
+        android:background="@drawable/custom_border"></ImageButton>-->
 
-    <TextView
-        android:id="@+id/TodosItem_Text"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/TodosItem_subRl"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_toEndOf="@id/TodosItem_checkBox"
-        tools:text="some item"></TextView>
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/TodosItem_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_toStartOf="@+id/TodosItem_checkBox"
+            android:textSize="20sp"
+            tools:text="some item"></TextView>
+
+        <ImageButton
+            android:id="@+id/TodosItem_checkBox"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="0dp"
+            android:background="@color/emphasis1"
+            android:src="@drawable/accept_icon"></ImageButton>
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"
+        android:layout_below="@id/TodosItem_subRl"></View>
+
 
 </RelativeLayout>

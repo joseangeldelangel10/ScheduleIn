@@ -6,7 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".fragments.TodosFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <nl.dionsegijn.konfetti.KonfettiView
+        android:id="@+id/TodoFragment_confettiView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <TextView
         android:id="@+id/TodoFragment_Title"
         android:layout_width="match_parent"
@@ -17,10 +21,15 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@color/primary"
         android:text="Things to do:"
-        android:textColor="@color/bone_white"
         android:textSize="26sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/TodoFragment_Title"></View>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/TodoFragment_Rv"
@@ -36,8 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
         android:src="@drawable/plus_icon"></com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 

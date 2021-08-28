@@ -1,5 +1,6 @@
 package com.example.schedulein_20.models;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schedulein_20.R;
@@ -16,11 +18,11 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 
 public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ViewHolder>{
-    Context context;
-    ArrayList<String> todos;
+    public Context context;
+    ArrayList<TodoItems> todos;
     ParseUser currentUser;
 
-    public TodosAdapter(Context context, ArrayList<String> todos){
+    public TodosAdapter(Context context, ArrayList<TodoItems> todos){
         this.context = context;
         this.todos = todos;
         currentUser = ParseUser.getCurrentUser();
@@ -35,8 +37,12 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull TodosAdapter.ViewHolder holder, int position) {
-        String todo = todos.get(position);
+        TodoItems todo = todos.get(position);
         holder.bind(todo, position);
+    }
+
+    public interface OnItemCompletedListener{
+        public void onItemCompleted(int position);
     }
 
     @Override
@@ -54,12 +60,15 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ViewHolder>{
             checkbox = itemView.findViewById(R.id.TodosItem_checkBox);
         }
 
-        public void bind(String todo, int position){
-            todoTv.setText(todo);
+        public void bind(TodoItems todo, int position){
+            todoTv.setText(todo.getDescription());
             checkbox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    checkbox.setBackground(view.getResources().getDrawable(R.drawable.custom_border_filled));
+                    //checkbox.setBackground(view.getResources().getDrawable(R.drawable.custom_border_filled));
+                    //OnItemCompletedListener listener = (OnItemCompletedListener) context;
+                    OnItemCompletedListener listener = (OnItemCompletedListener) FragmentHelpers.getVisibleFragment( ((FragmentActivity) context).getSupportFragmentManager() );
+                    listener.onItemCompleted(position);
                 }
             });
         }

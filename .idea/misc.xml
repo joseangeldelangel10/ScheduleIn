@@ -11,7 +11,9 @@
         <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/layout/fragment_relations.xml" value="0.13125" />
         <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/layout/fragment_text_dialog.xml" value="0.536" />
         <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/layout/fragment_todos.xml" value="0.264" />
-        <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/layout/todos_item.xml" value="0.4" />
+        <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/layout/relate_request_item.xml" value="0.4" />
+        <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/layout/relation_item.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/layout/todos_item.xml" value="0.6" />
         <entry key="..\:/Users/super/AndroidStudioProjects/ScheduleIn/app/src/main/res/menu/activity_main_drawer.xml" value="0.25416666666666665" />
       </map>
     </option>
