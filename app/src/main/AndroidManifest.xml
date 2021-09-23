@@ -41,6 +41,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
+
+
+        <receiver
+            android:name=".notificationCreators.NotificationReceiver">
+        </receiver>
+
+        <!--<service
+            android:name=".notificationCreators.MyNewIntentService"
+            android:exported="false" >
+        </service>-->
+
     </application>
 
 </manifest>

@@ -1,6 +1,14 @@
 package com.example.schedulein_20.fragments;
 
+import static android.content.Context.ALARM_SERVICE;
+
+import static com.parse.Parse.getApplicationContext;
+
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -8,6 +16,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
@@ -36,6 +45,7 @@ import com.example.schedulein_20.R;
 import com.example.schedulein_20.models.Events;
 import com.example.schedulein_20.models.OnPinchListener;
 import com.example.schedulein_20.models.ParseUserExtraAttributes;
+import com.example.schedulein_20.notificationCreators.NotificationReceiver;
 import com.example.schedulein_20.parseDatabaseComms.EventQueries;
 import com.parse.FindCallback;
 import com.parse.LogInCallback;
@@ -203,6 +213,33 @@ public class UserProfileFragment extends Fragment implements MergingDiffCalendar
                 startActivityForResult(intent, CREATE_EVENT_REQUEST_CODE);
             }
         });
+
+        /* ------------------------------------------------------------------------------------------------------------------------
+        *                                               TESTING NOTIFICATIONS
+        --------------------------------------------------------------------------------------------------------------------------*/
+
+        /*if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Date currentDate = DateTime.currentDate();
+            Calendar present = Calendar.getInstance();
+            present.setTime(currentDate);
+            for(int i=0;i<2;i++) {
+                present.set(Calendar.MINUTE, present.get(Calendar.MINUTE) + 1);
+
+                Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
+                int notificationId = currentUser.getInt("notificationCount");
+                intent.putExtra("notificationTitle", "Notification " + i);
+                intent.putExtra("notificationContent", "content " + i);
+                intent.putExtra("notificationId", notificationId);
+                currentUser.put("notificationCount", notificationId+1);
+                currentUser.saveInBackground();
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP,  present.getTimeInMillis(), pendingIntent);
+            }
+        }else{
+            Toast.makeText(context, "sorry the api is less than oreo", Toast.LENGTH_SHORT).show();
+            Log.e("Notification", "THE NOTIFICATION COUDN´T BE DISPLAYED BECAUSE OF THE API");
+        }*/
 
         /* ------------------------------------------------------------------------------------------------------------------------------------
                                                         ADD WEEK VIEW GESTURE

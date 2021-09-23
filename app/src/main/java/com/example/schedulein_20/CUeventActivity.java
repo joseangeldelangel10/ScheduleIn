@@ -1,5 +1,6 @@
 package com.example.schedulein_20;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.SearchView;
@@ -12,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +36,7 @@ import com.example.schedulein_20.models.Events;
 import com.example.schedulein_20.models.Group;
 import com.example.schedulein_20.models.GroupMembersSearchAdapter;
 import com.example.schedulein_20.models.ParseUserExtraAttributes;
+import com.example.schedulein_20.notificationCreators.NotificationActions;
 import com.example.schedulein_20.parseDatabaseComms.EventQueries;
 import com.example.schedulein_20.parseDatabaseComms.RelationRelatedQueries;
 import com.parse.DeleteCallback;
@@ -99,7 +102,9 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
         selectedInvitees = new ArrayList<>();
         colorButtons = new ArrayList<>();
         flag = (String) getIntent().getExtras().get("Flag");
-        eventColor = getColor(R.color.primary);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            eventColor = getColor(R.color.primary);
+        }
         Glide.with(context).load(R.drawable.accept_icon).into((ImageButton) findViewById(R.id.CUEventColorPrimary));
 
         /* ----------------------------------------------------------------------------------------
@@ -251,7 +256,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
                         repeatUntil,
                         eventColor,
                         ParseUserExtraAttributes.parseUsers2Ids((ArrayList<ParseUser>) selectedInvitees),
-                        createEventCallback());
+                        createEventCallback(eventTitle, startDate, repeatFlag));
             }
         });
 
@@ -486,7 +491,7 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
                                                 CRUD OPERATIONS
     ------------------------------------------------------------------------------------------------------*/
 
-    private SaveCallback createEventCallback(){
+    private SaveCallback createEventCallback(String eventTitle, Date startDate, String repeatFlag){
         return new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -498,6 +503,10 @@ public class CUeventActivity extends AppCompatActivity implements CalendarDialog
                 }
                 Log.i(TAG, "saving succeded");
                 Toast.makeText(CUeventActivity.this, "Saved!", Toast.LENGTH_LONG).show();
+                Calendar reminderTime = Calendar.getInstance();
+                reminderTime.setTime(startDate);
+                reminderTime.add(Calendar.MINUTE, -10);
+                NotificationActions.createOneTimeNotification(context, currentUser, "your event is about to start!", "good luck with " + eventTitle, reminderTime.getTimeInMillis());
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
                 finish();
